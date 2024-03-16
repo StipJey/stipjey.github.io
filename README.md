@@ -1,5 +1,9 @@
 # Сделано на Astro Starter Kit: Blog
 
-## Credit
+## Благодарочка
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Я использую бесплатную тему от [Bear Blog](https://github.com/HermanMartinus/bearblog/). За это ему большой респект и всех благ!
+
+## Полезные штуки
+
+Картинки для постов должны быть размером: 960 × 480 пикселей
