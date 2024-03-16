@@ -54,7 +54,7 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
+	margin: 1em 0 0 0;
 	color: rgb(var(--black));
 	line-height: 1.2;
 }
@@ -134,6 +134,14 @@ hr {
 		padding: 1em;
 	}
 }
+ul {
+	padding-inline-start: 1rem;
+	margin-block-start: 0.5rem;
+}
+
+figure {
+	margin-inline-start: 1rem;
+}
 
 .sr-only {
 	border: 0;
@@ -151,4 +159,26 @@ hr {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+@media print {
+
+	body {
+		font-size: 12px;
+	}
+
+	body>header,
+	body>footer {
+		display: none;
+	}
+
+	h1,
+	h2 {
+		font-size: 1.5rem;
+	}
+
+	h3,
+	h4 {
+		font-size: 1rem;
+	}
 }
