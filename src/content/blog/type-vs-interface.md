@@ -85,7 +85,6 @@ TypeScript использует механизм структурной типи
 Давайте возьмем уже знакомые нам тип `AType` и интерфейс `AInt` и на их основе создадим новые.
 
 Интерфейсы расширяются с помощью ключевого слова `extends`:
-
 ```typescript
 interface BInt extends AInt {
   third: string;
@@ -93,7 +92,6 @@ interface BInt extends AInt {
 ```
 
 С типами такую запись мы использовать не можем. Поэтому нам на помощь приходит инструмент «пересечение», который обозначается символом `&`. В результате мы получаем запись, которая с помощью выглядит иначе, но так же решает нашу задачу.
-
 ```typescript
 type BType = AType & {
   third: string;
@@ -101,7 +99,6 @@ type BType = AType & {
 ```
 
 На этом можно было бы и закончить. Но не возник ли у вас вопрос, а можем ли мы применить ключевое слово `extends` к типу или `&` к интерфейсу? Давайте попробуем!
-
 ```typescript
 interface BInt extends AType {
   third: string;
@@ -111,7 +108,6 @@ interface BInt extends AType {
 Внезапно! Эта запись работает! Получается, что интерфейсам в целом без разницы что расширять. Они одинаково хорошо расширят как и другой интерфейс, так и тип.
 
 Что же с инструментом пересечения?
-
 ```typescript
 type BType = AInt & {
   third: string;
@@ -123,7 +119,6 @@ type BType = AInt & {
 Более того, оказывается, мы можем использовать в качестве базы еще одну сущность — класс.
 
 Для примера создадим класс с двумя полями: `first` и `second`.
-
 ```typescript
 class AClass {
   public first: boolean;
@@ -137,7 +132,6 @@ class AClass {
 ```
 
 А теперь на его основе мы можем реализовать целевые тип и интерфейс:
-
 ```typescript
 interface BInt extends AClass {
   third: string;
@@ -150,7 +144,151 @@ type BType = AClass & {
 
 Трудно поверить, но все эти инструменты и варианты записи дают нам идентичный результат.
 
+# Классы
 
----
+Раз уж мы заговорили про классы, то давайте проясним и связанные с ними моменты.
+
+Исторически так сложилось, что классы имплементируют, а простыми словами — реализуют, интерфейсы. Интерфейс является описанием, которому экземпляры класса должны соответствовать.
+
+Сразу приведу пример: У нас есть уже наш давний знакомый интерфейс `AInt`, и его может имплементировать класс `CClass`. Выглядеть будет вот так:
+```typescript
+// Описываем интерфейс
+interface AInt {
+  first: boolean;
+  second: number;
+}
+
+// Имплементируем
+class CClass implements AInt {
+  first = true;
+  second = 20;
+}
+
+// Создаем экземпляр
+const x = new CClass();
+console.log(x.first); // true
+```
+
+А теперь интересно, сможем ли мы создать объект с другими значениями, ведь мы зафиксировали конкретные значения `first` и `second` в конструкторе. Пробуем:
+```typescript
+const a: CClass = {
+  first: false;
+  second: 15;
+}
+
+const b: AInt = {
+  first: false;
+  second: 15;
+}
+```
+Да, все получилось! Класс в этом случае ведет себя так же как и интерфейс. Результаты идентичны.
+
+А как поживает наш `type`? Думаю вы уже догадались. TypeScript настолько не различает `type` и `interface`, что готов имплементировать и `type` тоже.
+```typescript
+// Описываем тип
+type AType {
+  first: boolean;
+  second: number;
+}
+
+// Имплементируем
+class CClass implements AType {
+  first = true;
+  second = 20;
+}
+
+// Создаем экземпляр
+const x = new CClass();
+console.log(x.first); // true
+```
+
+Более того, чтобы показать, что TypeScript не видит разницы не только в типах и интерфейсах, но и в классах, я воспользуюсь в качестве основы уже знакомым нам классом `AClass`:
+```typescript
+// Описываем тип
+class AClass {
+  public first: boolean;
+  public second: number;
+
+  constructor(x: boolean, y: number) {
+    this.first = x;
+    this.second = y;
+  }
+}
+
+// Имплементируем
+class CClass implements AClass {
+  first = true;
+  second = 20;
+}
+
+// Создаем экземпляр
+const x = new CClass();
+console.log(x.first); // true
+```
+
+И здесь еще хочется добавить про расширение. Классы тоже умеют расширять типы, интерфейсы и другие классы. И да, у них тоже особенный синтаксис. Вот так можно добавить третье поле к `AInt` с помощью класса:
+```typescript
+class BClass implements AInt {
+  public third: string;
+
+  constructor() {
+    this.first = true;
+    this.second = 1;
+    this.third = 'Hello';
+  }
+}
+```
+
+Расширять, как вы поняли, можно так же и `type`, и `class`. Но это я позволю вам попробовать сделать самостоятельно.
+
+# Дженерики
+
+Что такое дженерик? По факту — это инструмент языка TypeScript для описания структур данных, в которых тип каких-либо параметров стуктуры может задаваться из вне. Капец, хотел написать попроще, получилось посложнее. Дженерики в целом достойны отдельной статьи, здесь же разберем особенности в рамках сравнения типов и интерфейсов. 
+
+Возьмем привычные нам `AInt` и `AType`, назовем их `DInt` и `DType` соответственно, и сделаем так, чтобы тип параметра `second` можно было задавать.
+```typescript
+// Определяем интерфейс
+interface DInt<ExternalType> {
+  first: boolean;
+  second: ExternalType;
+}
+
+// Определяем тип
+type DType<ExternalType> = {
+  first: boolean;
+  second: ExternalType;
+}
+```
+Здесь мы создали переменную типа `ExternalType`. При создании константы с типом DInt или DType мы должны указывать тип, которому будет соответствовать параметр `second`. 
+
+Если его не передать — будет ошибка. Если фактическое значение не будет совпадать с указанным, то тоже будет ошибка. Посмотрите:
+```typescript
+// Будет ошибка: Generic type 'DInt<ExternalType>' requires 1 type argument(s)
+const dIntError: DInt = {
+  first: true,
+  second: 15,
+}
+
+// Так правильно
+const dInt: DInt<number> = {
+  first: true,
+  second: 15,
+} 
+
+// Так будет ошибка: The expected type comes from property 'second' which is declared here on type 'DType<number>'
+const dType: DType<number> = {
+  first: true,
+  second: 'bla bla',
+}
+
+// Так правильно
+const dType: DType<string> = {
+  first: true,
+  second: 'bla bla',
+}
+```
+
+На примерах видно, что определение и использование различается только на уровне определения ровно настолько, насколько в принципе различаются `type` и `interface`.
+
 
 Материал дописывается и обновляется. Подписывайся на обновления в [блоге в Telegram](https://t.me/+fcLS-3M_XSYxMDVi)
