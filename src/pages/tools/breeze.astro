@@ -3,9 +3,16 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
+export const toolData = {
+    title: 'Breeze',
+    description:
+        'Инструмент для релаксации и концентрации через технику квадратного дыхания.',
+    emoji: '💨',
+    order: 2,
+};
+
 const currentTitle = 'Breeze | Квадратное дыхание';
-const currentDesc =
-    'Инструмент для релаксации и концентрации через технику квадратного дыхания.';
+const currentDesc = toolData.description;
 ---
 
 <!doctype html>

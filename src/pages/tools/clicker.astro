@@ -3,8 +3,15 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
+export const toolData = {
+    title: 'Clicker',
+    description: 'Простой и красивый счётчик кликов с историей.',
+    emoji: '🖱️',
+    order: 1,
+};
+
 const currentTitle = 'Clicker | Счётчик кликов';
-const currentDesc = 'Простой и красивый счётчик кликов с историей.';
+const currentDesc = toolData.description;
 ---
 
 <!doctype html>
