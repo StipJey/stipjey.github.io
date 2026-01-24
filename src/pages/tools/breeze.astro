@@ -1,0 +1,533 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const currentTitle = 'Breeze | Квадратное дыхание';
+const currentDesc =
+    'Инструмент для релаксации и концентрации через технику квадратного дыхания.';
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead title={currentTitle} description={currentDesc} />
+        <style>
+            .breeze-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 70vh; /* More space */
+                text-align: center;
+                padding: 0 10px; /* Safety padding for very small screens */
+            }
+
+            .center-info {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                pointer-events: none;
+                width: 100%;
+            }
+
+            .phase-text {
+                font-size: clamp(1.5rem, 6vw, 2.5rem); /* Responsive font */
+                font-weight: 700;
+                color: var(--black);
+                font-family: 'Unbounded', sans-serif;
+                margin: 0;
+                line-height: 1.2;
+            }
+
+            .stats {
+                font-family: 'Unbounded', sans-serif;
+                font-size: 1rem;
+                color: var(--gray);
+                margin-top: 0.5rem;
+                opacity: 0;
+                transition: opacity 0.5s;
+            }
+            .stats.visible {
+                opacity: 1;
+            }
+
+            /* 
+           Responsive Square 
+           Max size 300px, but shrinks on small screens.
+           We use a CSS variable for size to easily compute logic in JS if needed,
+           or just rely on percentage for position.
+        */
+            :root {
+                --box-size: min(80vw, 300px);
+            }
+
+            .breathing-square-wrapper {
+                position: relative;
+                width: var(--box-size);
+                height: var(--box-size);
+                margin: 1rem 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .breathing-square {
+                width: 100%;
+                height: 100%;
+                /* Premium Look: Glassy/Soft border */
+                border: 6px solid rgba(var(--gray), 0.2);
+                border-radius: 20px;
+                position: relative;
+                box-sizing: border-box;
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+                backdrop-filter: blur(5px);
+            }
+
+            .indicator {
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                background-color: var(--accent);
+                border-radius: 50%;
+                /* Center the dot on the line. 
+               We will use 'left' and 'top' percentages in JS. 
+               margin-top/left will center it relative to the point.
+            */
+                margin-top: -12px;
+                margin-left: -12px;
+
+                box-shadow: 0 0 15px var(--accent);
+                z-index: 20;
+                will-change: left, top;
+            }
+
+            /* Trail effect can be added later if needed, simple dot for now is cleaner */
+
+            .controls {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: center;
+                margin-top: 2rem;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .btn {
+                background-color: var(--accent);
+                color: white;
+                border: none;
+                padding: 14px 40px;
+                font-size: 1.2rem;
+                border-radius: 50px; /* Pill shape */
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                transition: all 0.2s ease;
+                box-shadow: 0 4px 12px rgba(var(--accent-dark), 0.2);
+                min-width: 200px;
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(var(--accent-dark), 0.3);
+            }
+            .btn:active {
+                transform: translateY(0);
+            }
+            .btn.secondary {
+                background-color: var(--gray-light);
+                border: 2px solid var(--gray);
+                color: var(--black);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .btn.secondary:hover {
+                background-color: #e2e2e2;
+                border-color: var(--gray-dark);
+                color: var(--black);
+                transform: translateY(-2px);
+            }
+
+            .settings {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+            }
+
+            .slider-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .settings label {
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: rgb(var(--gray-dark));
+            }
+
+            input[type='range'] {
+                cursor: pointer;
+                accent-color: var(--accent);
+                width: 60%;
+                max-width: 200px;
+            }
+
+            /* Animation: Pulse & Comet Trail */
+            @keyframes pulse-glow {
+                0% {
+                    box-shadow: 0 0 10px var(--accent);
+                    transform: scale(1);
+                }
+                50% {
+                    box-shadow:
+                        0 0 25px var(--accent),
+                        0 0 10px white;
+                    transform: scale(1.1);
+                }
+                100% {
+                    box-shadow: 0 0 10px var(--accent);
+                    transform: scale(1);
+                }
+            }
+
+            .indicator {
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                background-color: var(--accent);
+                border-radius: 50%;
+                margin-top: -12px;
+                margin-left: -12px;
+                z-index: 20;
+                will-change: left, top;
+
+                /* Core glow */
+                box-shadow: 0 0 15px var(--accent);
+                animation: pulse-glow 2s infinite ease-in-out;
+            }
+
+            /* Comet tail effect */
+            .indicator::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: inherit;
+                opacity: 0.6;
+                z-index: -1;
+                transform: translate(-50%, -50%) scale(1.5);
+                filter: blur(8px);
+            }
+
+            /* Small screen adjustments */
+            @media (max-width: 350px) {
+                .btn {
+                    padding: 10px 20px;
+                    font-size: 1rem;
+                    min-width: 140px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <section class="breeze-container">
+                <h1>Квадратное дыхание</h1>
+
+                <div class="breathing-square-wrapper">
+                    <div class="breathing-square">
+                        <div
+                            id="indicator"
+                            class="indicator"
+                            style="left: 0%; top: 100%;">
+                        </div>
+                    </div>
+
+                    <div class="center-info">
+                        <div id="phase-display" class="phase-text">Старт</div>
+                        <div id="stats" class="stats">
+                            Циклов: <span id="cycle-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="toggle-btn" class="btn">Начать</button>
+
+                    <div class="settings">
+                        <label for="duration-input">Скорость (сек/фаза)</label>
+                        <div class="slider-container">
+                            <span style="font-size: 0.8rem;">3с</span>
+                            <input
+                                type="range"
+                                id="duration-input"
+                                min="3"
+                                max="10"
+                                value="5"
+                                step="1"
+                            />
+                            <span style="font-size: 0.8rem;">10с</span>
+                        </div>
+                        <div
+                            id="duration-display"
+                            style="font-weight:bold; color:var(--accent);">
+                            5 сек
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <Footer />
+
+        <script>
+            // --- Configuration ---
+            const PHASES = [
+                { id: 0, text: 'Вдох', action: 'up' },
+                { id: 1, text: 'Пауза', action: 'right' },
+                { id: 2, text: 'Выдох', action: 'down' },
+                { id: 3, text: 'Пауза', action: 'left' },
+            ];
+
+            // --- State ---
+            let isRunning = false;
+            let currentPhaseIndex = 0;
+            let phaseDuration = 5;
+            let phaseStartTime = 0;
+            let animationFrameId: number | null = null;
+            let metronomeIntervalId: number | null = null;
+            let cycles = 0;
+
+            const audioCtx = new (
+                window.AudioContext || (window as any).webkitAudioContext
+            )();
+
+            // --- DOM Elements ---
+            const toggleBtn = document.getElementById(
+                'toggle-btn'
+            ) as HTMLButtonElement;
+            const indicator = document.getElementById(
+                'indicator'
+            ) as HTMLDivElement;
+            const phaseDisplay = document.getElementById(
+                'phase-display'
+            ) as HTMLDivElement;
+            const durationInput = document.getElementById(
+                'duration-input'
+            ) as HTMLInputElement;
+            const durationDisplay = document.getElementById(
+                'duration-display'
+            ) as HTMLDivElement;
+            const cycleCountSpan = document.getElementById(
+                'cycle-count'
+            ) as HTMLSpanElement;
+            const statsBlock = document.getElementById(
+                'stats'
+            ) as HTMLDivElement;
+
+            // --- Init ---
+            // Set initial position: Bottom-Left
+            if (indicator) {
+                indicator.style.left = '0%';
+                indicator.style.top = '100%';
+            }
+
+            // Load Settings
+            const storedDuration = localStorage.getItem('breeze-duration');
+            if (storedDuration && durationInput && durationDisplay) {
+                phaseDuration = parseInt(storedDuration, 10);
+                durationInput.value = String(phaseDuration);
+                durationDisplay.textContent = `${phaseDuration} сек`;
+            }
+
+            // --- Logic ---
+
+            function updateIndicatorPosition(
+                xPercent: number,
+                yPercent: number
+            ) {
+                if (!indicator) return;
+                indicator.style.left = `${xPercent}%`;
+                indicator.style.top = `${yPercent}%`;
+            }
+
+            function drawFrame(progress: number) {
+                // progress: 0.0 -> 1.0
+                let x = 0;
+                let y = 0;
+
+                // 0: Up (x=0, y=100->0)
+                // 1: Right (x=0->100, y=0)
+                // 2: Down (x=100, y=0->100)
+                // 3: Left (x=100->0, y=100)
+
+                switch (currentPhaseIndex) {
+                    case 0:
+                        x = 0;
+                        y = 100 - progress * 100;
+                        break;
+                    case 1:
+                        x = progress * 100;
+                        y = 0;
+                        break;
+                    case 2:
+                        x = 100;
+                        y = progress * 100;
+                        break;
+                    case 3:
+                        x = 100 - progress * 100;
+                        y = 100;
+                        break;
+                }
+                updateIndicatorPosition(x, y);
+            }
+
+            function startPhase(idx: number) {
+                currentPhaseIndex = idx;
+                const phase = PHASES[currentPhaseIndex];
+                if (phaseDisplay) phaseDisplay.textContent = phase.text;
+
+                speak(phase.text);
+                phaseStartTime = performance.now();
+            }
+
+            function loop(time: number) {
+                if (!isRunning) return;
+
+                const elapsed = (time - phaseStartTime) / 1000;
+                let progress = elapsed / phaseDuration;
+
+                if (progress >= 1) {
+                    // Next Phase
+                    const prevIndex = currentPhaseIndex;
+                    currentPhaseIndex = (currentPhaseIndex + 1) % 4;
+
+                    // Increment cycle only when completing the full loop (Phase 3 -> Phase 0)
+                    if (currentPhaseIndex === 0 && prevIndex === 3) {
+                        cycles++;
+                        if (cycleCountSpan)
+                            cycleCountSpan.textContent = cycles.toString();
+                    }
+
+                    startPhase(currentPhaseIndex);
+                    progress = 0;
+                }
+
+                drawFrame(progress);
+                animationFrameId = requestAnimationFrame(loop);
+            }
+
+            // --- Audio ---
+            function playClick() {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const t = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, t);
+                osc.frequency.exponentialRampToValueAtTime(400, t + 0.1);
+
+                gain.gain.setValueAtTime(0.3, t);
+                gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(t);
+                osc.stop(t + 0.1);
+            }
+
+            function speak(text: string) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'ru-RU';
+                    u.rate = 1.1;
+                    window.speechSynthesis.speak(u);
+                }
+            }
+
+            function startMetronome() {
+                stopMetronome();
+                playClick(); // Immediate first click
+
+                // Using setInterval is sufficient for this use case
+                metronomeIntervalId = window.setInterval(() => {
+                    if (isRunning) playClick();
+                }, 1000);
+            }
+
+            function stopMetronome() {
+                if (metronomeIntervalId) {
+                    clearInterval(metronomeIntervalId);
+                    metronomeIntervalId = null;
+                }
+            }
+
+            // --- Handlers ---
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    if (isRunning) {
+                        // Stop
+                        isRunning = false;
+                        toggleBtn.textContent = 'Начать';
+                        toggleBtn.classList.remove('secondary');
+
+                        if (animationFrameId)
+                            cancelAnimationFrame(animationFrameId);
+                        stopMetronome();
+
+                        if (phaseDisplay) phaseDisplay.textContent = 'Пауза';
+                        if (statsBlock) statsBlock.classList.remove('visible');
+                        window.speechSynthesis.cancel();
+                    } else {
+                        // Start
+                        isRunning = true;
+                        toggleBtn.textContent = 'Стоп';
+                        toggleBtn.classList.add('secondary');
+
+                        // Reset State
+                        cycles = 0;
+                        if (cycleCountSpan) cycleCountSpan.textContent = '0';
+                        if (statsBlock) statsBlock.classList.add('visible');
+
+                        currentPhaseIndex = 0;
+                        startPhase(0);
+                        startMetronome();
+                        requestAnimationFrame(loop);
+                    }
+                });
+            }
+
+            if (durationInput) {
+                durationInput.addEventListener('input', (e) => {
+                    const target = e.target as HTMLInputElement;
+                    const val = target.value;
+                    phaseDuration = parseInt(val, 10);
+                    if (durationDisplay)
+                        durationDisplay.textContent = `${val} сек`;
+                    localStorage.setItem('breeze-duration', val);
+                });
+            }
+        </script>
+    </body>
+</html>
