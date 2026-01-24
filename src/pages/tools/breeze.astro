@@ -4,21 +4,27 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 export const toolData = {
-    title: 'Breeze',
+    title: 'Breeze | Квадратное дыхание онлайн',
     description:
-        'Инструмент для релаксации и концентрации через технику квадратного дыхания.',
+        'Техника квадратного дыхания для снятия стресса, медитации и концентрации. Управляйте своим состоянием с помощью простого визуального помощника.',
     emoji: '💨',
     order: 2,
+    image: '/og/breeze.png',
 };
 
-const currentTitle = 'Breeze | Квадратное дыхание';
+const currentTitle = toolData.title;
 const currentDesc = toolData.description;
+const currentImage = toolData.image;
 ---
 
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={currentTitle} description={currentDesc} />
+        <BaseHead
+            title={currentTitle}
+            description={currentDesc}
+            image={currentImage}
+        />
         <style>
             .breeze-container {
                 display: flex;

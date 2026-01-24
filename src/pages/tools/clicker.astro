@@ -4,20 +4,27 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 export const toolData = {
-    title: 'Clicker',
-    description: 'Простой и красивый счётчик кликов с историей.',
+    title: 'Clicker | Счётчик кликов онлайн',
+    description:
+        'Удобный и красивый счетчик кликов с историей. Идеально подходит для подсчета чего угодно прямо в браузере. Минималистичный дизайн с обратной связью.',
     emoji: '🖱️',
     order: 1,
+    image: '/og/clicker.png',
 };
 
-const currentTitle = 'Clicker | Счётчик кликов';
+const currentTitle = toolData.title;
 const currentDesc = toolData.description;
+const currentImage = toolData.image;
 ---
 
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={currentTitle} description={currentDesc} />
+        <BaseHead
+            title={currentTitle}
+            description={currentDesc}
+            image={currentImage}
+        />
         <style is:global>
             .clicker-container {
                 display: flex;

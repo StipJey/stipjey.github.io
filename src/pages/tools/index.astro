@@ -5,7 +5,8 @@ import Footer from '../../components/Footer.astro';
 
 const currentTitle = 'Инструменты | Мой Блог';
 const currentDesc =
-    'Коллекция полезных онлайн-инструментов, созданных для удобства и продуктивности.';
+    'Коллекция бесплатных онлайн-инструментов: счетчик кликов, упражнения для дыхания и многое другое для вашей продуктивности.';
+const currentImage = '/og/tools.png';
 
 const toolFiles = await Astro.glob('./*.astro');
 const tools = toolFiles
@@ -20,7 +21,11 @@ const tools = toolFiles
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={currentTitle} description={currentDesc} />
+        <BaseHead
+            title={currentTitle}
+            description={currentDesc}
+            image={currentImage}
+        />
         <style>
             .tools-grid {
                 display: grid;
