@@ -1,0 +1,767 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const currentTitle = 'Clicker | Счётчик кликов';
+const currentDesc = 'Простой и красивый счётчик кликов с историей.';
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead title={currentTitle} description={currentDesc} />
+        <style is:global>
+            .clicker-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 70vh;
+                text-align: center;
+                padding: 4rem 10px;
+                border-radius: 24px;
+                margin: 2rem 0;
+
+                /* High-End Animated Mesh Gradient Background */
+                background:
+                    radial-gradient(
+                        circle at 10% 10%,
+                        rgba(var(--accent), 0.12) 0%,
+                        transparent 40%
+                    ),
+                    radial-gradient(
+                        circle at 90% 90%,
+                        rgba(150, 200, 255, 0.15) 0%,
+                        transparent 40%
+                    ),
+                    radial-gradient(
+                        circle at 90% 10%,
+                        rgba(var(--accent-light), 0.1) 0%,
+                        transparent 40%
+                    ),
+                    radial-gradient(
+                        circle at 10% 90%,
+                        rgba(200, 150, 255, 0.12) 0%,
+                        transparent 40%
+                    ),
+                    #ffffff;
+                background-size: 200% 200%;
+                animation: mesh-gradient 15s ease infinite alternate;
+                box-shadow:
+                    inset 0 0 100px rgba(255, 255, 255, 0.8),
+                    0 20px 50px rgba(0, 0, 0, 0.02);
+                border: 1px solid rgba(var(--accent), 0.05);
+                position: relative; /* For absolutely positioned controls */
+            }
+
+            .sound-toggle {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(var(--gray), 0.2);
+                border-radius: 50%;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 1.2rem;
+                transition: all 0.2s ease;
+                color: var(--gray-dark);
+                z-index: 10;
+            }
+
+            .sound-toggle:hover {
+                background: rgba(var(--accent), 0.1);
+                border-color: var(--accent);
+                color: var(--accent);
+                transform: scale(1.1);
+            }
+
+            .sound-toggle.muted {
+                color: var(--gray);
+            }
+
+            @keyframes mesh-gradient {
+                0% {
+                    background-position: 0% 0%;
+                }
+                50% {
+                    background-position: 100% 100%;
+                }
+                100% {
+                    background-position: 0% 100%;
+                }
+            }
+
+            /* --- Main Button --- */
+            .counter-btn-wrapper {
+                position: relative;
+                margin: 2rem 0;
+            }
+
+            .counter-btn {
+                width: 250px;
+                height: 250px;
+                border-radius: 50%;
+
+                /* Vibrant Solid Gradient Fill */
+                background: linear-gradient(
+                    135deg,
+                    #2337ff 0%,
+                    #4facfe 25%,
+                    #2337ff 50%,
+                    #4facfe 75%,
+                    #2337ff 100%
+                );
+                background-size: 400% 400%;
+
+                box-shadow: 0 15px 45px rgba(35, 55, 255, 0.3);
+                border: 4px solid rgba(255, 255, 255, 0.3);
+                color: #ffffff;
+                font-family: 'Unbounded', sans-serif;
+                font-size: 5rem;
+                font-weight: 700;
+                cursor: pointer;
+
+                /* Smoother transitions for hover/click */
+                transition:
+                    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    box-shadow 0.4s ease,
+                    border-color 0.4s ease,
+                    background-color 0.4s ease,
+                    filter 0.3s ease;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+                outline: none;
+
+                /* Combine breathing with shimmer */
+                animation:
+                    breathing 4s infinite ease-in-out,
+                    shimmer 12s infinite linear;
+                overflow: hidden; /* For pseudo-element flash */
+            }
+
+            /* Flash Layer */
+            .counter-btn::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, #ff7675, #d63031);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            .counter-btn.clicking::after {
+                animation: flash-red 0.5s ease-out;
+            }
+
+            @keyframes flash-red {
+                0% {
+                    opacity: 0;
+                }
+                20% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            /* Simple White Text */
+            .count-value {
+                color: #ffffff;
+                text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 2; /* Above flash layer */
+                position: relative;
+            }
+
+            /* Hover State */
+            .counter-btn:hover {
+                box-shadow: 0 15px 50px rgba(var(--accent), 0.4);
+                border-color: rgba(var(--accent), 0.6);
+                transform: scale(1.02);
+            }
+
+            /* Click Animation Class */
+            .counter-btn.clicking {
+                animation: click-compress 0.5s
+                    cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                box-shadow: 0 0 50px rgba(214, 48, 49, 0.5);
+            }
+
+            @keyframes click-compress {
+                0% {
+                    transform: scale(1.02);
+                }
+                30% {
+                    transform: scale(0.85);
+                }
+                100% {
+                    transform: scale(1.02);
+                }
+            }
+
+            /* Removed old animation */
+
+            @keyframes breathing {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(var(--accent), 0.3);
+                    transform: scale(1);
+                }
+                50% {
+                    box-shadow:
+                        0 0 40px 10px rgba(var(--accent), 0.2),
+                        0 0 20px 5px rgba(255, 255, 255, 0.3);
+                    transform: scale(1.04);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(var(--accent), 0.3);
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes shimmer {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            /* Value transition */
+            .count-value {
+                transition: transform 0.1s;
+            }
+            .counter-btn:active .count-value {
+                transform: scale(1.1);
+            }
+
+            /* --- Reset Button --- */
+            .btn-reset {
+                background-color: var(--gray-light);
+                border: 2px solid var(--gray);
+                color: var(--black);
+                padding: 12px 30px;
+                font-size: 1.1rem;
+                border-radius: 50px;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                transition: all 0.2s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                margin-top: 1rem;
+            }
+
+            .btn-reset:hover {
+                background-color: #e2e2e2;
+                border-color: var(--gray-dark);
+                transform: translateY(-2px);
+                color: var(--black); /* Ensure text stays black */
+            }
+
+            .btn-reset:active {
+                transform: translateY(0);
+            }
+
+            /* --- History Section Redesign - Clean & Professional --- */
+            .history-section {
+                margin-top: 4rem;
+                width: 100%;
+                max-width: 550px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            details {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                border-radius: 24px;
+                box-shadow:
+                    0 20px 60px rgba(0, 0, 0, 0.04),
+                    inset 0 0 1px 1px rgba(255, 255, 255, 0.8);
+                overflow: hidden;
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            summary {
+                cursor: pointer;
+                padding: 1.5rem 2rem;
+                font-weight: 700;
+                font-family: 'Unbounded', sans-serif;
+                color: rgb(var(--black));
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                user-select: none;
+                list-style: none;
+            }
+
+            summary::-webkit-details-marker {
+                display: none;
+            }
+
+            summary::after {
+                content: '';
+                width: 8px;
+                height: 8px;
+                border-right: 2px solid currentColor;
+                border-bottom: 2px solid currentColor;
+                transform: translateY(-2px) rotate(45deg);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                opacity: 0.4;
+            }
+
+            details[open] summary::after {
+                transform: translateY(2px) rotate(-135deg);
+            }
+
+            .history-content {
+                padding: 0 1.5rem 2rem;
+            }
+
+            .history-header {
+                display: grid;
+                grid-template-columns: 120px 100px 1fr 50px;
+                padding: 0.85rem 0.5rem;
+                margin-bottom: 0.25rem;
+                opacity: 0.5;
+                border: 1px solid transparent; /* Match row for alignment */
+            }
+
+            .header-item {
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: rgb(var(--black));
+                text-align: left;
+            }
+            .header-item:nth-child(3),
+            .header-item:nth-child(4) {
+                text-align: center;
+            }
+
+            #history-body {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .history-row {
+                display: grid;
+                grid-template-columns: 120px 100px 1fr 50px;
+                align-items: center;
+                padding: 0.85rem 0.5rem;
+                border-radius: 12px;
+                background: transparent;
+                border: 1px solid transparent;
+                transition: all 0.2s ease;
+            }
+
+            .history-row:hover {
+                background: white;
+                border-color: rgba(var(--accent), 0.1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+                transform: translateY(-1px);
+            }
+
+            .row-item {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 0.85rem;
+                color: rgb(var(--gray-dark));
+                text-align: left;
+            }
+
+            .row-count {
+                font-weight: 700;
+                color: var(--accent);
+                font-family: 'Unbounded', sans-serif;
+                font-size: 1.1rem;
+                text-align: center;
+            }
+
+            .row-time {
+                color: var(--gray);
+            }
+
+            .del-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 1rem;
+                color: #ff4d4f;
+                padding: 8px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                opacity: 0.2;
+                margin: 0 auto;
+            }
+
+            .history-row:hover .del-btn {
+                opacity: 0.6;
+            }
+
+            .del-btn:hover {
+                background: rgba(255, 77, 79, 0.1);
+                opacity: 1 !important;
+                transform: scale(1.1);
+            }
+
+            .empty-msg {
+                text-align: center;
+                color: var(--gray);
+                padding: 2rem;
+                font-style: italic;
+                font-size: 0.9rem;
+            }
+
+            /* --- Mobile Responsiveness --- */
+            @media (max-width: 600px) {
+                .clicker-container {
+                    padding: 2rem 15px;
+                    margin: 1rem 0;
+                    min-height: 60vh;
+                }
+
+                .counter-btn {
+                    width: 200px;
+                    height: 200px;
+                    font-size: 4rem;
+                }
+
+                h1 {
+                    font-size: 1.8rem;
+                }
+
+                .history-section {
+                    margin-top: 2rem;
+                    max-width: 100%;
+                }
+
+                summary {
+                    padding: 1.25rem;
+                }
+            }
+
+            @media (max-width: 500px) {
+                .history-header,
+                .history-row {
+                    grid-template-columns: 100px 1fr 50px; /* Adjusted for date width */
+                }
+
+                /* Hide Time on small screens, keep Date */
+                .header-item:nth-child(2),
+                .row-time {
+                    display: none;
+                }
+
+                .row-count {
+                    font-size: 1rem;
+                }
+
+                .row-item:first-child {
+                    text-align: left;
+                    padding-left: 0.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <section class="clicker-container">
+                <button
+                    id="sound-toggle"
+                    class="sound-toggle"
+                    title="Включить/выключить звук">
+                    <span id="sound-icon">🔊</span>
+                </button>
+                <h1 style="margin-bottom: 0;">Кликер</h1>
+
+                <div class="counter-btn-wrapper">
+                    <button id="clicker-btn" class="counter-btn">
+                        <span id="count-display" class="count-value">0</span>
+                    </button>
+                </div>
+
+                <button id="reset-btn" class="btn-reset">Сбросить</button>
+
+                <div class="history-section">
+                    <details open>
+                        <summary>История кликов</summary>
+                        <div class="history-content">
+                            <div id="history-container">
+                                <div class="history-header">
+                                    <span class="header-item">Дата</span>
+                                    <span class="header-item">Время</span>
+                                    <span class="header-item">Клики</span>
+                                    <span class="header-item"></span>
+                                </div>
+                                <div id="history-body">
+                                    <!-- Rows will be injected here -->
+                                </div>
+                            </div>
+                            <div
+                                id="empty-history"
+                                class="empty-msg"
+                                style="display: none;">
+                                История пуста
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </main>
+        <Footer />
+
+        <script>
+            // --- Logic ---
+            const btn = document.getElementById('clicker-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const countDisplay = document.getElementById('count-display');
+            const historyBody = document.getElementById('history-body');
+            const emptyMsg = document.getElementById('empty-history');
+
+            let count = 0;
+            let history: {
+                date: string;
+                time: string;
+                count: number;
+                timestamp: number;
+            }[] = [];
+
+            // Load State
+            function loadState() {
+                // count starts at 0, ignoring localStorage per request
+                updateDisplay();
+
+                const storedHistory = localStorage.getItem('clicker-history');
+                if (storedHistory) {
+                    try {
+                        history = JSON.parse(storedHistory);
+                    } catch (e) {
+                        history = [];
+                    }
+                }
+                renderHistory();
+            }
+
+            function saveState() {
+                localStorage.setItem('clicker-count', count.toString());
+            }
+
+            function saveHistory() {
+                localStorage.setItem(
+                    'clicker-history',
+                    JSON.stringify(history)
+                );
+            }
+
+            function updateDisplay() {
+                if (countDisplay) countDisplay.textContent = count.toString();
+            }
+
+            let currentSessionTimestamp: number | null = null;
+
+            function updateHistory() {
+                if (count <= 0) return;
+
+                if (currentSessionTimestamp === null) {
+                    const now = new Date();
+                    currentSessionTimestamp = Date.now();
+                    const record = {
+                        date: now.toLocaleDateString(),
+                        time: now.toLocaleTimeString(),
+                        count: count,
+                        timestamp: currentSessionTimestamp,
+                    };
+                    history.unshift(record);
+                } else {
+                    const record = history.find(
+                        (r) => r.timestamp === currentSessionTimestamp
+                    );
+                    if (record) {
+                        record.count = count;
+                    } else {
+                        // If current row was deleted, restart session tracking
+                        currentSessionTimestamp = null;
+                        updateHistory();
+                        return;
+                    }
+                }
+                saveHistory();
+                renderHistory();
+            }
+
+            const audioCtx = new (
+                window.AudioContext || (window as any).webkitAudioContext
+            )();
+
+            const soundToggle = document.getElementById('sound-toggle');
+            const soundIcon = document.getElementById('sound-icon');
+            let isMuted = localStorage.getItem('clicker-muted') === 'true';
+
+            function updateSoundUI() {
+                if (!soundToggle || !soundIcon) return;
+                if (isMuted) {
+                    soundToggle.classList.add('muted');
+                    soundIcon.textContent = '🔇';
+                } else {
+                    soundToggle.classList.remove('muted');
+                    soundIcon.textContent = '🔊';
+                }
+            }
+
+            if (soundToggle) {
+                soundToggle.addEventListener('click', () => {
+                    isMuted = !isMuted;
+                    localStorage.setItem('clicker-muted', isMuted.toString());
+                    updateSoundUI();
+                });
+            }
+
+            function playClickSound() {
+                if (isMuted) return;
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const t = audioCtx.currentTime;
+
+                // --- Body / Thud ---
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, t);
+                osc.frequency.exponentialRampToValueAtTime(100, t + 0.05);
+                gain.gain.setValueAtTime(0.2, t);
+                gain.gain.exponentialRampToValueAtTime(0.01, t + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(t);
+                osc.stop(t + 0.05);
+
+                // --- Transient / Click ---
+                const click = audioCtx.createOscillator();
+                const clickGain = audioCtx.createGain();
+                click.type = 'sine';
+                click.frequency.setValueAtTime(2500, t);
+                clickGain.gain.setValueAtTime(0.15, t);
+                clickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.01);
+                click.connect(clickGain);
+                clickGain.connect(audioCtx.destination);
+                click.start(t);
+                click.stop(t + 0.01);
+            }
+
+            // Button Click
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    count++;
+                    updateDisplay();
+                    playClickSound();
+
+                    // Update current session's record in history
+                    updateHistory();
+
+                    // Restart animation reliably
+                    btn.classList.remove('clicking');
+                    void btn.offsetWidth; // trigger reflow
+                    btn.classList.add('clicking');
+
+                    setTimeout(() => {
+                        btn.classList.remove('clicking');
+                    }, 500);
+                });
+            }
+
+            // Reset Click
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    // Reset counter
+                    count = 0;
+                    currentSessionTimestamp = null; // Next click will be a new session record
+                    updateDisplay();
+                });
+            }
+
+            // Render History
+            function renderHistory() {
+                if (!historyBody || !emptyMsg) return;
+
+                historyBody.innerHTML = '';
+
+                if (history.length === 0) {
+                    emptyMsg.style.display = 'block';
+                    const container =
+                        document.getElementById('history-container');
+                    if (container) container.style.display = 'none';
+                    return;
+                } else {
+                    emptyMsg.style.display = 'none';
+                    const container =
+                        document.getElementById('history-container');
+                    if (container) container.style.display = 'block';
+                }
+
+                history.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'history-row';
+
+                    row.innerHTML = `
+                        <span class="row-item">${item.date}</span>
+                        <span class="row-item row-time">${item.time}</span>
+                        <span class="row-item row-count">${item.count}</span>
+                        <div class="row-item" style="text-align: center;">
+                            <button class="del-btn" data-index="${index}" title="Удалить запись">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </div>
+                    `;
+                    historyBody.appendChild(row);
+                });
+
+                // Attach event listeners to delete buttons
+                document.querySelectorAll('.del-btn').forEach((btn) => {
+                    btn.addEventListener('click', (e) => {
+                        const target = e.currentTarget as HTMLElement;
+                        const idx = parseInt(
+                            target.getAttribute('data-index') || '-1',
+                            10
+                        );
+                        if (idx >= 0) {
+                            deleteHistoryItem(idx);
+                        }
+                    });
+                });
+            }
+
+            function deleteHistoryItem(index: number) {
+                history.splice(index, 1);
+                saveHistory();
+                renderHistory();
+            }
+
+            // Initialize
+            loadState();
+            updateSoundUI();
+        </script>
+    </body>
+</html>
