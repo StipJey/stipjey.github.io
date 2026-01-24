@@ -579,10 +579,6 @@ const currentImage = toolData.image;
                 renderHistory();
             }
 
-            function saveState() {
-                localStorage.setItem('clicker-count', count.toString());
-            }
-
             function saveHistory() {
                 localStorage.setItem(
                     'clicker-history',
@@ -687,7 +683,7 @@ const currentImage = toolData.image;
 
             // Button Click
             if (btn) {
-                btn.addEventListener('click', (e) => {
+                btn.addEventListener('click', () => {
                     count++;
                     updateDisplay();
                     playClickSound();

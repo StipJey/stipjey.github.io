@@ -10,8 +10,8 @@ const currentImage = '/og/tools.png';
 
 const toolFiles = await Astro.glob('./*.astro');
 const tools = toolFiles
-    .filter((file) => !file.url?.endsWith('/tools') && file.toolData)
-    .map((file) => ({
+    .filter((file: any) => !file.url?.endsWith('/tools') && file.toolData)
+    .map((file: any) => ({
         ...file.toolData,
         link: file.url,
     }))
