@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import RecommendationCard from '../../components/RecommendationCard.astro';
+
+const recommendations = await getCollection('recommendations');
+
+const title = 'Рекомендации и Промокоды';
+const description =
+    'Мои личные рекомендации сервисов, банков и инструментов с бонусами для вас.';
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead title={title} description={description} />
+        <style>
+            main {
+                width: 1000px;
+                max-width: calc(100% - 2em);
+                margin: auto;
+                padding: 3em 1em;
+            }
+            .intro {
+                margin-bottom: 3rem;
+                text-align: center;
+            }
+            .intro h1 {
+                margin-bottom: 0.5rem;
+            }
+            .intro p {
+                color: rgb(var(--gray));
+                font-size: 1.1rem;
+            }
+            .recommendations-grid {
+                columns: 2;
+                column-gap: 2rem;
+                width: 100%;
+            }
+            .recommendations-grid > :global(*) {
+                break-inside: avoid;
+                margin-bottom: 2rem;
+                display: block;
+                width: 100%;
+                overflow: hidden;
+            }
+            @media (max-width: 1000px) {
+                .recommendations-grid {
+                    columns: 1;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <section class="intro">
+                <h1>{title}</h1>
+                <p>{description}</p>
+            </section>
+
+            <div class="recommendations-grid">
+                {
+                    recommendations.map((group) => (
+                        <RecommendationCard
+                            title={group.data.title}
+                            description={group.data.description}
+                            items={group.data.items}
+                        />
+                    ))
+                }
+            </div>
+        </main>
+        <Footer />
+    </body>
+</html>

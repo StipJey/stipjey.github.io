@@ -1,0 +1,397 @@
+---
+interface Item {
+    title: string;
+    benefit: string;
+    steps: string[];
+    recommendation: string;
+    type: 'promo' | 'link' | 'other';
+    code?: string;
+    link?: string;
+    linkText?: string;
+}
+
+interface Props {
+    title: string;
+    description?: string;
+    items: Item[];
+}
+
+const { title, description, items } = Astro.props;
+---
+
+<div class="company-card">
+    <div class="company-header">
+        <h3>{title}</h3>
+        {description && <p class="company-description">{description}</p>}
+    </div>
+
+    <div class="items-list">
+        {
+            items.map((item, index) => (
+                <div class="recommendation-item">
+                    {index > 0 && <hr class="item-separator" />}
+                    <div class="item-main-content">
+                        <div class="item-header">
+                            <h4>{item.title}</h4>
+                            <span class="benefit-tag">{item.benefit}</span>
+                        </div>
+
+                        <div class="personal-note">
+                            <p>{item.recommendation}</p>
+                        </div>
+
+                        <div class="actions">
+                            {item.type === 'promo' && item.code && (
+                                <div class="promo-wrapper">
+                                    <div
+                                        class="promo-code"
+                                        id={`promo-${item.code}`}>
+                                        <code>{item.code}</code>
+                                        <button
+                                            class="copy-btn"
+                                            data-code={item.code}
+                                            aria-label="Copy promo code">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="18"
+                                                height="18"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect
+                                                    x="9"
+                                                    y="9"
+                                                    width="13"
+                                                    height="13"
+                                                    rx="2"
+                                                    ry="2"
+                                                />
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                            </svg>
+                                            <span>Копировать</span>
+                                        </button>
+                                    </div>
+                                    {item.link && (
+                                        <a
+                                            href={item.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="action-link">
+                                            {item.linkText || 'Перейти'} →
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                            {item.type === 'link' && item.link && (
+                                <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn-primary">
+                                    {item.linkText || 'Воспользоваться'}
+                                </a>
+                            )}
+                            {item.type === 'other' && item.link && (
+                                <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="action-link">
+                                    {item.linkText || 'Подробнее'} →
+                                </a>
+                            )}
+                        </div>
+
+                        <details class="item-details">
+                            <summary>
+                                Подробнее о том, как получить бонус
+                            </summary>
+                            <div class="details-content">
+                                <h5>Что нужно сделать:</h5>
+                                <ul>
+                                    {item.steps.map((step) => (
+                                        <li>{step}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</div>
+
+<style>
+    .company-card {
+        box-sizing: border-box;
+        background: #fff;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        width: 100%;
+    }
+
+    .company-header {
+        margin-bottom: 1.25rem;
+        border-bottom: 1px solid rgb(var(--gray-light));
+        padding-bottom: 1rem;
+    }
+
+    .company-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: rgb(var(--black));
+    }
+
+    .company-description {
+        margin: 0.25rem 0 0 0;
+        color: rgb(var(--gray));
+        font-size: 0.95rem;
+    }
+
+    .recommendation-item {
+        padding: 0.5rem 0;
+    }
+
+    .item-separator {
+        border: none;
+        border-top: 1px dashed rgb(var(--gray-light));
+        margin: 1.5rem 0;
+    }
+
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+        gap: 1rem;
+    }
+
+    .item-header h4 {
+        margin: 0;
+        font-size: 1.15rem;
+        color: rgb(var(--black));
+        font-weight: 700;
+    }
+
+    .benefit-tag {
+        background: #eef2ff;
+        color: var(--accent);
+        padding: 0.2rem 0.6rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .personal-note {
+        margin-bottom: 1rem;
+    }
+
+    .personal-note p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgb(var(--gray-dark));
+        border-left: 3px solid var(--accent);
+        padding-left: 0.75rem;
+    }
+
+    .actions {
+        margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+        display: block;
+        box-sizing: border-box;
+        background: var(--accent);
+        color: #fff !important;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.2s ease;
+        text-align: center;
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary:hover {
+        background: var(--accent-dark);
+    }
+
+    .promo-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .promo-code {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f8fafc;
+        padding: 0.4rem 0.4rem 0.4rem 0.75rem;
+        border-radius: 8px;
+        border: 1px dashed rgb(var(--gray));
+    }
+
+    .promo-code code {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgb(var(--black));
+        background: none;
+        padding: 0;
+    }
+
+    .copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #fff;
+        border: 1px solid rgb(var(--gray-light));
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        color: rgb(var(--gray-dark));
+    }
+
+    .copy-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .copy-btn.copied {
+        background: #ecfdf5;
+        border-color: #10b981;
+        color: #059669;
+    }
+
+    .action-link {
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--accent);
+        text-align: center;
+    }
+
+    .action-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Collapsible details */
+    .item-details {
+        border-top: 1px solid #f1f5f9;
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .item-details summary {
+        font-size: 0.85rem;
+        color: rgb(var(--gray));
+        cursor: pointer;
+        font-weight: 500;
+        list-style: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .item-details summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .item-details summary::before {
+        content: '→';
+        margin-right: 0.5rem;
+        transition: transform 0.2s ease;
+        display: inline-block;
+    }
+
+    .item-details[open] summary::before {
+        transform: rotate(90deg);
+    }
+
+    .details-content {
+        padding: 1rem 0 0.5rem 0.5rem;
+    }
+
+    .details-content h5 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: rgb(var(--gray));
+        letter-spacing: 0.05em;
+    }
+
+    .details-content ul {
+        margin: 0;
+        padding-left: 1.25rem;
+    }
+
+    .details-content li {
+        font-size: 0.9rem;
+        margin-bottom: 0.35rem;
+        color: rgb(var(--gray-dark));
+    }
+
+    @media (max-width: 600px) {
+        .company-card {
+            padding: 1.25rem;
+        }
+
+        .item-header {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .benefit-tag {
+            align-self: flex-start;
+        }
+
+        .promo-code {
+            flex-direction: column;
+            gap: 0.75rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .copy-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<script>
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    copyButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const code = button.getAttribute('data-code');
+            if (code) {
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalContent = button.innerHTML;
+                    button.classList.add('copied');
+                    button.innerHTML = `
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+						<span>Скопировано!</span>
+					`;
+
+                    setTimeout(() => {
+                        button.classList.remove('copied');
+                        button.innerHTML = originalContent;
+                    }, 2000);
+                });
+            }
+        });
+    });
+</script>
