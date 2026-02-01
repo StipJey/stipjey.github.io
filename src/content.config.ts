@@ -20,6 +20,7 @@ const recommendations = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string().optional(),
+		category: z.string(),
 		items: z.array(z.object({
 			title: z.string(),
 			benefit: z.string(),

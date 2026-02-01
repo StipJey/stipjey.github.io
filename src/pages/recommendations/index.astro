@@ -10,6 +10,9 @@ const recommendations = await getCollection('recommendations');
 const title = 'Рекомендации и Промокоды';
 const description =
     'Мои личные рекомендации сервисов, банков и инструментов с бонусами для вас.';
+const categories = [
+    ...new Set(recommendations.map((r) => r.data.category)),
+].sort();
 ---
 
 <!doctype html>
@@ -24,7 +27,7 @@ const description =
                 padding: 3em 1em;
             }
             .intro {
-                margin-bottom: 3rem;
+                margin-bottom: 2rem;
                 text-align: center;
             }
             .intro h1 {
@@ -33,6 +36,36 @@ const description =
             .intro p {
                 color: rgb(var(--gray));
                 font-size: 1.1rem;
+            }
+            .filters {
+                display: flex;
+                justify-content: center;
+                gap: 0.75rem;
+                margin-bottom: 3rem;
+                flex-wrap: wrap;
+            }
+            .filter-btn {
+                padding: 0.6rem 1.4rem;
+                border-radius: 999px;
+                border: 2px solid transparent;
+                background: #f1f5f9;
+                color: rgb(var(--gray-dark));
+                cursor: pointer;
+                font-size: 0.9rem;
+                font-weight: 600;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+            .filter-btn:hover {
+                background: #e2e8f0;
+                transform: translateY(-1px);
+            }
+            .filter-btn.active {
+                background: var(--accent);
+                color: #fff;
+                box-shadow:
+                    0 4px 6px -1px rgba(var(--accent-rgb), 0.2),
+                    0 2px 4px -1px rgba(var(--accent-rgb), 0.1);
             }
             .recommendations-grid {
                 columns: 2;
@@ -61,12 +94,26 @@ const description =
                 <p>{description}</p>
             </section>
 
+            <div class="filters">
+                <button class="filter-btn active" data-category="all"
+                    >Все</button
+                >
+                {
+                    categories.map((cat) => (
+                        <button class="filter-btn" data-category={cat}>
+                            {cat}
+                        </button>
+                    ))
+                }
+            </div>
+
             <div class="recommendations-grid">
                 {
                     recommendations.map((group) => (
                         <RecommendationCard
                             title={group.data.title}
                             description={group.data.description}
+                            category={group.data.category}
                             items={group.data.items}
                         />
                     ))
@@ -74,5 +121,57 @@ const description =
             </div>
         </main>
         <Footer />
+
+        <script>
+            // Filtering logic
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll(
+                '.company-card'
+            ) as NodeListOf<HTMLElement>;
+
+            filterButtons.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach((b) => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filter = btn.getAttribute('data-category');
+
+                    cards.forEach((card) => {
+                        if (
+                            filter === 'all' ||
+                            card.getAttribute('data-category') === filter
+                        ) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Copy to clipboard logic
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            copyButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const code = button.getAttribute('data-code');
+                    if (code) {
+                        navigator.clipboard.writeText(code).then(() => {
+                            const originalContent = button.innerHTML;
+                            button.classList.add('copied');
+                            button.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Скопировано!</span>
+                            `;
+
+                            setTimeout(() => {
+                                button.classList.remove('copied');
+                                button.innerHTML = originalContent;
+                            }, 2000);
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

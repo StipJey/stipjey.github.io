@@ -13,13 +13,14 @@ interface Item {
 interface Props {
     title: string;
     description?: string;
+    category: string;
     items: Item[];
 }
 
-const { title, description, items } = Astro.props;
+const { title, description, category, items } = Astro.props;
 ---
 
-<div class="company-card">
+<div class="company-card" data-category={category}>
     <div class="company-header">
         <h3>{title}</h3>
         {description && <p class="company-description">{description}</p>}
@@ -370,28 +371,3 @@ const { title, description, items } = Astro.props;
         }
     }
 </style>
-
-<script>
-    const copyButtons = document.querySelectorAll('.copy-btn');
-
-    copyButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const code = button.getAttribute('data-code');
-            if (code) {
-                navigator.clipboard.writeText(code).then(() => {
-                    const originalContent = button.innerHTML;
-                    button.classList.add('copied');
-                    button.innerHTML = `
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-						<span>Скопировано!</span>
-					`;
-
-                    setTimeout(() => {
-                        button.classList.remove('copied');
-                        button.innerHTML = originalContent;
-                    }, 2000);
-                });
-            }
-        });
-    });
-</script>
