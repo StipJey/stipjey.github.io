@@ -24,6 +24,11 @@ const topOffers = recommendations
                 slug: group.id,
             }))
     )
+    .sort((a, b) => {
+        const getVal = (s: string) =>
+            parseInt(s.replace(/\s/g, '').match(/\d+/)?.[0] || '0');
+        return getVal(b.benefit) - getVal(a.benefit);
+    })
     .slice(0, 6);
 ---
 
