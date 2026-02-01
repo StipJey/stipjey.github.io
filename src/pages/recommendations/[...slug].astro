@@ -15,12 +15,50 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { title, description, category, items } = entry.data;
+
+// SEO Logic
+const date = new Date();
+const currentMonth = date.toLocaleString('ru-RU', { month: 'long' });
+const currentYear = date.getFullYear();
+const monthYear = `${currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)} ${currentYear}`;
+
+const topPromo =
+    items.find((i) => i.isTop && i.code) ||
+    items.find((i) => i.code) ||
+    items[0];
+const benefitText = topPromo?.benefit ? ` — ${topPromo.benefit}` : '';
+const promoCodeText = topPromo?.code
+    ? `Промокод: ${topPromo.code}`
+    : 'Скидки и бонусы';
+
+const seoTitle = `${title}: Промокоды и Бонусы на ${monthYear}${benefitText}`;
+const seoDescription = `🎁 Актуальные промокоды для ${title} (${monthYear}). ${promoCodeText}. ${description || ''} ✅ Проверено и работает.`;
+
+// JSON-LD Schema (FAQ for Rich Snippets)
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items
+        .filter((i) => i.code || i.steps)
+        .map((item) => ({
+            '@type': 'Question',
+            name: item.title,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: `Промокод: ${item.code || 'Нет кода'}. Выгода: ${item.benefit}. ${item.recommendation} ${item.link ? `Ссылка: ${item.link}` : ''}`,
+            },
+        })),
+};
 ---
 
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={`${title} — Рекомендации`} description={description} />
+        <BaseHead title={seoTitle} description={seoDescription} />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(faqSchema)}
+        />
         <style>
             main {
                 width: 700px;
