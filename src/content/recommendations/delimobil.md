@@ -11,6 +11,7 @@ items:
       - "Бонусы начислятся на ваш счет"
     recommendation: "Промокод refmn54 дает 2000 бонусов на поездки."
     type: "promo"
+    isTop: true
     code: "refmn54"
     link: "https://delimobil.ru/"
     linkText: "Скачать приложение"

@@ -13,6 +13,18 @@ const description =
 const categories = [
     ...new Set(recommendations.map((r) => r.data.category)),
 ].sort();
+
+const topOffers = recommendations
+    .flatMap((group) =>
+        group.data.items
+            .filter((item) => item.isTop)
+            .map((item) => ({
+                ...item,
+                company: group.data.title,
+                slug: group.id,
+            }))
+    )
+    .slice(0, 6);
 ---
 
 <!doctype html>
@@ -27,7 +39,7 @@ const categories = [
                 padding: 3em 1em;
             }
             .intro {
-                margin-bottom: 2rem;
+                margin-bottom: 2.5rem;
                 text-align: center;
             }
             .intro h1 {
@@ -37,6 +49,144 @@ const categories = [
                 color: rgb(var(--gray));
                 font-size: 1.1rem;
             }
+
+            /* Top Offers Styles */
+            .top-offers-section {
+                margin-bottom: 4rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+                font-weight: 800;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .section-title span {
+                font-size: 1.25rem;
+            }
+            .top-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: 1.25rem;
+            }
+            .top-card {
+                background: white;
+                border: 2px solid #f1f5f9;
+                border-radius: 20px;
+                padding: 1.5rem;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+            .top-card:hover {
+                border-color: var(--accent);
+                transform: translateY(-4px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+            .top-card .company-name {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: var(--accent);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.5rem;
+            }
+            .top-card h3 {
+                font-size: 1.1rem;
+                margin: 0 0 0.75rem 0;
+                line-height: 1.3;
+            }
+            .top-card .benefit {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: var(--accent);
+                margin-bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .top-card .benefit::before {
+                content: '✨';
+                font-size: 1rem;
+            }
+            .top-card .actions {
+                margin-top: auto;
+            }
+            .top-card .btn-compact {
+                display: inline-block;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                background: var(--accent);
+                color: white;
+                text-decoration: none;
+                text-align: center;
+                border-radius: 12px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                transition:
+                    transform 0.2s ease,
+                    opacity 0.2s ease;
+            }
+            .top-card .btn-compact:hover {
+                transform: translateY(-2px);
+                opacity: 0.9;
+            }
+            .top-card .promo-compact {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .top-card .promo-code-box {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                background: #f8fafc;
+                border: 1px dashed #cbd5e1;
+                border-radius: 12px;
+                padding: 0.5rem 0.75rem;
+                cursor: pointer;
+                overflow: hidden;
+            }
+            .top-card .promo-code-box code {
+                font-family: inherit;
+                font-weight: 700;
+                color: rgb(var(--black));
+                background: none;
+                padding: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                flex-grow: 1;
+                min-width: 0;
+                transition: all 0.2s ease;
+            }
+            .top-card .promo-code-box.expanded code {
+                white-space: normal;
+                word-break: break-all;
+                overflow: visible;
+                text-overflow: clip;
+            }
+            .top-card .copy-btn-mini {
+                background: none;
+                border: none;
+                color: var(--accent);
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.2s ease;
+                flex-shrink: 0;
+            }
+            .top-card .copy-btn-mini:hover {
+                background: rgba(var(--accent-rgb), 0.1);
+            }
+
+            /* Existing Styles */
             .filters {
                 display: flex;
                 justify-content: center;
@@ -94,6 +244,82 @@ const categories = [
                 <p>{description}</p>
             </section>
 
+            {
+                topOffers.length > 0 && (
+                    <section class="top-offers-section">
+                        <h2 class="section-title">
+                            <span>🔥</span> Лучшие промокоды и рефералки
+                        </h2>
+                        <div class="top-grid">
+                            {topOffers.map((offer) => (
+                                <div class="top-card">
+                                    <div class="company-name">
+                                        {offer.company}
+                                    </div>
+                                    <h3>{offer.title}</h3>
+                                    <div class="benefit">{offer.benefit}</div>
+                                    <div class="actions">
+                                        {offer.type === 'promo' &&
+                                        offer.code ? (
+                                            <div class="promo-compact">
+                                                <div class="promo-code-box">
+                                                    <code>{offer.code}</code>
+                                                    <button
+                                                        class="copy-btn copy-btn-mini"
+                                                        data-code={offer.code}
+                                                        title="Скопировать">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="16"
+                                                            height="16"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            stroke-width="2.5"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <rect
+                                                                x="9"
+                                                                y="9"
+                                                                width="13"
+                                                                height="13"
+                                                                rx="2"
+                                                                ry="2"
+                                                            />
+                                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                {offer.link && (
+                                                    <a
+                                                        href={offer.link}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="btn-compact">
+                                                        Перейти
+                                                    </a>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            offer.link && (
+                                                <a
+                                                    href={offer.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="btn-compact">
+                                                    {offer.linkText ||
+                                                        'Получить'}
+                                                </a>
+                                            )
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
+
             <div class="filters">
                 <button class="filter-btn active" data-category="all"
                     >Все</button
@@ -147,6 +373,20 @@ const categories = [
                             card.style.display = 'none';
                         }
                     });
+                });
+            });
+
+            // Promo code expansion logic
+            const promoBoxes = document.querySelectorAll(
+                '.promo-code-box, .promo-code'
+            );
+
+            promoBoxes.forEach((box) => {
+                box.addEventListener('click', (e) => {
+                    // Don't toggle if the copy button was clicked
+                    if ((e.target as HTMLElement).closest('.copy-btn')) return;
+
+                    box.classList.toggle('expanded');
                 });
             });
 

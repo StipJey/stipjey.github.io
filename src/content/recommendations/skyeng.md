@@ -11,6 +11,7 @@ items:
       - "Начните заниматься"
     recommendation: "Дают 5000 рублей на оплату пакетов уроков. Это очень щедро для языковой школы."
     type: "promo"
+    isTop: true
     code: "REFERRAL-kPqI7Er2"
     link: "https://skyeng.ru/referral/?source_type=referral&inviterHash=4e546b314f4449314e773d3d"
     linkText: "Записаться"

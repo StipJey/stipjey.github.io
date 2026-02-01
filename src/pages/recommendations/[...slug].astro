@@ -56,6 +56,12 @@ const { title, description, category, items } = entry.data;
             .back-link:hover svg {
                 transform: translateX(-2px);
             }
+            .promo-code.expanded code {
+                white-space: normal;
+                word-break: break-all;
+                overflow: visible;
+                text-overflow: clip;
+            }
         </style>
     </head>
     <body>
@@ -90,6 +96,18 @@ const { title, description, category, items } = entry.data;
         <Footer />
 
         <script>
+            // Promo code expansion logic
+            const promoBoxes = document.querySelectorAll('.promo-code');
+
+            promoBoxes.forEach((box) => {
+                box.addEventListener('click', (e) => {
+                    // Don't toggle if the copy button was clicked
+                    if ((e.target as HTMLElement).closest('.copy-btn')) return;
+
+                    box.classList.toggle('expanded');
+                });
+            });
+
             // Copy to clipboard logic (since it's used in RecommendationCard)
             const copyButtons = document.querySelectorAll('.copy-btn');
 

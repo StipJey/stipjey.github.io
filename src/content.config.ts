@@ -27,6 +27,7 @@ const recommendations = defineCollection({
 			steps: z.array(z.string()),
 			recommendation: z.string(),
 			type: z.enum(['promo', 'link', 'other']),
+			isTop: z.boolean().optional(),
 			code: z.string().optional(),
 			link: z.string().optional(),
 			linkText: z.string().optional(),

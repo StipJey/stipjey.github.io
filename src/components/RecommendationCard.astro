@@ -203,26 +203,27 @@ const { title, description, category, slug, items } = Astro.props;
     }
 
     .benefit-tag {
-        background: #eef2ff;
+        background: rgba(var(--accent-rgb), 0.1);
         color: var(--accent);
-        padding: 0.2rem 0.6rem;
-        border-radius: 8px;
-        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
         font-weight: 700;
         white-space: nowrap;
     }
 
     .personal-note {
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
+        background: #f8fafc;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
     }
 
     .personal-note p {
         margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        line-height: 1.6;
         color: rgb(var(--gray-dark));
-        border-left: 3px solid var(--accent);
-        padding-left: 0.75rem;
     }
 
     .actions {
@@ -257,11 +258,13 @@ const { title, description, category, slug, items } = Astro.props;
     .promo-code {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        background: #f8fafc;
-        padding: 0.4rem 0.4rem 0.4rem 0.75rem;
-        border-radius: 8px;
-        border: 1px dashed rgb(var(--gray));
+        gap: 1rem;
+        background: white;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        border-radius: 12px;
+        border: 2px dashed #cbd5e1;
+        cursor: pointer;
+        overflow: hidden;
     }
 
     .promo-code code {
@@ -270,21 +273,34 @@ const { title, description, category, slug, items } = Astro.props;
         color: rgb(var(--black));
         background: none;
         padding: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .promo-code.expanded code {
+        white-space: normal;
+        word-break: break-all;
+        overflow: visible;
+        text-overflow: clip;
     }
 
     .copy-btn {
         display: flex;
         align-items: center;
-        gap: 0.4rem;
-        background: #fff;
-        border: 1px solid rgb(var(--gray-light));
-        padding: 0.3rem 0.6rem;
-        border-radius: 6px;
+        gap: 0.5rem;
+        background: #f1f5f9;
+        border: none;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 0.8rem;
-        font-weight: 500;
+        font-size: 0.85rem;
+        font-weight: 600;
         transition: all 0.2s ease;
         color: rgb(var(--gray-dark));
+        flex-shrink: 0;
     }
 
     .copy-btn:hover {

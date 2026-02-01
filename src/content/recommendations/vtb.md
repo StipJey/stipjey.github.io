@@ -21,6 +21,7 @@ items:
       - "Получите 1000 рублей"
     recommendation: "Надбавка 1,5% к ВТБ-Счету и кешбэк рублями в 4-х категориях на выбор."
     type: "promo"
+    isTop: true
     code: "4e39kk7t"
     link: "https://vtb.ru/l/4e39kk7t"
     linkText: "Заказать карту"
@@ -32,6 +33,7 @@ items:
       - "Получите 1000 рублей"
     recommendation: "Карта с кешбэком до 50% рублями. Простой способ получить приятный бонус."
     type: "link"
+    isTop: true
     link: "https://vtb.ru/l/44p2e6c8"
     linkText: "Получить бонус"
   - title: "Перевод пенсии"
