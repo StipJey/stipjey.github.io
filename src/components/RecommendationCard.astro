@@ -14,15 +14,26 @@ interface Props {
     title: string;
     description?: string;
     category: string;
+    slug?: string;
     items: Item[];
 }
 
-const { title, description, category, items } = Astro.props;
+const { title, description, category, slug, items } = Astro.props;
 ---
 
 <div class="company-card" data-category={category}>
     <div class="company-header">
-        <h3>{title}</h3>
+        <h3>
+            {
+                slug ? (
+                    <a href={`/recommendations/${slug}`} class="title-link">
+                        {title}
+                    </a>
+                ) : (
+                    title
+                )
+            }
+        </h3>
         {description && <p class="company-description">{description}</p>}
     </div>
 
@@ -148,6 +159,16 @@ const { title, description, category, items } = Astro.props;
         margin: 0;
         font-size: 1.5rem;
         color: rgb(var(--black));
+    }
+
+    .title-link {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .title-link:hover {
+        color: var(--accent);
     }
 
     .company-description {

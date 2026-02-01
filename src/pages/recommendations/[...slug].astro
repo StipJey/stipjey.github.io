@@ -1,0 +1,118 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import RecommendationCard from '../../components/RecommendationCard.astro';
+
+export async function getStaticPaths() {
+    const recommendations = await getCollection('recommendations');
+    return recommendations.map((entry) => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { title, description, category, items } = entry.data;
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead title={`${title} — Рекомендации`} description={description} />
+        <style>
+            main {
+                width: 700px;
+                max-width: calc(100% - 2em);
+                margin: auto;
+                padding: 3em 1em;
+            }
+            .navigation {
+                margin-bottom: 2.5rem;
+            }
+            .back-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                background: #f1f5f9;
+                color: rgb(var(--gray-dark));
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 600;
+                border-radius: 999px;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+            .back-link:hover {
+                background: #e2e8f0;
+                color: var(--accent);
+                transform: translateX(-4px);
+            }
+            .back-link svg {
+                transition: transform 0.2s ease;
+            }
+            .back-link:hover svg {
+                transform: translateX(-2px);
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <div class="navigation">
+                <a href="/recommendations" class="back-link">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><line x1="19" y1="12" x2="5" y2="12"></line><polyline
+                            points="12 19 5 12 12 5"></polyline></svg
+                    >
+                    Назад к списку
+                </a>
+            </div>
+
+            <RecommendationCard
+                title={title}
+                description={description}
+                category={category}
+                items={items}
+            />
+        </main>
+        <Footer />
+
+        <script>
+            // Copy to clipboard logic (since it's used in RecommendationCard)
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            copyButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const code = button.getAttribute('data-code');
+                    if (code) {
+                        navigator.clipboard.writeText(code).then(() => {
+                            const originalContent = button.innerHTML;
+                            button.classList.add('copied');
+                            button.innerHTML = `
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+								<span>Скопировано!</span>
+							`;
+
+                            setTimeout(() => {
+                                button.classList.remove('copied');
+                                button.innerHTML = originalContent;
+                            }, 2000);
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
