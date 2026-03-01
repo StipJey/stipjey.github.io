@@ -2,7 +2,7 @@
 title: 'Самая быстрая консультация'
 description: 'Быстрое решение проблемы должно стоить дешевле или дороже?'
 pubDate: 'Nov 22 2023'
-heroImage: '/master-preview.jpeg'
+heroImage: './images/master-preview.jpeg'
 ---
 
 
