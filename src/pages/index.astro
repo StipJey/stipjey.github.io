@@ -16,30 +16,42 @@ const posts = (await getCollection('blog')).sort(
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
         <style>
-            main {
-                width: 960px;
-            }
             ul {
-                display: flex;
-                flex-wrap: wrap;
+                display: grid;
+                grid-template-columns: 1fr;
                 gap: 2rem;
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
             }
-            ul li {
-                width: 100%;
+            @media (min-width: 768px) {
+                ul {
+                    grid-template-columns: 1fr 1fr;
+                }
+                ul li:first-child {
+                    grid-column: 1 / -1;
+                    margin-bottom: 2rem;
+                }
             }
             ul li * {
                 text-decoration: none;
                 transition: 0.2s ease;
             }
-            ul li img {
-                margin-bottom: 0.5rem;
-                border-radius: 12px;
-            }
             ul li a {
                 display: block;
+                padding: 1.5rem;
+                height: 100%;
+                border-radius: 12px;
+                background-color: rgba(var(--gray-light), 0.3);
+            }
+            ul li a:hover {
+                background-color: rgba(var(--gray-light), 0.7);
+            }
+            ul li a .description {
+                margin: 0.75rem 0 0 0;
+                color: rgb(var(--gray));
+                font-size: 0.85rem;
+                line-height: 1.5;
             }
             .title {
                 margin: 0;
@@ -53,9 +65,6 @@ const posts = (await getCollection('blog')).sort(
             ul li a:hover h4,
             ul li a:hover .date {
                 color: rgb(var(--accent));
-            }
-            ul a:hover img {
-                box-shadow: var(--box-shadow);
             }
         </style>
     </head>
@@ -74,6 +83,11 @@ const posts = (await getCollection('blog')).sort(
                                             date={post.data.pubDate}
                                         />
                                     </p>
+                                    {post.data.description && (
+                                        <p class="description">
+                                            {post.data.description}
+                                        </p>
+                                    )}
                                 </a>
                             </li>
                         ))

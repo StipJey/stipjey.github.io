@@ -37,12 +37,7 @@ const topOffers = recommendations
     <head>
         <BaseHead title={title} description={description} />
         <style>
-            main {
-                width: 1000px;
-                max-width: calc(100% - 2em);
-                margin: auto;
-                padding: 3em 1em;
-            }
+            /* Убрано переопределение main для использования глобальных стилей */
             .intro {
                 margin-bottom: 2.5rem;
                 text-align: center;
@@ -234,15 +229,9 @@ const topOffers = recommendations
                 width: 100%;
                 overflow: hidden;
             }
-            @media (max-width: 1000px) {
+            @media (max-width: 1024px) {
                 .recommendations-grid {
                     columns: 1;
-                }
-            }
-
-            @media (max-width: 720px) {
-                .intro h1 {
-                    font-size: clamp(1.6rem, 7vw, 3rem);
                 }
             }
         </style>
