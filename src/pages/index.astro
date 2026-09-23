@@ -125,10 +125,9 @@ const cases = [
                     <div class="chips"><span>React</span><span>TypeScript</span><span>Архитектура</span><span>Performance</span><span>Team Leadership</span><span>AI / SDLC</span></div>
                 </aside>
                 <aside class="tile process" data-entrance>
-                    <span class="card-kicker">От идеи до запуска</span>
-                    <div class="process-flow" aria-label="Идея, прототип, разработка, запуск, рост">
-                        <span>Идея</span><span>Прототип</span><span>Разработка</span><span>Запуск</span><span>Рост</span>
-                    </div>
+                    <span class="card-kicker">Как работаю</span>
+                    <p class="process-statement">Разобраться.<br />Проверить.<br />Сделать.</p>
+                    <span class="process-caption">От задачи к результату</span>
                 </aside>
             </div>
 
@@ -148,7 +147,7 @@ const cases = [
                 <div class="section-heading"><div><p class="section-index">02 / Результаты</p><h2>Результаты работы</h2><p>Задачи, решения и измеримые изменения.</p></div></div>
                 <div class="case-grid">
                     {cases.map((item, index) => (
-                        <details class={`tile case-card ${item.color}`} open={index === 0}>
+                        <details class={`tile case-card ${item.color}`}>
                             <summary><span class="case-top"><span class="case-label">{item.label}</span><span class="case-index">0{index + 1}</span></span><strong class="case-value">{item.value}</strong><h3>{item.title}</h3><span class="case-open">Подробнее <span aria-hidden="true">＋</span></span></summary>
                             <div class="case-details"><dl><dt>Задача</dt><dd>{item.problem}</dd><dt>Что сделал</dt><dd>{item.action}</dd><dt>Результат</dt><dd>{item.result}</dd></dl></div>
                         </details>
@@ -186,6 +185,46 @@ const cases = [
                     ease: 'out(3)',
                 });
             }
+
+            const multiColumnCards = window.matchMedia('(min-width: 851px)');
+            const expandableGrids = document.querySelectorAll(
+                '.service-grid, .case-grid',
+            );
+
+            for (const grid of expandableGrids) {
+                grid.addEventListener('click', (event) => {
+                    if (!(event.target instanceof Element)) return;
+
+                    const summary = event.target.closest('summary');
+                    const selectedCard = summary?.parentElement;
+                    if (
+                        !multiColumnCards.matches ||
+                        !(selectedCard instanceof HTMLDetailsElement) ||
+                        !grid.contains(selectedCard)
+                    ) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    const shouldOpen = !selectedCard.open;
+                    grid.querySelectorAll('details').forEach((card) => {
+                        card.open = shouldOpen;
+                    });
+                });
+            }
+
+            multiColumnCards.addEventListener('change', (event) => {
+                if (!event.matches) return;
+
+                for (const grid of expandableGrids) {
+                    const shouldOpen = Array.from(grid.querySelectorAll('details')).some(
+                        (card) => card.open,
+                    );
+                    grid.querySelectorAll('details').forEach((card) => {
+                        card.open = shouldOpen;
+                    });
+                }
+            });
 
         </script>
     </body>
