@@ -7,6 +7,8 @@ interface Props {
     title: string;
     description: string;
     image?: string;
+    imageWidth?: number;
+    imageHeight?: number;
     type?: 'website' | 'article';
     publishedTime?: Date;
     modifiedTime?: Date;
@@ -18,10 +20,13 @@ const {
     title,
     description,
     image = '/og/home.png',
+    imageWidth,
+    imageHeight,
     type = 'website',
     publishedTime,
     modifiedTime,
 } = Astro.props;
+const socialImageURL = new URL(image, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -59,12 +64,12 @@ const {
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content={socialImageURL} />
+{(imageWidth || image === '/og/home.png') && <meta property="og:image:width" content={imageWidth ?? 1200} />}
+{(imageHeight || image === '/og/home.png') && <meta property="og:image:height" content={imageHeight ?? 630} />}
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:site_name" content="Евгений Черкасов" />
 {
@@ -91,10 +96,10 @@ const {
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta property="twitter:image" content={socialImageURL} />
 
 <!-- Telegram -->
 <meta property="telegram:channel" content="@frontend_lead_mentor" />

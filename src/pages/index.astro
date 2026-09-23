@@ -10,6 +10,16 @@ const telegram = 'https://t.me/stipjey';
 const channel = 'https://t.me/+fcLS-3M_XSYxMDVi';
 const resume =
     'https://spb.hh.ru/resume/0de0d9a4ff07ef1aa60039ed1f3266446e4855';
+const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Евгений Черкасов',
+    alternateName: 'Evgeny Cherkasov',
+    url: 'https://stipjey.github.io/',
+    jobTitle: 'Head of Frontend Development',
+    description: 'Руководитель frontend-разработки. Развиваю архитектуру, команды и инженерные процессы.',
+    sameAs: ['https://github.com/StipJey', telegram, resume],
+};
 const selectedPosts = [
     'ssr-ssg-spa',
     'type-vs-interface',
@@ -86,6 +96,7 @@ const cases = [
             description="Евгений Черкасов — Head of Frontend Development. Развиваю frontend, команды и процессы. Открыт к предложениям."
             image="/og/home.png"
         />
+        <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     </head>
     <body class="home-page">
         <Header />
