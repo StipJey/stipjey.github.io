@@ -19,11 +19,12 @@ interface Props {
 }
 
 const { title, description, category, slug, items } = Astro.props;
+const Heading = slug ? 'h3' : 'h1';
 ---
 
 <div class="company-card" data-category={category}>
     <div class="company-header">
-        <h3>
+        <Heading>
             {
                 slug ? (
                     <a href={`/recommendations/${slug}`} class="title-link">
@@ -33,7 +34,7 @@ const { title, description, category, slug, items } = Astro.props;
                     title
                 )
             }
-        </h3>
+        </Heading>
         {description && <p class="company-description">{description}</p>}
     </div>
 
@@ -155,7 +156,7 @@ const { title, description, category, slug, items } = Astro.props;
         padding-bottom: 1rem;
     }
 
-    .company-header h3 {
+    .company-header :is(h1, h3) {
         margin: 0;
         font-size: 1.5rem;
         color: var(--text);
