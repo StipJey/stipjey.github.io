@@ -17,7 +17,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
     title,
     description,
-    image = '/blog-placeholder-1.jpg',
+    image = '/og/home.png',
     type = 'website',
     publishedTime,
     modifiedTime,
@@ -27,6 +27,17 @@ const {
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<script is:inline>
+    try {
+        const savedTheme = localStorage.getItem('site-theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+            document.documentElement.dataset.theme = savedTheme;
+        }
+    } catch (_) {
+        // Storage may be unavailable; the CSS media query still follows the system.
+    }
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
@@ -131,6 +142,15 @@ const {
         url: location.href,
         accurateTrackBounce: true,
         trackLinks: true,
+    });
+
+    document.addEventListener('click', (event) => {
+        const target = event.target;
+        const link = target instanceof Element ? target.closest('a[data-goal]') : null;
+        const goal = link && link.getAttribute('data-goal');
+        if ((goal === 'telegram' || goal === 'resume') && typeof window.ym === 'function') {
+            window.ym(106572860, 'reachGoal', goal);
+        }
     });
 </script>
 <!-- /Yandex.Metrika counter -->

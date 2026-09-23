@@ -2,99 +2,190 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
+import '../styles/home.css';
 
-const posts = (await getCollection('blog')).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const telegram = 'https://t.me/stipjey';
+const resume =
+    'https://spb.hh.ru/resume/0de0d9a4ff07ef1aa60039ed1f3266446e4855';
+const selectedPosts = [
+    'ssr-ssg-spa',
+    'type-vs-interface',
+    'short-consultation',
+];
+const posts = (await getCollection('blog'))
+    .filter((post) => selectedPosts.includes(post.id))
+    .sort((a, b) => selectedPosts.indexOf(a.id) - selectedPosts.indexOf(b.id));
+const services = [
+    {
+        number: '01',
+        icon: '</>',
+        className: 'lime',
+        title: 'Разобрать frontend и архитектуру',
+        description: 'Найти узкие места, снизить сложность и дать команде ясный технический план.',
+        examples: ['Аудит кодовой базы и процессов', 'Архитектурные решения и миграции', 'Производительность и качество'],
+        outcome: 'Понятный путь улучшений и меньше технических рисков.',
+    },
+    {
+        number: '02',
+        icon: '◎',
+        className: 'blue',
+        title: 'Развить команду',
+        description: 'Выстроить найм, онбординг и инженерные практики без лишней бюрократии.',
+        examples: ['Найм и оценка разработчиков', 'Онбординг и развитие', 'Ревью и инженерные процессы'],
+        outcome: 'Самостоятельная команда с предсказуемой работой.',
+    },
+    {
+        number: '03',
+        icon: '✳',
+        className: 'violet',
+        title: 'Применить AI с пользой',
+        description: 'Найти задачи, где AI помогает продукту и разработке, и проверить идеи на практике.',
+        examples: ['AI в пользовательских сценариях', 'Рабочие процессы команды', 'Прототипы и оценка ограничений'],
+        outcome: 'Практичные сценарии вместо обещаний без проверки.',
+    },
+];
+const cases = [
+    {
+        label: 'КОМАНДА',
+        value: '2 месяца → 2 недели',
+        title: 'Новый разработчик быстрее входит в работу',
+        problem: 'Долгий онбординг замедлял команду и мешал новичкам стать самостоятельными.',
+        action: 'Собрал базу знаний для онбординга фронтенд-разработчиков.',
+        result: 'Срок выхода на самостоятельную работу сократился с двух месяцев до двух недель.',
+        color: 'mint',
+    },
+    {
+        label: 'ПРОЦЕССЫ',
+        value: '≈ ×2',
+        title: 'Быстрее вёрстка и интеграция',
+        problem: 'Прежняя система статической вёрстки усложняла создание новых интерфейсов.',
+        action: 'Создал новую систему статической вёрстки взамен прежней.',
+        result: 'Время вёрстки и интеграции сократилось примерно вдвое.',
+        color: 'sky',
+    },
+    {
+        label: 'НАЙМ',
+        value: '5 из 5',
+        title: 'Сильные люди остаются в команде',
+        problem: 'Нужно было находить разработчиков, подходящих под задачи команды.',
+        action: 'Выстроил процесс найма и провёл около 50 собеседований.',
+        result: 'Все пять нанятых разработчиков прошли испытательный срок.',
+        color: 'lilac',
+    },
+];
 ---
 
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <style>
-            ul {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            @media (min-width: 768px) {
-                ul {
-                    grid-template-columns: 1fr 1fr;
-                }
-                ul li:first-child {
-                    grid-column: 1 / -1;
-                    margin-bottom: 2rem;
-                }
-            }
-            ul li * {
-                text-decoration: none;
-                transition: 0.2s ease;
-            }
-            ul li a {
-                display: block;
-                padding: 1.5rem;
-                height: 100%;
-                border-radius: 12px;
-                background-color: rgba(var(--gray-light), 0.3);
-            }
-            ul li a:hover {
-                background-color: rgba(var(--gray-light), 0.7);
-            }
-            ul li a .description {
-                margin: 0.75rem 0 0 0;
-                color: rgb(var(--gray));
-                font-size: 0.85rem;
-                line-height: 1.5;
-            }
-            .title {
-                margin: 0;
-                color: rgb(var(--black));
-                line-height: 1;
-            }
-            .date {
-                margin: 0;
-                color: rgb(var(--gray));
-            }
-            ul li a:hover h4,
-            ul li a:hover .date {
-                color: rgb(var(--accent));
-            }
-        </style>
+        <BaseHead
+            title="Евгений Черкасов — Head of Frontend Development"
+            description="Помогаю делать сложный frontend понятным и управляемым: архитектура, команды, процессы и AI. Открыт к предложениям."
+            image="/og/home.png"
+        />
     </head>
-    <body>
+    <body class="home-page">
         <Header />
-        <main>
-            <section>
-                <ul>
-                    {
-                        posts.map((post) => (
-                            <li>
-                                <a href={`/blog/${post.id}/`}>
-                                    <h4 class="title">{post.data.title}</h4>
-                                    <p class="date">
-                                        <FormattedDate
-                                            date={post.data.pubDate}
-                                        />
-                                    </p>
-                                    {post.data.description && (
-                                        <p class="description">
-                                            {post.data.description}
-                                        </p>
-                                    )}
-                                </a>
-                            </li>
-                        ))
-                    }
-                </ul>
+        <main class="home" id="top">
+            <div class="hero-grid" aria-label="Обо мне">
+                <section class="tile hero" data-entrance>
+                    <div class="hero-topline">
+                        <span class="availability"><span class="availability-dot"></span> Открыт к сильным продуктовым задачам</span>
+                        <span class="location">Санкт-Петербург / remote</span>
+                    </div>
+                    <div>
+                        <p class="eyebrow">Евгений Черкасов · Head of Frontend Development</p>
+                        <h1>Делаю сложный frontend <em>понятным, быстрым</em> и управляемым.</h1>
+                        <p class="hero-lead">Руковожу frontend-разработкой программы лояльности крупного банка. Развиваю архитектуру, команды и процессы, применяю AI в продукте и работе команды.</p>
+                        <div class="hero-actions">
+                            <a class="button button-primary" href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram">Обсудить задачу <span aria-hidden="true">↗</span></a>
+                            <a class="button button-secondary" href={resume} target="_blank" rel="noopener noreferrer" data-goal="resume">Смотреть резюме <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                    <span class="hero-note" aria-hidden="true">Больше, чем<br />просто код ↗</span>
+                </section>
+                <section class="tile proof" id="experience" aria-label="Опыт и результаты" data-entrance>
+                    <div class="proof-item"><strong>50+</strong><span>интервью<br /><small>провёл с кандидатами</small></span></div>
+                    <div class="proof-item"><strong>15+</strong><span>решений о найме<br /><small>для разных ролей и форматов</small></span></div>
+                    <div class="proof-item"><strong>2 мес → 2 нед</strong><span>до самостоятельной работы<br /><small>после пересборки онбординга</small></span></div>
+                    <div class="proof-item"><strong>≈ ×2</strong><span>быстрее вёрстка и интеграция<br /><small>после обновления системы вёрстки</small></span></div>
+                </section>
+                <aside class="tile philosophy" data-entrance>
+                    <span class="card-kicker">Мой подход / 01</span>
+                    <h2>Сильный тимлид&nbsp;| frontend</h2>
+                    <div class="telegram-orbit" aria-hidden="true">↗</div>
+                    <p>Пишу про frontend, менеджмент и AI. <strong>2,5 тыс.+</strong> читателей в Telegram-канале.</p>
+                    <span class="script-note">Технологии — это люди.<br />А ещё — возможность<br />делать мир чуть лучше.</span>
+                </aside>
+                <aside class="tile expertise" data-entrance>
+                    <span class="card-kicker">Мой стек и экспертиза</span>
+                    <h2>От идеи до устойчивой системы</h2>
+                    <div class="chips"><span>React</span><span>TypeScript</span><span>Архитектура</span><span>Performance</span><span>Team Leadership</span><span>AI / SDLC</span></div>
+                </aside>
+                <aside class="tile process" data-entrance>
+                    <span class="card-kicker">От идеи → в прод</span>
+                    <div class="process-flow" aria-label="Идея, прототип, разработка, запуск, рост">
+                        <span>Идея</span><span>Прототип</span><span>Разработка</span><span>Запуск</span><span>Рост</span>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="home-section" id="help">
+                <div class="section-heading"><div><p class="section-index">01 / Направления</p><h2>Чем могу быть полезен</h2><p>Практичный опыт для реальных задач. Без воды, с фокусом на результат.</p></div></div>
+                <div class="service-grid">
+                    {services.map((service) => (
+                        <details class={`tile service-card ${service.className}`}>
+                            <summary><span class="service-icon" aria-hidden="true">{service.icon}</span><span class="service-number">{service.number}</span><h3>{service.title}</h3><p>{service.description}</p><span class="service-outcome"><span aria-hidden="true">→</span> {service.outcome}</span><span class="expand-hint">Примеры задач <span aria-hidden="true">＋</span></span></summary>
+                            <div class="service-details"><ul>{service.examples.map((example) => <li>{example}</li>)}</ul><a href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram">Обсудить задачу ↗</a></div>
+                        </details>
+                    ))}
+                </div>
             </section>
+
+            <section class="home-section" id="results">
+                <div class="section-heading"><div><p class="section-index">02 / Результаты</p><h2>Результаты, а не список технологий</h2><p>Коротко о задачах, решениях и результатах из моей практики.</p></div></div>
+                <div class="case-grid">
+                    {cases.map((item, index) => (
+                        <details class={`tile case-card ${item.color}`} open={index === 0}>
+                            <summary><span class="case-top"><span class="case-label">{item.label}</span><span class="case-index">0{index + 1}</span></span><strong class="case-value">{item.value}</strong><h3>{item.title}</h3><span class="case-open">Подробнее <span aria-hidden="true">＋</span></span></summary>
+                            <div class="case-details"><dl><dt>Задача</dt><dd>{item.problem}</dd><dt>Что сделал</dt><dd>{item.action}</dd><dt>Результат</dt><dd>{item.result}</dd></dl></div>
+                        </details>
+                    ))}
+                </div>
+                <a class="text-link" href={resume} target="_blank" rel="noopener noreferrer" data-goal="resume">Больше об опыте — в резюме ↗</a>
+            </section>
+
+            <section class="home-section" id="projects">
+                <div class="section-heading"><div><p class="section-index">03 / Сайд-проекты</p><h2>Мои проекты</h2><p>Небольшие, но живые проекты. Здесь я исследую, учусь и получаю удовольствие.</p></div></div>
+                <div class="project-grid">
+                    <a class="tile project-card project-clicker" href="/tools/clicker/"><span class="project-art" aria-hidden="true">↖</span><span class="project-type">Веб · эксперимент</span><h3>Clicker</h3><p>Счётчик кликов. Счётчик с историей. Эксперимент на тему минимализма, обратной связи и удовольствия от процесса.</p><span class="project-action">Открыть проект ↗</span></a>
+                    <a class="tile project-card project-breeze" href="/tools/breeze/"><span class="project-art" aria-hidden="true">≈</span><span class="project-type">Веб · инструмент</span><h3>Breeze</h3><p>Небольшой инструмент для концентрации и спокойной работы. Иногда лучший код — это пауза.</p><span class="project-action">Открыть проект ↗</span></a>
+                    <a class="tile project-card project-keyboard" href="/blog/stipjey-keyboard-layout/"><span class="project-art" aria-hidden="true">⌘</span><span class="project-type">Идея · статья</span><h3>Раскладка StipJey</h3><p>Собственная раскладка для клавиатуры: как сделать рабочий инструмент удобнее для себя.</p><span class="project-action">Читать историю ↗</span></a>
+                </div>
+            </section>
+
+            <div class="lower-grid">
+                <section class="tile consulting" id="consulting"><p class="section-index">04 / Консультации</p><h2>Можно прийти с проблемой,<br />а уйти с планом.</h2><p>Архитектура и технические решения, развитие команды, AI в продукте и разработке. Расскажите о задаче — вместе определим подходящий формат.</p><ul><li>Разбор конкретной ситуации</li><li>Аудит и рекомендации</li><li>Сопровождение изменений</li></ul><a class="button button-lime" href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram">Написать о задаче ↗</a><small>Формат и стоимость обсуждаем индивидуально.</small></section>
+                <section class="home-section blog-section" id="blog"><div class="section-heading"><div><p class="section-index">05 / Пишу о практике</p><h2>Блог</h2><p>То, что проверил на практике. Без теории ради теории.</p></div><a class="text-link" href="/blog/">Все статьи ↗</a></div><div class="post-grid">{posts.map((post) => <a class="tile post-card" href={`/blog/${post.id}/`}><span class="post-label">{post.id === 'short-consultation' ? 'КОНСАЛТИНГ' : 'ТЕХНОЛОГИИ'}</span><h3>{post.data.title}</h3><p>{post.data.description}</p><span class="post-arrow" aria-hidden="true">↗</span></a>)}</div></section>
+            </div>
+            <section class="closing" aria-label="Связаться"><span class="section-index">Сложные задачи — интересные люди</span><h2>Если frontend стал сложным, команда буксует или AI существует только в презентациях — давайте разберём.</h2><div class="closing-actions"><a class="button button-primary" href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram">Написать в Telegram ↗</a><a class="button button-dark-outline" href={resume} target="_blank" rel="noopener noreferrer" data-goal="resume">Резюме на HH ↗</a><a class="button button-dark-outline" href="https://github.com/StipJey" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div><div class="closing-meta"><span>Евгений Черкасов · StipJey</span><span>Санкт-Петербург / remote</span><span>До связи ↗</span></div></section>
         </main>
         <Footer />
+        <script>
+            import { animate, stagger } from 'animejs';
+
+            const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (!motion.matches) {
+                animate('.home [data-entrance]', {
+                    opacity: [0, 1],
+                    translateY: [16, 0],
+                    delay: stagger(65),
+                    duration: 530,
+                    ease: 'out(3)',
+                });
+            }
+
+        </script>
     </body>
 </html>

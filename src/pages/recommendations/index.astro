@@ -46,7 +46,7 @@ const topOffers = recommendations
                 margin-bottom: 0.5rem;
             }
             .intro p {
-                color: rgb(var(--gray));
+                color: var(--muted);
                 font-size: 1.1rem;
             }
 
@@ -71,8 +71,8 @@ const topOffers = recommendations
                 gap: 1.25rem;
             }
             .top-card {
-                background: white;
-                border: 2px solid #f1f5f9;
+                background: var(--surface);
+                border: 2px solid var(--border);
                 border-radius: 20px;
                 padding: 1.5rem;
                 position: relative;
@@ -120,7 +120,7 @@ const topOffers = recommendations
                 width: 100%;
                 padding: 0.75rem 1rem;
                 background: var(--accent);
-                color: white;
+                color: var(--on-accent);
                 text-decoration: none;
                 text-align: center;
                 border-radius: 12px;
@@ -143,8 +143,8 @@ const topOffers = recommendations
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
-                background: #f8fafc;
-                border: 1px dashed #cbd5e1;
+                background: var(--surface-soft);
+                border: 1px dashed var(--border);
                 border-radius: 12px;
                 padding: 0.5rem 0.75rem;
                 cursor: pointer;
@@ -153,7 +153,7 @@ const topOffers = recommendations
             .top-card .promo-code-box code {
                 font-family: inherit;
                 font-weight: 700;
-                color: rgb(var(--black));
+                color: var(--text);
                 background: none;
                 padding: 0;
                 white-space: nowrap;
@@ -198,8 +198,8 @@ const topOffers = recommendations
                 padding: 0.6rem 1.4rem;
                 border-radius: 999px;
                 border: 2px solid transparent;
-                background: #f1f5f9;
-                color: rgb(var(--gray-dark));
+                background: var(--surface-soft);
+                color: var(--text);
                 cursor: pointer;
                 font-size: 0.9rem;
                 font-weight: 600;
@@ -207,12 +207,12 @@ const topOffers = recommendations
                 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             }
             .filter-btn:hover {
-                background: #e2e8f0;
+                background: var(--surface);
                 transform: translateY(-1px);
             }
             .filter-btn.active {
                 background: var(--accent);
-                color: #fff;
+                color: var(--on-accent);
                 box-shadow:
                     0 4px 6px -1px rgba(var(--accent-rgb), 0.2),
                     0 2px 4px -1px rgba(var(--accent-rgb), 0.1);
