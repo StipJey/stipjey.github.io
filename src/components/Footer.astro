@@ -1,17 +1,18 @@
 ---
+import TelegramIcon from './TelegramIcon.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
     <div class="footer-inner">
         <div class="footer-intro">
-            <span class="footer-eyebrow">Сложные задачи · сильные команды</span>
-            <h2>Давайте обсудим вашу задачу.</h2>
+            <span class="footer-eyebrow">На связи</span>
+            <h2>Есть задача? Давайте обсудим.</h2>
             <p>Напишите пару слов о контексте — я отвечу лично.</p>
-            <a class="footer-contact" href="https://t.me/stipjey" target="_blank" rel="noopener noreferrer" data-goal="telegram">Написать в Telegram <span aria-hidden="true">↗</span></a>
+            <a class="footer-contact" href="https://t.me/stipjey" target="_blank" rel="noopener noreferrer" data-goal="telegram"><TelegramIcon /> Написать в Telegram</a>
         </div>
         <div class="footer-bottom">
-            <span>© {year} Евгений Черкасов · StipJey</span>
+            <span>© {year} Евгений Черкасов</span>
             <nav aria-label="Ссылки в подвале">
                 <a href="https://spb.hh.ru/resume/0de0d9a4ff07ef1aa60039ed1f3266446e4855" target="_blank" rel="noopener noreferrer" data-goal="resume">Резюме на HH</a>
                 <a href="https://github.com/StipJey" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -29,12 +30,12 @@ const year = new Date().getFullYear();
     .footer-intro h2 { color: #fff; margin: .7rem 0 .5rem; font-size: clamp(1.45rem, 3vw, 2.7rem); }
     .footer-intro p { margin: 0 0 1.35rem; color: #d5dfef; font-size: .9rem; }
     .footer-contact { display: inline-flex; gap: .7rem; align-items: center; padding: .85rem 1.1rem; border-radius: 11px; background: #96c5ff; color: #0d1b31; text-decoration: none; font-size: .8rem; font-weight: 700; }
-    .footer-contact:hover { background: #c4e0ff; color: #0d1b31; }
+    .footer-contact:hover { background: #c4e0ff; color: #0d1b31; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0, 0, 0, .2); }
     .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; margin-top: clamp(2.5rem, 5vw, 5rem); padding-top: 1.25rem; border-top: 1px solid #43536d; color: #c8d4e5; font-size: .68rem; }
     .footer-bottom nav { display: flex; flex-wrap: wrap; gap: .75rem 1.2rem; }
     .footer-bottom a { color: #e3ebf7; text-decoration: none; }
     .footer-bottom a:hover { color: #96c5ff; }
     @media (prefers-reduced-motion: no-preference) {
-        .footer-contact, .footer-bottom a { transition: color 180ms ease, background-color 180ms ease; }
+        .footer-contact, .footer-bottom a { transition: color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
     }
 </style>

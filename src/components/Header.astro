@@ -1,4 +1,5 @@
 ---
+import TelegramIcon from './TelegramIcon.astro';
 const telegram = 'https://t.me/stipjey';
 ---
 
@@ -7,7 +8,7 @@ const telegram = 'https://t.me/stipjey';
     <nav class="site-nav" aria-label="Основная навигация">
         <a class="identity" href="/" aria-label="Евгений Черкасов — главная">
             <span class="monogram" aria-hidden="true">ЕЧ</span>
-            <span class="identity-copy"><strong>Евгений Черкасов</strong><small>StipJey · Head of Frontend</small></span>
+            <span class="identity-copy"><strong>Евгений Черкасов</strong><small>Head of Frontend Development</small></span>
         </a>
         <div class="nav-links">
             <a href="/#experience">Опыт</a>
@@ -16,36 +17,38 @@ const telegram = 'https://t.me/stipjey';
             <a href="/#blog">Блог</a>
         </div>
         <div class="nav-actions">
-            <label class="theme-control">
-                <span>Тема</span>
-                <select id="site-theme" aria-label="Тема оформления">
-                    <option value="auto">Авто</option>
-                    <option value="light">Светлая</option>
-                    <option value="dark">Тёмная</option>
-                </select>
-            </label>
-            <a class="contact-link" href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram">Связаться <span aria-hidden="true">↗</span></a>
+            <button class="theme-toggle" id="site-theme" type="button" role="switch" aria-label="Тёмная тема" aria-checked="false" title="Переключить тему">
+                <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                <span class="theme-thumb"></span>
+                <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 16.8A8.7 8.7 0 0 1 7.2 3.8 8.7 8.7 0 1 0 20.2 16.8Z"/></svg>
+            </button>
+            <a class="contact-link" href={telegram} target="_blank" rel="noopener noreferrer" data-goal="telegram"><TelegramIcon /> Связаться</a>
         </div>
     </nav>
 </header>
 <script is:inline>
     (() => {
-        const select = document.getElementById('site-theme');
-        if (!(select instanceof HTMLSelectElement)) return;
-        select.value = document.documentElement.dataset.theme || 'auto';
-        select.addEventListener('change', () => {
-            const choice = select.value;
-            if (choice === 'light' || choice === 'dark') {
-                document.documentElement.dataset.theme = choice;
-            } else {
-                delete document.documentElement.dataset.theme;
-            }
+        const toggle = document.getElementById('site-theme');
+        if (!(toggle instanceof HTMLButtonElement)) return;
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const sync = () => {
+            const dark = document.documentElement.dataset.theme === 'dark' ||
+                (!document.documentElement.dataset.theme && systemTheme.matches);
+            toggle.setAttribute('aria-checked', String(dark));
+            toggle.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');
+            toggle.title = dark ? 'Светлая тема' : 'Тёмная тема';
+        };
+        sync();
+        systemTheme.addEventListener('change', sync);
+        toggle.addEventListener('click', () => {
+            const dark = toggle.getAttribute('aria-checked') !== 'true';
+            document.documentElement.dataset.theme = dark ? 'dark' : 'light';
             try {
-                if (choice === 'auto') localStorage.removeItem('site-theme');
-                else localStorage.setItem('site-theme', choice);
+                localStorage.setItem('site-theme', dark ? 'dark' : 'light');
             } catch (_) {
                 // The selected mode still works for this page when storage is blocked.
             }
+            sync();
         });
     })();
 </script>
@@ -92,17 +95,26 @@ const telegram = 'https://t.me/stipjey';
     .nav-links, .nav-actions { display: flex; align-items: center; gap: clamp(.55rem, 1.4vw, 1.5rem); }
     .nav-links a { color: var(--text-primary); font-size: .77rem; font-weight: 600; white-space: nowrap; }
     .nav-links a:hover { color: var(--brand); }
-    .theme-control { display: flex; align-items: center; gap: .45rem; color: var(--text-muted); font-size: .7rem; white-space: nowrap; }
-    .theme-control select {
-        max-width: 7.2rem;
-        padding: .52rem .42rem;
+    .theme-toggle {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        width: 64px;
+        height: 36px;
+        padding: 0 8px;
         border: 1px solid var(--line);
-        border-radius: 9px;
+        border-radius: 999px;
         color: var(--text-primary);
         background: var(--surface-raised);
-        font: inherit;
         cursor: pointer;
     }
+    .theme-toggle svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; z-index: 1; }
+    .theme-toggle .theme-moon { fill: none; }
+    .theme-thumb { position: absolute; left: 3px; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-soft); box-shadow: 0 1px 5px rgba(0, 0, 0, .14); }
+    .theme-toggle[aria-checked='true'] .theme-thumb { transform: translateX(28px); }
+    .theme-toggle[aria-checked='true'] .theme-sun, .theme-toggle[aria-checked='false'] .theme-moon { opacity: .5; }
     .contact-link {
         display: inline-flex;
         align-items: center;
@@ -127,9 +139,9 @@ const telegram = 'https://t.me/stipjey';
         .identity-copy small { display: none; }
         .identity-copy strong { font-size: .72rem; }
         .monogram { width: 36px; height: 36px; font-size: .7rem; }
-        .theme-control { gap: 0; }
-        .theme-control span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-        .theme-control select { max-width: 6.8rem; padding: .46rem .3rem; }
+        .theme-toggle { width: 58px; height: 34px; }
+        .theme-thumb { width: 26px; height: 26px; }
+        .theme-toggle[aria-checked='true'] .theme-thumb { transform: translateX(24px); }
         .contact-link { padding: .57rem .7rem; }
         .nav-links { gap: .8rem; }
         .nav-links a { font-size: .72rem; }
@@ -139,6 +151,7 @@ const telegram = 'https://t.me/stipjey';
         .contact-link { font-size: .66rem; }
     }
     @media (prefers-reduced-motion: no-preference) {
-        .nav-links a, .contact-link { transition: color 180ms ease, background-color 180ms ease; }
+        .nav-links a, .contact-link, .theme-toggle, .theme-thumb, .theme-toggle svg { transition: color 180ms ease, background-color 180ms ease, transform 220ms ease, opacity 180ms ease, box-shadow 180ms ease; }
+        .contact-link:hover, .theme-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(23, 34, 53, .16); }
     }
 </style>
