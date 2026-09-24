@@ -60,7 +60,7 @@ const services = [
 const cases = [
     {
         label: 'КОМАНДА',
-        value: '2 месяца → 2 недели',
+        value: '2 недели',
         title: 'Новый разработчик быстрее входит в работу',
         problem: 'Долгий онбординг замедлял команду и мешал новичкам стать самостоятельными.',
         action: 'Собрал базу знаний для онбординга фронтенд-разработчиков.',
@@ -78,11 +78,11 @@ const cases = [
     },
     {
         label: 'НАЙМ',
-        value: '5 из 5',
-        title: 'Пять успешных наймов',
+        value: '10+ наймов',
+        title: 'Разработчики остаются в команде',
         problem: 'Нужно было находить разработчиков, подходящих под задачи команды.',
-        action: 'Выстроил процесс найма и провёл около 50 собеседований.',
-        result: 'Все пять нанятых разработчиков прошли испытательный срок.',
+        action: 'Выстроил процесс найма, провёл около 50 собеседований и сделал 15 офферов. 11 человек приняли предложение.',
+        result: 'Все 11 прошли испытательный срок. Шесть человек работают в команде более двух лет.',
         color: 'lilac',
     },
 ];
@@ -119,17 +119,17 @@ const cases = [
                 </section>
                 <section class="tile proof" id="experience" aria-label="Опыт и результаты" data-entrance>
                     <div class="proof-item"><strong>50+</strong><span>интервью<br /><small>провёл с кандидатами</small></span></div>
-                    <div class="proof-item"><strong>15+</strong><span>решений о найме<br /><small>для разных ролей и форматов</small></span></div>
-                    <div class="proof-item"><strong>2 мес → 2 нед</strong><span>до самостоятельной работы<br /><small>после пересборки онбординга</small></span></div>
+                    <div class="proof-item"><strong>10+</strong><span>успешных наймов<br /><small>11 принятых офферов из 15</small></span></div>
+                    <div class="proof-item"><strong>2 недели</strong><span>до работы без помощи<br /><small>раньше — 2 месяца</small></span></div>
                     <div class="proof-item"><strong>≈ ×2</strong><span>быстрее вёрстка и интеграция<br /><small>после обновления системы вёрстки</small></span></div>
                 </section>
-                <aside class="tile philosophy" data-entrance>
+                <a class="tile philosophy" href={channel} target="_blank" rel="noopener noreferrer" aria-label="Читать Telegram-канал: Заметки о работе" data-entrance>
                     <span class="card-kicker">Telegram-канал</span>
                     <h2>Заметки о работе</h2>
-                    <a class="telegram-orbit" href={channel} target="_blank" rel="noopener noreferrer" aria-label="Открыть Telegram-канал"><TelegramIcon /></a>
+                    <span class="telegram-orbit"><TelegramIcon /></span>
                     <p>Пишу про frontend, управление командой и AI. <strong>2,5 тыс.+</strong> читателей.</p>
-                    <a class="channel-link" href={channel} target="_blank" rel="noopener noreferrer">Читать канал <span aria-hidden="true">✦</span></a>
-                </aside>
+                    <span class="channel-link">Читать канал <span aria-hidden="true">✦</span></span>
+                </a>
                 <aside class="tile expertise" data-entrance>
                     <span class="card-kicker">Мой стек и экспертиза</span>
                     <h2>От задачи до решения</h2>

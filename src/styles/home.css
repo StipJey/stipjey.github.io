@@ -52,10 +52,10 @@
 .proof-item:nth-child(odd) { border-right: 1px solid var(--home-line); }
 .proof-item:nth-child(-n+2) { border-bottom: 1px solid var(--home-line); }
 .proof-item strong { font-size: clamp(1.45rem, 2vw, 2rem); letter-spacing: -.07em; line-height: 1.05; white-space: nowrap; }
-.proof-item:nth-child(3) strong { font-size: clamp(1rem, 1.35vw, 1.4rem); letter-spacing: -.04em; white-space: normal; }
+.proof-item:nth-child(3) strong { font-size: clamp(1.25rem, 1.8vw, 1.8rem); letter-spacing: -.05em; white-space: normal; }
 .proof-item span { font-size: .78rem; line-height: 1.4; font-weight: 700; margin-top: 8px; }
 .proof-item small { display: inline-block; margin-top: 6px; color: var(--home-muted); font-size: .68rem; line-height: 1.35; font-weight: 450; }
-.philosophy { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 23px; background: #1e252b !important; color: #fff; border-color: #1e252b !important; }
+.philosophy { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 23px; background: #1e252b !important; color: #fff !important; border-color: #1e252b !important; }
 .philosophy .card-kicker { color: #bac4d0; }
 .philosophy h2 { font-family: 'Montserrat', sans-serif; font-size: clamp(1rem, 1.25vw, 1.3rem); line-height: 1.2; letter-spacing: -.02em; }
 .philosophy p { color: #dce4ec; font-size: .82rem; line-height: 1.5; }
@@ -161,13 +161,15 @@
 
 @keyframes detail-in { from { opacity: .65; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: no-preference) {
-    .home summary, .telegram-orbit, .channel-link { transition: background-color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease, color .2s ease; }
+    .home summary, .philosophy, .telegram-orbit, .channel-link { transition: background-color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease, color .2s ease; }
     .home details:hover, .home details:focus-within { border-color: var(--home-brand); box-shadow: 0 10px 25px rgba(33, 80, 152, .1); }
     .home details summary:hover .service-icon { transform: rotate(-8deg) scale(1.06); }
     .home .service-icon { transition: transform .2s ease; }
     .home details summary:hover .expand-hint span, .home details summary:hover .case-open span { transform: rotate(90deg); }
     .home details[open] summary:hover .expand-hint span, .home details[open] summary:hover .case-open span { transform: rotate(135deg); }
-    .telegram-orbit:hover, .telegram-orbit:focus-visible { transform: translateY(-3px) rotate(-8deg); box-shadow: 0 15px 24px rgba(0, 0, 0, .3); }
+    .philosophy:hover, .philosophy:focus-visible { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0, 0, 0, .2); }
+    .philosophy:hover .telegram-orbit, .philosophy:focus-visible .telegram-orbit { transform: rotate(-8deg) scale(1.08); box-shadow: 0 15px 24px rgba(0, 0, 0, .3); }
+    .philosophy:hover .channel-link, .philosophy:focus-visible .channel-link { color: #fff; }
     @supports (animation-timeline: view()) {
         .home-section::before { content: ''; display: block; width: 38px; height: 2px; margin-bottom: 11px; background: var(--home-brand); transform-origin: left center; animation: accent-grow linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
         @keyframes accent-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -212,6 +214,7 @@
     .proof { padding: 11px; }
     .proof-item { padding: 12px; }
     .proof-item strong { font-size: 1.3rem; }
+    .proof-item:nth-child(3) strong { font-size: 1.3rem; }
     .proof-item span { font-size: .7rem; }
     .proof-item small { font-size: .62rem; }
     .expertise, .process { grid-column: 1 / -1; }
