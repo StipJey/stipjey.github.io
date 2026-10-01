@@ -2,6 +2,12 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const currentYear = new Date().getFullYear();
+const frontendExperienceYears = currentYear - 2013;
+const commercialExperienceYears = currentYear - 2014;
+const remoteExperienceYears = currentYear - 2018;
+const managementExperienceYears = currentYear - 2021;
 ---
 
 <!doctype html>
@@ -21,8 +27,9 @@ import Footer from '../components/Footer.astro';
             <div>
                 <p>
                     <strong
-                        >Frontend Developer and Team Leader with 11 years
-                        experience in frontend</strong
+                        >Frontend Developer and Team Leader with {
+                            frontendExperienceYears
+                        } years experience in frontend</strong
                     >
                 </p>
                 <figure>
@@ -41,10 +48,12 @@ import Footer from '../components/Footer.astro';
                     <strong>About me</strong>
                 </h2>
                 <p>
-                    Frontend developer with 10 years of commercial development
-                    experience. Last six years working remotely in teams of two
-                    to ten people. Team management experience of just over three
-                    years. I know how to turn business desires into working
+                    Frontend developer with {commercialExperienceYears} years of
+                    commercial development experience. Last {
+                        remoteExperienceYears
+                    } years working remotely in teams of two to ten people. Team
+                    management experience of {managementExperienceYears} years. I
+                    know how to turn business desires into working
                     code: from requirements gathering and ticket creation to
                     release in production via CI/CD and analytics.<br />I enjoy
                     managing the development team: managing the stack,
