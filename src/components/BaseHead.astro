@@ -6,6 +6,10 @@ import '../styles/global.css';
 interface Props {
     title: string;
     description: string;
+    seoTitle?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
     image?: string;
     imageWidth?: number;
     imageHeight?: number;
@@ -19,6 +23,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
     title,
     description,
+    seoTitle,
+    ogTitle,
+    ogDescription,
+    ogImage,
     image = '/og/home.png',
     imageWidth,
     imageHeight,
@@ -26,7 +34,13 @@ const {
     publishedTime,
     modifiedTime,
 } = Astro.props;
-const socialImageURL = new URL(image, Astro.site);
+const pageTitle = seoTitle ?? title;
+const socialTitle = ogTitle ?? pageTitle;
+const socialDescription = ogDescription ?? description;
+const socialImage = ogImage ?? image;
+const socialImageWidth = ogImage ? undefined : imageWidth;
+const socialImageHeight = ogImage ? undefined : imageHeight;
+const socialImageURL = new URL(socialImage, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -58,18 +72,18 @@ const socialImageURL = new URL(image, Astro.site);
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
 <meta property="og:url" content={canonicalURL} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:title" content={socialTitle} />
+<meta property="og:description" content={socialDescription} />
 <meta property="og:image" content={socialImageURL} />
-{(imageWidth || image === '/og/home.png') && <meta property="og:image:width" content={imageWidth ?? 1200} />}
-{(imageHeight || image === '/og/home.png') && <meta property="og:image:height" content={imageHeight ?? 630} />}
+{(socialImageWidth || socialImage === '/og/home.png') && <meta property="og:image:width" content={socialImageWidth ?? 1200} />}
+{(socialImageHeight || socialImage === '/og/home.png') && <meta property="og:image:height" content={socialImageHeight ?? 630} />}
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:site_name" content="Евгений Черкасов" />
 {
@@ -97,8 +111,8 @@ const socialImageURL = new URL(image, Astro.site);
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
+<meta property="twitter:title" content={socialTitle} />
+<meta property="twitter:description" content={socialDescription} />
 <meta property="twitter:image" content={socialImageURL} />
 
 <!-- Telegram -->

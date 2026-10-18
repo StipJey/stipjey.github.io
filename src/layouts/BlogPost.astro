@@ -7,7 +7,42 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	description,
+	seoTitle,
+	ogTitle,
+	ogDescription,
+	ogImage,
+	pubDate,
+	updatedDate,
+	heroImage,
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const blogPostingSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	author: {
+		'@type': 'Person',
+		name: 'Евгений Черкасов',
+	},
+	datePublished: pubDate.toISOString(),
+	...(updatedDate && { dateModified: updatedDate.toISOString() }),
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': canonicalURL,
+	},
+	publisher: {
+		'@type': 'Person',
+		name: 'Евгений Черкасов',
+	},
+	...(heroImage && {
+		image: new URL(heroImage.src, Astro.site).href,
+	}),
+};
+const blogPostingJsonLd = JSON.stringify(blogPostingSchema).replace(/</g, '\\u003c');
 ---
 
 <html lang="ru">
@@ -15,6 +50,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<BaseHead
 			title={title}
 			description={description}
+			seoTitle={seoTitle}
+			ogTitle={ogTitle}
+			ogDescription={ogDescription}
+			ogImage={ogImage}
 			image={heroImage?.src}
 			imageWidth={heroImage?.width}
 			imageHeight={heroImage?.height}
@@ -22,6 +61,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			publishedTime={pubDate}
 			modifiedTime={updatedDate}
 		/>
+		<script type="application/ld+json" set:html={blogPostingJsonLd} />
 		<style>
 			.hero-image {
 				width: 100%;
@@ -54,6 +94,50 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.last-updated-on {
 				font-style: italic;
+			}
+			:global(.formula-table-wrap) {
+				width: 100%;
+				max-width: 100%;
+				margin: 1.5em 0;
+			}
+			:global(.formula-table-wrap) :global(table) {
+				width: 100%;
+				max-width: 100%;
+				display: table;
+				white-space: normal;
+				border-collapse: collapse;
+				table-layout: fixed;
+			}
+			:global(.formula-table-wrap) :global(caption) {
+				padding: 0.5rem;
+				text-align: left;
+				font-weight: 600;
+			}
+			:global(.formula-table-wrap) :global(th),
+			:global(.formula-table-wrap) :global(td) {
+				padding: 0.75rem;
+				border: 1px solid var(--muted);
+				vertical-align: top;
+				text-align: left;
+				overflow-wrap: anywhere;
+			}
+			:global(.formula-table-wrap) :global(thead th:first-child) {
+				width: 26%;
+			}
+			:global(.formula-table-wrap) :global(details) {
+				margin-top: 0.75rem;
+			}
+			:global(.formula-table-wrap) :global(summary) {
+				cursor: pointer;
+			}
+			@media (max-width: 40rem) {
+				:global(.formula-table-wrap) :global(thead th:first-child) {
+					width: 40%;
+				}
+				:global(.formula-table-wrap) :global(th),
+				:global(.formula-table-wrap) :global(td) {
+					padding: 0.375rem;
+				}
 			}
 		</style>
 	</head>
