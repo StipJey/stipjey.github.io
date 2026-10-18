@@ -167,7 +167,7 @@ const socialImageURL = new URL(socialImage, Astro.site);
         const target = event.target;
         const link = target instanceof Element ? target.closest('a[data-goal]') : null;
         const goal = link && link.getAttribute('data-goal');
-        if ((goal === 'telegram' || goal === 'resume') && typeof window.ym === 'function') {
+        if ((goal === 'telegram' || goal === 'resume' || goal === 'download_40_formulas') && typeof window.ym === 'function') {
             window.ym(106572860, 'reachGoal', goal);
         }
     });

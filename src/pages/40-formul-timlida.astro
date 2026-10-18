@@ -1,0 +1,125 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+
+const title = '40 формул для собеседования тимлида';
+const description = 'Готовые структуры ответов на вопросы и управленческие кейсы. С примерами из российского IT.';
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead
+            title={`${title} — скачать Markdown`}
+            description="Скачайте бесплатно 40 формул для ответов на вопросы и управленческие кейсы собеседования тимлида. Примеры из российского IT."
+            ogTitle={`${title} — скачать Markdown`}
+            ogDescription="Скачайте бесплатно 40 формул для ответов на вопросы и управленческие кейсы собеседования тимлида. Примеры из российского IT."
+            ogImage="/og/teamlead-interview-v2.png"
+            type="website"
+        />
+    </head>
+    <body>
+        <main class="download-page">
+            <h1>{title}</h1>
+            <p class="description">{description}</p>
+            <div class="actions">
+                <a
+                    class="download-link"
+                    href="/downloads/40-formul-timlida.md"
+                    download="40-formul-timlida.md"
+                    data-goal="download_40_formulas"
+                >📥 Скачать Markdown</a>
+                <a class="article-link" href="/blog/sobesedovanie-na-timlida/">Читать статью целиком</a>
+            </div>
+            <p class="note">Бесплатно · Без регистрации · Формат .md</p>
+        </main>
+    </body>
+</html>
+
+<style>
+    .download-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        min-height: 100dvh;
+        max-width: 560px;
+        padding: 2rem 1.25rem;
+        text-align: center;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(1.65rem, 5vw, 2.6rem);
+    }
+
+    .description {
+        max-width: 32rem;
+        margin: 1.25rem 0 2rem;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+
+    .actions {
+        display: flex;
+        width: min(100%, 24rem);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.9rem;
+    }
+
+    .download-link,
+    .article-link {
+        display: block;
+        text-decoration: none;
+        border-radius: 0.55rem;
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1.4;
+        text-align: center;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .download-link {
+        background: var(--accent);
+        color: var(--on-accent);
+    }
+
+    .download-link:hover {
+        background: var(--accent-dark);
+        color: var(--on-accent);
+    }
+
+    .article-link {
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .article-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .download-link:focus-visible,
+    .article-link:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+    }
+
+    .note {
+        margin: 1.25rem 0 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    @media (max-width: 480px) {
+        .download-page {
+            padding: 1.5rem 1rem;
+        }
+    }
+</style>
