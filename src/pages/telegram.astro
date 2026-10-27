@@ -1,8 +1,12 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import TelegramIcon from '../components/TelegramIcon.astro';
 
 const channel = 'https://t.me/frontend_lead_mentor';
+const articles = [
+    { title: '40 кейсов для собеседования тимлида', description: 'Формулы и примеры ответов', href: '/blog/sobesedovanie-na-timlida/' },
+    { title: 'SSR, SSG и SPA: полный разбор', description: 'Как выбрать подход к рендерингу', href: '/blog/ssr-ssg-spa/' },
+    { title: 'Типы и интерфейсы в TypeScript', description: 'Разбираем отличия type и interface', href: '/blog/type-vs-interface/' },
+];
 const digests: { title: string; description: string; href: string }[] = [
     { title: 'Про ИИ и нейросети', description: 'Инструменты, найм и работа с ИИ · 2026', href: 'https://t.me/frontend_lead_mentor/1128' },
     { title: 'Для тимлидов', description: 'Команда, процессы и управление · 2026', href: 'https://t.me/frontend_lead_mentor/1130' },
@@ -12,6 +16,16 @@ const digests: { title: string; description: string; href: string }[] = [
     { title: 'Лучшие посты канала', description: 'Тимлидство, frontend и личный опыт · 2024', href: 'https://t.me/frontend_lead_mentor/576' },
     { title: 'С чего всё начиналось', description: 'Истории и советы для новых читателей · 2023', href: 'https://t.me/frontend_lead_mentor/428' },
 ];
+const taggedLink = (href: string, content: string) => {
+    const separator = href.includes('?') ? '&' : '?';
+    const params = new URLSearchParams({
+        utm_source: 'telegram',
+        utm_medium: 'linkpage',
+        utm_campaign: 'channel_links',
+        utm_content: content,
+    });
+    return `${href}${separator}${params}`;
+};
 const advertisingContact: string | null = 'https://t.me/thanksforyourmsg';
 const consultingContact: string | null = 'https://t.me/thanksforyourmsg';
 ---
@@ -26,40 +40,47 @@ const consultingContact: string | null = 'https://t.me/thanksforyourmsg';
     </head>
     <body class="links-page">
         <main class="links">
-            <a class="brand" href="/">Евгений Черкасов <span aria-hidden="true">✦</span></a>
-
             <header class="intro">
-                <span class="channel-icon"><TelegramIcon /></span>
-                <p class="eyebrow">Telegram-канал</p>
-                <h1>Счастливый <em>тимлид</em></h1>
-                <p class="lead">Frontend, управление командой и AI. Полезные ссылки из канала — в одном месте.</p>
-                <a class="channel-link" href={channel} target="_blank" rel="noopener noreferrer">Перейти в канал <span aria-hidden="true">↗</span></a>
+                <div><p class="eyebrow">Евгений Черкасов · Telegram</p><h1>Счастливый <em>тимлид</em></h1></div>
+                <a class="channel-link" href={taggedLink(channel, 'channel')} target="_blank" rel="noopener noreferrer">Канал <span aria-hidden="true">↗</span></a>
             </header>
 
+            <section class="section" aria-labelledby="articles-title">
+                <div class="section-heading"><p class="eyebrow">01 / Читать</p><h2 id="articles-title">Лучшие статьи</h2></div>
+                <div class="digest-list">
+                    {articles.map((article) => (
+                        <a class="digest article" href={taggedLink(article.href, article.href.split('/')[2])}>
+                            <span><strong>{article.title}</strong><small>{article.description}</small></span>
+                            <span class="arrow" aria-hidden="true">↗</span>
+                        </a>
+                    ))}
+                </div>
+            </section>
+
             <section class="section" aria-labelledby="digests-title">
-                <div class="section-heading"><p class="eyebrow">01 / Читать</p><h2 id="digests-title">Дайджесты</h2></div>
+                <div class="section-heading"><p class="eyebrow">02 / Подборки</p><h2 id="digests-title">Дайджесты</h2></div>
                 {digests.length > 0 ? (
                     <div class="digest-list">
                         {digests.map((digest) => (
-                            <a class="digest" href={digest.href} target="_blank" rel="noopener noreferrer">
+                            <a class="digest" href={taggedLink(digest.href, `digest_${digest.href.split('/').pop()}`)} target="_blank" rel="noopener noreferrer">
                                 <span><strong>{digest.title}</strong><small>{digest.description}</small></span>
                                 <span class="arrow" aria-hidden="true">↗</span>
                             </a>
                         ))}
                     </div>
                 ) : (
-                    <div class="empty-card"><p>Дайджесты скоро появятся здесь.</p><a href={channel} target="_blank" rel="noopener noreferrer">Пока можно почитать канал <span aria-hidden="true">↗</span></a></div>
+                    <div class="empty-card"><p>Дайджесты скоро появятся здесь.</p><a href={taggedLink(channel, 'channel')} target="_blank" rel="noopener noreferrer">Пока можно почитать канал <span aria-hidden="true">↗</span></a></div>
                 )}
             </section>
 
             <section class="section" aria-labelledby="contact-title">
-                <div class="section-heading"><p class="eyebrow">02 / Связаться</p><h2 id="contact-title">Есть предложение?</h2></div>
+                <div class="section-heading"><p class="eyebrow">03 / Связаться</p><h2 id="contact-title">Есть предложение?</h2></div>
                 <div class="actions">
-                    {advertisingContact ? <a class="action action-blue" href={advertisingContact}>Реклама и сотрудничество <span aria-hidden="true">↗</span></a> : <button class="action action-blue" disabled>Реклама и сотрудничество <span aria-hidden="true">↗</span></button>}
-                    {consultingContact ? <a class="action action-light" href={consultingContact}>Записаться на консультацию <span aria-hidden="true">↗</span></a> : <button class="action action-light" disabled>Записаться на консультацию <span aria-hidden="true">↗</span></button>}
+                    {advertisingContact ? <a class="action action-blue" href={taggedLink(advertisingContact, 'advertising')}>Реклама и сотрудничество <span aria-hidden="true">↗</span></a> : <button class="action action-blue" disabled>Реклама и сотрудничество <span aria-hidden="true">↗</span></button>}
+                    {consultingContact ? <a class="action action-light" href={taggedLink(consultingContact, 'consultation')}>Записаться на консультацию <span aria-hidden="true">↗</span></a> : <button class="action action-light" disabled>Записаться на консультацию <span aria-hidden="true">↗</span></button>}
                 </div>
             </section>
-            <footer><a href="/">На главный сайт <span aria-hidden="true">↗</span></a><span>Евгений Черкасов</span></footer>
+            <footer><a href={taggedLink('/', 'homepage')}>На главный сайт <span aria-hidden="true">↗</span></a><span>Евгений Черкасов</span></footer>
         </main>
     </body>
 </html>
@@ -69,22 +90,18 @@ const consultingContact: string | null = 'https://t.me/thanksforyourmsg';
     .links { max-width: 620px; padding: 24px 18px 42px; font-size: 16px; line-height: 1.5; }
     .links h1, .links h2, .links p { margin: 0; }
     .links a { text-decoration: none; }
-    .brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-weight: 750; font-size: .8rem; }
-    .brand span { color: var(--brand); }
-    .intro { position: relative; overflow: hidden; margin-top: 25px; padding: 30px 26px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: var(--box-shadow); }
-    .channel-icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 26px; border-radius: 15px; color: white; background: #2475e9; }
-    .channel-icon :global(svg) { width: 25px; height: 25px; }
+    .intro { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 3px 0; }
     .eyebrow { color: var(--text-muted); font-size: .68rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
-    .intro h1 { margin-top: 10px; font-size: clamp(2rem, 7vw, 3rem); letter-spacing: -.05em; line-height: 1.15; }
+    .intro h1 { margin-top: 6px; font-size: clamp(1.2rem, 5vw, 1.55rem); letter-spacing: -.04em; line-height: 1.25; }
     .intro h1 em { color: var(--brand); font-style: normal; }
-    .lead { max-width: 42ch; margin-top: 18px !important; color: var(--text-muted); font-size: .92rem; }
-    .channel-link { display: inline-flex; gap: 12px; margin-top: 22px; font-size: .82rem; font-weight: 750; }
+    .channel-link { flex: 0 0 auto; font-size: .8rem; font-weight: 750; }
     .section { margin-top: 32px; }
     .section-heading { margin: 0 3px 12px; }
     .section h2 { margin-top: 6px; font-size: 1.25rem; letter-spacing: -.035em; }
     .digest-list, .actions { display: grid; gap: 10px; }
     .digest, .empty-card { padding: 20px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
     .digest { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--text); }
+    .article { border-color: var(--brand); background: var(--surface-soft); }
     .digest strong, .digest small { display: block; }
     .digest small { margin-top: 5px; color: var(--text-muted); font-size: .8rem; }
     .arrow { color: var(--brand); font-size: 1.2rem; }
@@ -96,5 +113,5 @@ const consultingContact: string | null = 'https://t.me/thanksforyourmsg';
     .action:disabled { opacity: .6; cursor: not-allowed; }
     footer { display: flex; justify-content: space-between; gap: 12px; margin: 36px 3px 0; color: var(--text-muted); font-size: .7rem; }
     footer a { font-weight: 700; }
-    @media (max-width: 360px) { .intro { padding: 24px 20px; } footer { flex-wrap: wrap; } }
+    @media (max-width: 360px) { footer { flex-wrap: wrap; } }
 </style>
