@@ -1,0 +1,1586 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export const toolData = {
+    title: 'Калькулятор отпуска 2027',
+    description: 'Производственный календарь России на 2027 год: планирование отпуска, сравнение отпускных и зарплаты, расчёт премий и НДФЛ.',
+    emoji: '🏖️',
+    order: 3,
+    image: '/og/tools.png',
+};
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead title={`${toolData.title} | Инструменты`} description={toolData.description} image={toolData.image} />
+        <style is:global>
+            #vacation-app main {
+                width: auto;
+                max-width: none;
+                margin: 0;
+                padding: 27px 32px 70px;
+            }
+
+            @media (max-width: 650px) {
+                #vacation-app main {
+                    padding: 15px 15px 48px;
+                }
+            }
+
+  :root {color-scheme:dark;--bg:#0c111e;--panel:#141b2b;--panel2:#1a2436;--panel3:#202d40;--text:#ecf2fe;--muted:#a7b4ca;--faint:#8290a9;--line:rgba(186,202,235,.13);--accent:#91a4ff;--accent2:#716ff8;--blue-pale:rgba(135,155,255,.17);--holiday:#f9a6a8;--off:#f5c8a3;--vacation:#a7dfcf;--manual:#60dcbf;--good:#7ad9b8;--warn:#ffd08a;--shadow:0 17px 55px rgba(1,5,15,.22);--focus:#ad9fff}
+  @media(prefers-color-scheme:light){:root:not([data-theme="dark"]) {color-scheme:light;--bg:#f4f6fb;--panel:#fff;--panel2:#f3f6fc;--panel3:#e9edf7;--text:#19243a;--muted:#64748b;--faint:#8491a4;--line:rgba(22,47,82,.10);--accent:#4d54bc;--accent2:#5957d6;--blue-pale:#eeedff;--holiday:#bc445c;--off:#ab6c42;--vacation:#167968;--manual:#007c65;--good:#0c8763;--warn:#9d6612;--shadow:0 15px 44px rgba(41,58,87,.09);--focus:#6860fa}}
+  html[data-theme="light"]{color-scheme:light;--bg:#f4f6fb;--panel:#fff;--panel2:#f3f6fc;--panel3:#e9edf7;--text:#19243a;--muted:#64748b;--faint:#8491a4;--line:rgba(22,47,82,.10);--accent:#4d54bc;--accent2:#5957d6;--blue-pale:#eeedff;--holiday:#bc445c;--off:#ab6c42;--vacation:#167968;--manual:#007c65;--good:#0c8763;--warn:#9d6612;--shadow:0 15px 44px rgba(41,58,87,.09);--focus:#6860fa}
+  #vacation-app{font-family:Montserrat,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.45;color:var(--text);font-variant-numeric:tabular-nums;-webkit-tap-highlight-color:transparent}#vacation-app button,#vacation-app input,#vacation-app select{font:inherit}#vacation-app button{cursor:pointer}#vacation-app button:focus-visible,#vacation-app input:focus-visible,#vacation-app select:focus-visible,#vacation-app a:focus-visible{outline:3px solid var(--focus);outline-offset:3px}#vacation-app a{color:inherit}.vacation-container{max-width:1570px;margin:auto;padding:0 32px}
+  .hero{overflow:hidden;position:relative;background:linear-gradient(125deg,rgba(var(--accent-rgb),.16),transparent 58%),var(--surface);color:var(--text);border-bottom:1px solid var(--border);padding:30px 0 36px}.hero::after{content:"27";position:absolute;right:-.02em;top:-.60em;font-size:450px;font-weight:900;letter-spacing:-.13em;opacity:.036;pointer-events:none}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.18em;font-weight:750;color:var(--accent)}
+  .hero-main{position:relative;z-index:1}.hero h1{font-weight:830;line-height:1.08;margin:8px 0}.hero h1 em{font-style:normal;color:var(--accent)}.hero p{color:var(--muted);max-width:680px;font-size:15px;margin:0}
+  .page{padding:27px 0 70px}.top-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:23px}.metric{padding:19px 19px 16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);min-width:0}.metric-label{display:flex;align-items:center;gap:7px;color:var(--muted);font-weight:650;font-size:12px}.metric-num{font-weight:800;font-size:clamp(21px,2.1vw,29px);letter-spacing:-.05em;margin:9px 0 5px;white-space:nowrap}.metric-note{font-size:11px;color:var(--faint)}.metric.highlight{background:linear-gradient(120deg,rgba(115,115,244,.14),rgba(113,204,199,.08)),var(--panel);border-color:rgba(127,134,242,.29)}.plus{color:var(--good)}.minus{color:var(--holiday)}
+  .layout{display:grid;grid-template-columns:350px minmax(0,1fr);align-items:start;gap:23px}.sidebar{display:grid;gap:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:21px}.panel h2,.content-title h2{font-size:19px;letter-spacing:-.04em;line-height:1.2;margin:0 0 5px;font-weight:800}.help{font-size:12px;color:var(--muted);line-height:1.55;margin:4px 0 14px}.field{margin-top:14px}.field label,.setting-label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:7px}.control{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:0 12px;min-height:45px}.control:focus-within{border-color:var(--accent)}.control input{min-width:0;width:100%;height:42px;color:var(--text);background:transparent;border:0;outline:none;font-weight:750;font-size:16px}.control small{font-size:12px;color:var(--faint)}input[type=number]{appearance:textfield;-moz-appearance:textfield}input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.footnote{font-size:11px;line-height:1.55;color:var(--faint);margin:10px 0 0}.toggleline{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted);margin-top:14px;cursor:pointer}.toggleline input{accent-color:var(--accent2);width:16px;height:16px;flex-shrink:0;margin-top:1px}.divider{border:none;border-top:1px solid var(--line);margin:16px 0}.rule{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;margin-top:9px}.rule-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.rule-head b{font-size:12px}.small-btn{border:1px solid var(--line);color:var(--text);background:var(--panel2);padding:8px 11px;border-radius:9px;font-size:12px;font-weight:750}.small-btn:hover{border-color:var(--accent)}.remove{color:var(--holiday);border:none;background:transparent;padding:4px 8px;font-size:18px;line-height:1}.compact-input,.compact-select{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0;width:100%;padding:10px 8px;color:var(--text);font-weight:650;font-size:12px}.tiny-label{display:block;font-size:10px;color:var(--faint);margin-bottom:5px}.compact-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:8px}.compact-grid.three{grid-template-columns:1.1fr .85fr 1fr}.actions-inline{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:11px 13px;font-weight:750;font-size:12px;background:var(--panel2);border:1px solid var(--line);color:var(--text);text-decoration:none;transition:transform .15s,border-color .15s}.button:hover{border-color:var(--accent);transform:translateY(-1px)}.button.primary{background:var(--accent2);color:white;border-color:var(--accent2)}.button.ghost{background:transparent}.button.small{padding:8px 11px}.button.full{width:100%}
+  .plan-preferences{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px;margin:13px 0 16px}
+  .more-settings{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}.more-settings>summary{padding:13px 15px;color:var(--accent);font-size:13px;font-weight:750;cursor:pointer;list-style:none}.more-settings>summary::-webkit-details-marker{display:none}.more-settings>summary::after{content:'＋';float:right}.more-settings[open]>summary::after{content:'−'}.more-settings-content{display:grid;gap:12px;padding:0 13px 14px}.more-settings-content .plan-preferences{margin:0}.more-settings-content .panel{box-shadow:none;margin:0}.more-settings-content .setting-label{margin-top:8px}
+  .alternative-plans{display:grid;gap:8px;margin-top:10px}.alternative-card{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px;color:var(--text);font-size:11px;line-height:1.5}.alternative-card:hover{border-color:var(--accent);background:var(--panel2)}.alternative-card strong,.alternative-card small{display:block}.alternative-card small{color:var(--muted);margin-top:3px}
+  .plan-preferences h3{font-size:13px;margin:0 0 7px;letter-spacing:-.02em}.plan-preferences .help{margin:0 0 12px}
+  .rule-controls{display:grid;gap:10px;margin:10px 0}.rule-controls>label{min-width:0}.rule-controls select,.rule-controls input{min-width:0;width:100%;min-height:40px;border:1px solid var(--line);border-radius:9px;padding:8px;background:var(--panel2);color:var(--text);font-size:12px}.inline-control{display:flex;gap:7px}.inline-control input[type=number]{width:78px;flex:none}.inline-control select{flex:1}.rule-controls .tiny-label{font-size:11px}
+  .pref-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .pref-choice{min-height:48px;border-radius:10px;padding:10px 8px;border:1px solid var(--line);color:var(--muted);background:var(--panel);font-size:12px;font-weight:750;text-align:left;display:flex;gap:7px;align-items:center;cursor:pointer}
+  .pref-choice[aria-pressed="true"]{border:1px solid var(--accent);background:var(--blue-pale);color:var(--text);box-shadow:inset 0 0 0 1px rgba(120,120,240,.15)}
+  .restriction-note{font-size:11px;color:var(--muted);line-height:1.5;margin:10px 0 2px}
+  .block-date-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
+  .layout>*,.sidebar,.panel,.rule,.rule-controls,.rule-controls>*{min-width:0}
+  .block-date-grid>*{min-width:0}
+  .block-date-grid .compact-select{width:100%;min-width:0}
+  .compact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .compact-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .compact-grid>*{min-width:0}
+  .compact-input,.compact-select{box-sizing:border-box}
+  .block-date-grid input{width:100%;min-width:0;min-height:41px;border-radius:9px;padding:8px 6px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-size:12px}
+  #vacation-app :is(.rule-controls, .block-date-grid) :is(input, select) {
+      box-sizing: border-box;
+      max-width: 100%;
+  }
+  #vacation-app .settings-choice-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  }
+  #vacation-app .inline-control { flex-wrap: wrap; }
+  #vacation-app .inline-control select { flex: 1 1 8rem; width: auto; }
+  #vacation-app select {
+      appearance: none;
+      padding-inline-end: 34px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%238290a9' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 12px;
+  }
+  @media (forced-colors: active) {
+      #vacation-app select { appearance: auto; padding-inline-end: 8px; background-image: none; }
+  }
+  .blocked-list{display:grid;gap:6px;margin-top:10px}.blocked-item{background:var(--panel2);border:1px solid var(--line);border-radius:9px;display:flex;gap:8px;justify-content:space-between;align-items:center;padding:6px 8px;font-size:11px;color:var(--muted)}
+  .blocked-item button{border:0;background:transparent;color:var(--holiday);font-size:19px;padding:2px 8px;line-height:1}
+  .day.blocked:not(.selected-manual):not(.selected-auto):not(.holiday){background:repeating-linear-gradient(-45deg,rgba(232,96,113,.12) 0,rgba(232,96,113,.12) 3px,transparent 3px,transparent 7px);color:var(--faint);box-shadow:inset 0 0 0 1px rgba(228,127,142,.25)}
+  .month.blocked-month{border-color:rgba(232,96,113,.27)}.dot.blocked{background:repeating-linear-gradient(-45deg,rgba(234,112,128,.7) 0 3px,rgba(234,112,128,.18) 3px 6px)}
+  .preset{width:100%;display:flex;text-align:left;gap:12px;background:var(--panel2);border:1px solid var(--line);padding:12px;border-radius:12px;margin-top:9px;color:var(--text);align-items:center}.preset:hover{border-color:var(--accent);background:var(--panel3)}.preset .emoji{font-size:23px;display:grid;place-items:center;width:38px;height:38px;background:var(--panel);border-radius:10px;flex-shrink:0}.preset b{font-size:13px;display:block}.preset small{font-size:11px;color:var(--muted);display:block;margin-top:2px}.progressline{height:7px;background:var(--panel3);border-radius:99px;overflow:hidden;margin:12px 0 8px}.progressfill{background:linear-gradient(90deg,#7777f7,#65d8bd);height:100%;border-radius:inherit;width:0;transition:width .25s}.progresslabel{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.hint-state{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12px;color:var(--muted);line-height:1.5}.hint-state.good{border-color:rgba(90,199,156,.35);color:var(--good)}.hint-state.warn{border-color:rgba(249,191,112,.35);color:var(--warn)}
+  .content-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:5px 0 15px}.content-title h2{margin:0}.caption{font-size:12px;color:var(--muted)}.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:11px;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:middle}.dot.work{background:var(--muted)}.dot.off{background:var(--off)}.dot.holiday{background:var(--holiday)}.dot.vac{background:var(--manual)}.dot.suggest{background:var(--accent2)}
+  .months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.month{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px 14px 14px;min-width:0;box-shadow:var(--shadow)}.month-head{display:flex;justify-content:space-between;gap:7px;align-items:flex-start}.month h3{font-weight:800;letter-spacing:-.04em;font-size:19px;line-height:1.15;margin:0}.month-tag{background:var(--panel2);padding:4px 7px;border:1px solid var(--line);border-radius:7px;color:var(--muted);font-size:10px;white-space:nowrap}.month-overview{font-size:11px;color:var(--faint);margin:5px 0 15px}.weekdays,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.weekdays{margin-bottom:5px}.weekdays span{text-align:center;color:var(--faint);font-size:10px;font-weight:700;padding:4px 0}.weekdays span:nth-child(n+6){color:var(--holiday)}.day{width:100%;border:1px solid transparent;border-radius:8px;min-width:0;position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:var(--text);background:transparent;font-size:12px;font-weight:650;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:background .11s,transform .09s}.day:hover{background:var(--panel3)}.day.off{color:var(--off);background:rgba(236,155,92,.055)}.day.holiday{color:var(--holiday);background:rgba(232,96,113,.13);font-weight:800}.day.holiday::after{content:"";width:3px;height:3px;background:var(--holiday);border-radius:100%;position:absolute;bottom:3px}.day.short::before{content:"·";position:absolute;top:-5px;right:3px;font-size:17px;color:var(--warn)}.day.bonusday::before{content:"•";position:absolute;top:-3px;right:3px;font-size:16px;color:var(--good)}.day.selected-manual{background:linear-gradient(145deg,#2dcdb5,#2595a8);color:#061924;font-weight:850;border-color:transparent;box-shadow:0 2px 9px rgba(36,188,170,.23)}.day.selected-auto{background:linear-gradient(145deg,#8485f2,#6156ce);color:white;font-weight:850;box-shadow:0 2px 9px rgba(113,108,244,.23)}.day.selected-manual::after,.day.selected-auto::after{content:"";width:3px;height:3px;background:currentColor;opacity:.6;border-radius:100%;position:absolute;bottom:3px}.day[aria-pressed="true"]:hover{filter:brightness(1.12)}.day.avoided:not(.holiday){box-shadow:inset 0 0 0 1px rgba(238,145,145,.35)}.day.blank{visibility:hidden}.day:active{transform:scale(.92)}.month-bottom{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:9px 5px}.month-kpi small{display:block;color:var(--faint);font-size:10px}.month-kpi strong{display:block;font-size:13px;margin-top:1px;letter-spacing:-.025em;white-space:nowrap}.month-income{grid-column:1/-1;color:var(--muted);background:var(--panel2);border-radius:8px;padding:8px 9px;display:flex;gap:6px;align-items:center;justify-content:space-between;font-size:11px}.month-income strong{color:var(--text)}
+  .mini-panel{border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:20px;min-width:0}.mini-panel h3{margin:0 0 6px;font-size:16px;letter-spacing:-.03em}.period{display:flex;align-items:start;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:11px 0}.period:first-child{border-top:0}.period strong{font-size:12px}.period small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.period-price{font-size:12px;font-weight:750;text-align:right;white-space:nowrap}.monthly-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}.monthly-table th{text-align:right;font-weight:600;color:var(--muted);padding:9px 4px;border-bottom:1px solid var(--line)}.monthly-table th:first-child{text-align:left}.monthly-table td{text-align:right;padding:9px 4px;border-bottom:1px solid var(--line);white-space:nowrap}.monthly-table td:first-child{text-align:left}.monthly-table tfoot td{font-weight:800;border-bottom:0}.sources{margin-top:19px;border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:18px 20px}.sources h3{margin:0 0 8px;font-size:15px}.sources p,.sources li{font-size:11px;color:var(--muted);line-height:1.6}.sources ul{padding-left:17px;margin:8px 0}.sources a{color:var(--accent)}
+  .toolbar{display:flex;gap:6px;flex-wrap:wrap}.toolbar button{padding:8px 10px}.toast{position:fixed;z-index:999;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:11px 17px;border-radius:11px;box-shadow:0 9px 35px #0006;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;font-size:12px;font-weight:650;text-align:center;max-width:calc(100vw - 40px)}.toast.visible{opacity:1;transform:translate(-50%,0)}.review{border-top:1px solid var(--line);margin-top:10px;padding-top:9px;color:var(--muted);font-size:11px}.stat-row{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid var(--line);border-radius:99px;background:var(--panel2);font-size:10px;padding:4px 7px;color:var(--muted)}
+  @media(max-width:1280px){.months{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:320px minmax(0,1fr)}.day{font-size:13px}}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.sidebar .preset-panel{grid-column:span 2}.top-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:650px){.vacation-container{padding:0 15px}.hero{padding:19px 0 24px}.hero p{font-size:13px}.eyebrow{font-size:10px}.page{padding-top:15px}.top-metrics{gap:8px;margin-bottom:16px}.metric{border-radius:13px;padding:14px 13px}.metric-label{font-size:11px}.metric-num{font-size:22px}.metric-note{font-size:10px}.layout{display:flex;flex-direction:column;gap:12px}.sidebar{display:contents}.sidebar>.panel{width:100%}.sidebar>.panel:nth-child(1){order:1}.sidebar>.panel:nth-child(2){order:2}.calendar-content{width:100%}.panel{padding:18px}.months{grid-template-columns:1fr;gap:12px}.month{padding:18px 17px}.day{font-size:14px;max-height:49px}.content-title{align-items:flex-start}.legend{gap:9px}.mini-panel{padding:16px}.block-date-grid{grid-template-columns:minmax(0,1fr)}#bonusesPanel .compact-grid{grid-template-columns:minmax(0,1fr)}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  #vacation-app .hero { padding: 22px 0; }
+  #vacation-app .hero-main { margin: 0; }
+  #vacation-app .hero h1 { font-size: clamp(30px, 4vw, 52px); letter-spacing: -.045em; }
+  #vacation-app .hero-actions .primary, #vacation-app .example-panel .primary { color: white; }
+  #vacationInputs, #vacationCalendar, #vacationPresets, #vacationIncome, #vacationFourDay { scroll-margin-top: 20px; }
+  .example-panel { margin-bottom: 18px; }
+  .example-panel .example-values { margin: 8px 0; overflow-x: auto; }
+  .example-panel .example-values .monthly-table td:first-child { white-space: normal; }
+  .example-panel .example-values .monthly-table th { line-height: 1.25; }
+  .example-panel .example-rest { margin: 8px 0; }
+  #vacation-app .vacation-article { color: var(--accent); }
+  .calendar-summary {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+  }
+  .calendar-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+  }
+  .calendar-summary-row strong { font-size: 13px; }
+  .calendar-status { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+  .calendar-status.warn { color: var(--warn); }
+  .calendar-details { margin: 0 0 10px; scroll-margin-top: 120px; }
+  .calendar-details + .legend { margin-top: 14px; }
+  .vacation-income { margin-top: 16px; }
+  .vacation-income .top-metrics { margin-bottom: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vacation-income .metric-num { white-space: normal; overflow-wrap: anywhere; }
+  .vacation-income #monthlyReport { overflow-x: auto; }
+  .alternative-card button { margin-top: 8px; }
+  .alternative-plans:empty, #rangeStatus:empty, #fourDayResult:empty { display: none; }
+  #vacationFourDay [hidden] { display: none; }
+  @media (max-width: 650px) {
+      #vacation-app .hero h1 { max-width: 22ch; font-size: clamp(28px, 7.5vw, 40px); }
+      .sidebar > .vacation-export { order: 5; }
+      .calendar-content { order: 3; }
+      .calendar-summary { padding: 8px; }
+  }
+  #vacation-app :is(.print-calendar-header, .print-calendar-periods, .print-calendar-footer) { display: none; }
+
+  @media print {
+      @page {
+          size: A4 portrait;
+          margin: 10mm;
+      }
+
+      html, body {
+          margin: 0;
+          background: white !important;
+          color-scheme: light;
+      }
+
+      #vacation-app {
+          color: #18202c;
+          font-family: Arial, sans-serif;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+      }
+
+      #vacation-app > :not(main),
+      #vacation-app main > :not(.layout),
+      #vacation-app .layout > :not(#vacationCalendar),
+      #vacationCalendar > :not(.print-calendar-header, .months, .print-calendar-periods, .print-calendar-footer),
+      #vacation-app :is(.month-tag, .month-overview, .month-bottom) {
+          display: none;
+      }
+
+      #vacation-app main { padding: 0; }
+      #vacation-app .layout { display: block; }
+      #vacationCalendar {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          min-height: 275mm;
+          --print-day-height: 6.2mm;
+          --print-day-font: 10pt;
+          --print-period-columns: 3;
+      }
+
+      #vacationCalendar[data-print-density="compact"] {
+          --print-day-height: 5.1mm;
+          --print-day-font: 9pt;
+          --print-period-columns: 4;
+      }
+
+      #vacationCalendar[data-print-density="dense"] {
+          --print-day-height: 3.7mm;
+          --print-day-font: 8pt;
+          --print-period-columns: 6;
+      }
+
+      #vacation-app #vacationCalendar[data-print-density="dense"] .months {
+          row-gap: 2mm;
+      }
+
+      #vacation-app .print-calendar-header {
+          display: block;
+          margin-bottom: 5mm;
+      }
+
+      #vacation-app .print-calendar-heading {
+          margin: 0;
+          padding-bottom: 3mm;
+          border-bottom: 0.35mm solid #18202c;
+          color: #18202c;
+          font-size: 30pt;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.3pt;
+          text-align: center;
+      }
+
+      #vacation-app .print-calendar-footer {
+          display: block;
+          margin: auto 0 0;
+          padding-top: 3mm;
+          text-align: right;
+          font-size: 8pt;
+          line-height: 1.2;
+      }
+
+      #vacation-app .print-calendar-footer a {
+          color: #424e5e;
+          text-decoration: none;
+      }
+
+      #vacation-app .print-calendar-periods:not([hidden]) {
+          display: block;
+          margin-top: 3mm;
+          break-inside: avoid;
+      }
+
+      #vacation-app .print-calendar-periods h2 {
+          margin: 0 0 1mm;
+          color: #18202c;
+          font-size: 11pt;
+          line-height: 1.1;
+      }
+
+      #vacation-app .print-calendar-periods ul {
+          display: grid;
+          grid-template-columns: repeat(var(--print-period-columns), minmax(0, 1fr));
+          gap: 0.4mm 2mm;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          color: #283950;
+          font-size: 8pt;
+          line-height: 1.1;
+      }
+
+      #vacation-app .print-calendar-periods li { white-space: nowrap; }
+
+      #vacation-app .print-calendar-legend {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 2mm 5mm;
+          margin-top: 3mm;
+          font-size: 9pt;
+      }
+
+      #vacation-app .print-calendar-legend > span {
+          display: inline-flex;
+          align-items: center;
+          gap: 1mm;
+      }
+
+      #vacation-app .months {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 3mm;
+      }
+
+      #vacation-app .month {
+          padding: 2.4mm;
+          border: 0.25mm solid #adb6c4;
+          border-radius: 2mm;
+          background: white;
+          box-shadow: none;
+          break-inside: avoid;
+      }
+
+      #vacation-app .month h3 {
+          margin: 0 0 1.5mm;
+          color: #18202c;
+          font-size: 12pt;
+          line-height: 1.15;
+      }
+
+      #vacation-app :is(.weekdays, .days) { gap: 0.5mm; }
+      #vacation-app .weekdays { margin-bottom: 0.5mm; }
+      #vacation-app .weekdays span {
+          padding: 0.6mm 0;
+          color: #424e5e;
+          font-size: 8pt;
+          line-height: 1;
+      }
+
+      #vacation-app .day {
+          box-sizing: border-box;
+          height: var(--print-day-height);
+          max-height: none;
+          aspect-ratio: auto;
+          padding: 0;
+          border: 0.25mm solid transparent;
+          border-radius: 1mm;
+          background: white;
+          box-shadow: none;
+          color: #18202c;
+          font-size: var(--print-day-font);
+          font-weight: 400;
+          line-height: 1;
+          transform: none;
+      }
+
+      #vacation-app .print-calendar-legend .day {
+          width: 6.2mm;
+          height: 6.2mm;
+          flex: none;
+          font-size: 10pt;
+      }
+
+      #vacation-app .day::before,
+      #vacation-app .day::after { content: none; }
+
+      #vacation-app .day.off:not(.holiday) {
+          color: #3d4959;
+          text-decoration: underline;
+          text-underline-offset: 1.5pt;
+      }
+
+      #vacation-app .day.holiday {
+          background: #fcebea;
+          color: #8b202c;
+          font-weight: 700;
+      }
+
+      #vacation-app .day.holiday::after {
+          content: '*';
+          top: 0.3mm;
+          right: 0.45mm;
+          bottom: auto;
+          width: auto;
+          height: auto;
+          background: none;
+          color: inherit;
+          font-size: 7pt;
+      }
+
+      #vacation-app .day.selected-manual {
+          border: 0.45mm solid #15725a;
+          background: #daf3e9;
+          color: #164738;
+          font-weight: 700;
+      }
+
+      #vacation-app .day.selected-auto {
+          border: 0.45mm dashed #4b47a0;
+          background: #eeeafd;
+          color: #34317c;
+          font-weight: 700;
+      }
+  }
+  </style>
+    </head>
+    <body>
+        <Header />
+        <div id="vacation-app">
+<header class="hero">
+  <div class="vacation-container">
+    <div class="hero-main">
+      <div>
+        <div class="eyebrow">Россия · пятидневная рабочая неделя</div>
+        <h1>Калькулятор отпуска <em>2027</em></h1>
+        <p>Выберите даты и узнайте, сколько дней получится отдохнуть и как изменится доход.</p>
+        <div class="actions-inline hero-actions">
+          <a class="button primary" href="#vacationCalendar">Выбрать даты</a>
+          <a class="button" href="#vacationPresets">Подобрать отпуск</a>
+          <a class="button vacation-article" href="/blog/когда-выгодно-брать-отпуск-в-2027-году/">Когда выгодно брать отпуск</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="vacation-container page">
+  <section class="panel example-panel" id="vacationExample" aria-labelledby="exampleTitle" hidden>
+    <h2 id="exampleTitle"></h2>
+    <p class="help" id="exampleIntro"></p>
+    <p class="example-rest" id="exampleRest" hidden></p>
+    <div class="example-values" id="exampleValues"></div>
+    <div class="actions-inline">
+      <a class="button primary" href="/tools/vacation-2027/#vacationInputs">Перейти к своему плану</a>
+    </div>
+  </section>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Настройки расчёта">
+      <section class="panel" id="vacationInputs" tabindex="-1">
+        <h2>Ваши условия</h2><p class="help">Расчёт для фиксированного оклада и пятидневной рабочей недели.</p>
+        <div class="field"><label for="salary">Оклад в месяц до НДФЛ</label><div class="control"><input id="salary" type="number" min="0" max="1000000000" step="1000" inputmode="numeric" value="300000"><small>₽</small></div></div>
+        <div class="field"><label for="budget">Сколько дней отпуска запланировать</label><div class="control"><input id="budget" type="number" min="0" max="120" step="1" inputmode="numeric" value="28"><small>дн.</small></div></div>
+        <details class="more-settings" id="bonusesPanel">
+          <summary>Премии и бонусы</summary>
+          <div class="more-settings-content">
+            <div class="field">
+              <label for="history">Средняя премия за месяц в 2026 году</label>
+              <div class="control"><input id="history" type="number" min="0" max="100000000" step="1000" inputmode="numeric" value="0"><small>₽</small></div>
+            </div>
+            <p class="footnote">Учитывается в среднем заработке в начале 2027 года. Все суммы указывайте до НДФЛ.</p>
+            <hr class="divider">
+            <div class="setting-label">Премии в 2027 году</div>
+            <div id="recurringRules"></div>
+            <div id="oneoffRules"></div>
+            <div class="actions-inline">
+              <button class="small-btn" type="button" id="addRecurring">Добавить регулярную</button>
+              <button class="small-btn" type="button" id="addOneoff">Добавить разовую</button>
+            </div>
+          </div>
+        </details>
+        <hr class="divider">
+        <div class="progresslabel"><b>Распределено дней</b><strong id="budgetText">0 / 28</strong></div><div class="progressline"><div class="progressfill" id="progressFill"></div></div><div class="stat-row" id="selectionStats"></div><div class="hint-state" id="legalHint" aria-live="polite">Выберите даты или используйте пресет.</div>
+      </section>
+      <section class="panel preset-panel" id="vacationPresets" tabindex="-1">
+        <h2>Подобрать отпуск</h2><p class="help">Выберите стратегию. Ручные даты сохранятся.</p>
+        <div class="plan-preferences">
+          <h3>Когда хочется отдыхать?</h3>
+          <p class="help">Общий приоритет для всех трёх пресетов. Его можно менять и подбирать заново.</p>
+          <div class="pref-tabs" id="prefTabs" aria-label="Распределение отпуска">
+            <button type="button" class="pref-choice" data-pref="summer" aria-pressed="false">☀️ Больше летом</button>
+            <button type="button" class="pref-choice" data-pref="spread" aria-pressed="false">🗓️ Равномерно</button>
+            <button type="button" class="pref-choice" data-pref="holidays" aria-pressed="false">🎉 К праздникам</button>
+            <button type="button" class="pref-choice" data-pref="any" aria-pressed="false">✦ Без приоритета</button>
+          </div>
+          <p class="restriction-note" id="prefDescription"></p>
+        </div>
+        <hr class="divider">
+        <div class="setting-label">Что важнее при выборе дат?</div>
+        <button type="button" class="preset" data-preset="rest"><span class="emoji">🌴</span><span><b>Максимум отдыха</b><small>Больше дней отдыха при заданных ограничениях</small></span></button>
+        <button type="button" class="preset" data-preset="money"><span class="emoji">💸</span><span><b>Больше денег</b><small>Приоритет расчётного дохода за год</small></span></button>
+        <button type="button" class="preset" data-preset="balanced"><span class="emoji">⚖️</span><span><b>Сбалансированный</b><small>Хорошие периоды отдыха без лишних денежных потерь</small></span></button>
+        <p class="restriction-note" id="activeRules"></p>
+        <label class="toggleline"><input type="checkbox" id="past14"><span>Обязательная 14-дневная часть уже использована в этом рабочем году</span></label>
+        <div class="actions-inline">
+          <button type="button" class="button full" id="compareAlternatives">Сравнить варианты</button>
+        </div>
+        <div id="alternativePlans" class="alternative-plans" aria-live="polite"></div>
+        <details class="more-settings">
+          <summary>Больше настроек</summary>
+          <div class="more-settings-content">
+            <div class="rule-controls">
+              <label for="minPart"><span class="tiny-label">Минимум дней в части</span><input id="minPart" type="number" min="1" max="120" step="1" inputmode="numeric"></label>
+              <div role="group" aria-labelledby="partsLabel">
+                <span class="setting-label" id="partsLabel">Количество частей отпуска</span>
+                <div class="block-date-grid">
+                  <label for="minParts"><span class="tiny-label">От</span><input id="minParts" type="number" min="1" max="20" step="1" inputmode="numeric"></label>
+                  <label for="maxParts"><span class="tiny-label">До</span><input id="maxParts" type="number" min="1" max="20" step="1" inputmode="numeric"></label>
+                </div>
+              </div>
+              <label for="minGap"><span class="tiny-label">Минимум дней между периодами отдыха</span></label>
+              <div class="inline-control">
+                <input id="minGap" type="number" min="0" max="365" step="1" inputmode="numeric">
+                <select id="gapUnit" aria-label="Какие дни считать"><option value="calendar">Календарные</option><option value="working">Рабочие</option></select>
+              </div>
+              <label for="maxRestDays"><span class="tiny-label">Максимум дней отдыха подряд</span><input id="maxRestDays" type="number" min="1" max="365" step="1" inputmode="numeric"></label>
+            </div>
+            <p class="help">Дни отдыха включают отпуск и примыкающие выходные. Лимит можно превысить при ручном выборе или в периоде с обязательной 14-дневной частью.</p>
+            <details class="more-settings">
+              <summary>Месяцы</summary>
+              <div class="more-settings-content rule-controls">
+                <p class="help">Выберите одно правило для каждого месяца. Исключение действует только при автоподборе.</p>
+                <div id="monthRules" class="block-date-grid settings-choice-grid"></div>
+              </div>
+            </details>
+            <details class="more-settings">
+              <summary>Исключить конкретные даты</summary>
+              <div class="more-settings-content">
+                <div class="block-date-grid settings-choice-grid">
+                  <label for="blockFrom"><span class="tiny-label">С</span><input id="blockFrom" type="date" min="2027-01-01" max="2027-12-31"></label>
+                  <label for="blockTo"><span class="tiny-label">По</span><input id="blockTo" type="date" min="2027-01-01" max="2027-12-31"></label>
+                </div>
+                <div class="actions-inline"><button class="button small" type="button" id="addBlocked">Исключить период</button></div>
+                <div id="blockedRanges" class="blocked-list" aria-live="polite"></div>
+              </div>
+            </details>
+            <div id="clearBlockedAction" hidden>
+              <div class="actions-inline"><button class="small-btn" type="button" id="clearBlocked">Снять все исключения дат и месяцев</button></div>
+            </div>
+            <details class="more-settings" id="workRules">
+              <summary>Рабочий год и выходные</summary>
+              <div class="more-settings-content rule-controls">
+                <label for="workYearStart"><span class="tiny-label">Начало рабочего года</span><input id="workYearStart" type="date" min="2026-01-01" max="2027-12-31"></label>
+                <label for="weekendPolicy"><span class="tiny-label">Части отпуска без выходных</span><select id="weekendPolicy"><option value="allow">Разрешены</option><option value="discourage">Нежелательны</option><option value="require">Запрещены</option></select></label>
+                <label for="weekendRule"><span class="tiny-label">Дополнительное требование к части</span><select id="weekendRule"><option value="any">Без требований</option><option value="pair">Хотя бы одна пара суббота и воскресенье</option><option value="week">Полная неделя с понедельника</option><option value="friday">Не заканчивать в пятницу</option><option value="custom">Минимум выходных дней</option></select></label>
+                <label for="minWeekendDays" id="weekendMinimum" hidden><span class="tiny-label">Сколько выходных включить в часть</span><input id="minWeekendDays" type="number" min="0" max="14" step="1" inputmode="numeric"></label>
+              </div>
+            </details>
+          </div>
+        </details>
+        <details class="more-settings" id="vacationFourDay">
+          <summary>Четырёхдневная рабочая неделя</summary>
+          <form class="more-settings-content rule-controls" id="fourDayForm">
+            <p class="help">
+              Берите один рабочий день отпуска в неделю. Праздники и перенесённые
+              выходные пропускаем. Подбор заменит автодаты и сохранит ручные.
+            </p>
+            <label for="fourDayWeekday">
+              <span class="tiny-label">Какой день брать в отпуск</span>
+              <select id="fourDayWeekday">
+                <option value="monday">Понедельник</option>
+                <option value="wednesday">Среда</option>
+                <option value="friday" selected>Пятница</option>
+              </select>
+            </label>
+            <div class="block-date-grid">
+              <label for="fourDayFrom"><span class="tiny-label">Первый месяц</span><select id="fourDayFrom"></select></label>
+              <label for="fourDayTo"><span class="tiny-label">Последний месяц</span><select id="fourDayTo"></select></label>
+            </div>
+            <p class="help">
+              Здесь действуют бюджет и исключения дат. Настройки длины и числа
+              частей, выходных и промежутков относятся к обычному подбору.
+              Согласуйте деление отпуска с работодателем и предусмотрите одну
+              часть не короче 14 календарных дней.
+            </p>
+            <div class="actions-inline">
+              <button class="button" id="runFourDay" type="submit">Рассчитать четырёхдневку</button>
+              <button class="small-btn" id="removeFourDay" type="button" hidden>Убрать четырёхдневку</button>
+            </div>
+            <p id="fourDayResult" class="hint-state" role="status"></p>
+            <div id="fourDayLinks" class="actions-inline" hidden>
+              <a class="button small" href="#vacationCalendar">К выбранным датам</a>
+              <a class="button small" href="#vacationIncome">К доходу за год</a>
+            </div>
+            <div id="fourDayExample" class="actions-inline" hidden>
+              <a class="button small" href="/tools/vacation-2027/#vacationInputs">Перейти к своему плану</a>
+            </div>
+          </form>
+        </details>
+        <div class="actions-inline"><button class="button ghost full" id="clearSelection" type="button">↺ Сбросить все отпускные дни</button></div>
+        <p class="footnote">Подбор старается распределить как можно больше дней в рамках правил. Суммы ориентировочные.</p>
+      </section>
+      <section class="panel vacation-export">
+        <h2>Сохранить и поделиться</h2><p class="help" id="storageHelp">Настройки и выбранные дни сохраняются в браузере автоматически.</p>
+        <div class="actions-inline"><button type="button" class="button primary" id="share">↗ Ссылка на план</button><button type="button" class="button" id="ics">▦ В календарь (.ics)</button><button type="button" class="button" id="csv">↓ CSV</button><button type="button" class="button" id="print">⎙ Печать</button></div>
+        <p class="footnote">Ссылка с данными заработка подходит для личного использования. Не публикуйте её, если не хотите раскрывать размер зарплаты. Для работающей ссылки разместите HTML на сайте.</p>
+      </section>
+    </aside>
+    <section aria-label="Календарь и отчёт" class="calendar-content" id="vacationCalendar" tabindex="-1">
+      <div class="print-calendar-header">
+        <h1 class="print-calendar-heading">Календарь отдыха 2027</h1>
+        <div class="print-calendar-legend" aria-label="Условные обозначения">
+          <span><span class="day" aria-hidden="true">1</span>Рабочий</span>
+          <span><span class="day off" aria-hidden="true">1</span>Выходной</span>
+          <span><span class="day holiday" aria-hidden="true">1</span>Праздник</span>
+          <span><span class="day selected-manual" aria-hidden="true">1</span>Ручной выбор</span>
+          <span><span class="day selected-auto" aria-hidden="true">1</span>Автоподбор</span>
+        </div>
+      </div>
+      <div class="content-title">
+        <div><h2>Производственный календарь</h2><div class="caption">Нажмите на день, чтобы отметить его. Обычные выходные тоже расходуют бюджет, если их выбрать.</div></div>
+      </div>
+      <div class="calendar-summary">
+        <div class="calendar-summary-row">
+          <strong id="planSummaryText" aria-live="polite">Использовано 0 из 28 дн.</strong>
+          <div class="toolbar">
+            <button type="button" class="small-btn" id="showPeriods" aria-controls="periodList">Периоды</button>
+            <a class="button small" href="#vacationIncome">Доход</a>
+          </div>
+        </div>
+        <p id="calendarStatus" class="calendar-status" role="status" hidden></p>
+      </div>
+      <details class="more-settings calendar-details" id="periodList">
+        <summary>Периоды отдыха</summary>
+        <div class="more-settings-content">
+          <p class="help">Включают отпускные дни и примыкающие выходные и праздники.</p>
+          <div id="periods"><p class="help">Пока отпускные дни не выбраны.</p></div>
+        </div>
+      </details>
+      <details class="more-settings calendar-details">
+        <summary>Выбрать диапазон</summary>
+        <form class="more-settings-content" id="rangeForm">
+          <div class="block-date-grid">
+            <label><span class="tiny-label">Начало отпуска</span><input id="rangeFrom" type="date" min="2027-01-01" max="2027-12-31" required></label>
+            <label><span class="tiny-label">Конец отпуска</span><input id="rangeTo" type="date" min="2027-01-01" max="2027-12-31" required></label>
+          </div>
+          <p class="help">Выходные войдут в отпуск. Праздничные дни пропустим.</p>
+          <div><button class="button" type="submit">Добавить даты вручную</button></div>
+          <p id="rangeStatus" class="restriction-note" role="status"></p>
+        </form>
+      </details>
+      <div class="legend"><span><i class="dot work"></i>Рабочий</span><span><i class="dot off"></i>Выходной</span><span><i class="dot holiday"></i>Праздник</span><span><i class="dot vac"></i>Ваш отпуск</span><span><i class="dot suggest"></i>Подобран</span><span><i class="dot blocked"></i>Не предлагать</span><span>· сокращённый</span></div>
+      <div id="months" class="months"></div>
+      <section class="print-calendar-periods" id="printRestPeriods" aria-labelledby="printRestTitle" hidden>
+        <h2 id="printRestTitle">Периоды отдыха</h2>
+        <ul id="printRestList"></ul>
+      </section>
+      <p class="print-calendar-footer"><a href="https://t.me/frontend_lead_mentor">Telegram @frontend_lead_mentor</a></p>
+      <section class="mini-panel vacation-income" id="vacationIncome" tabindex="-1">
+        <div class="content-title">
+          <div><h2>Доход и отпускные</h2><p class="help">Оценка по выбранным датам. Суммы распределены по месяцам начисления.</p></div>
+          <button type="button" class="small-btn" id="copySummary">Скопировать итоги</button>
+        </div>
+        <section class="top-metrics" aria-label="Годовые итоги">
+    <div class="metric"><div class="metric-label">↗ Гросс за год · без отпуска</div><div class="metric-num" id="grossYear">—</div><div class="metric-note" id="grossNote">Оклад и все запланированные премии</div></div>
+    <div class="metric"><div class="metric-label">◎ На руки · без отпуска</div><div class="metric-num" id="netYear">—</div><div class="metric-note">После прогрессивного НДФЛ</div></div>
+    <div class="metric highlight"><div class="metric-label">✳ На руки · с отпуском</div><div class="metric-num" id="leaveNetYear">—</div><div class="metric-note" id="leaveNetNote">С учётом выбранных дней</div></div>
+    <div class="metric"><div class="metric-label">≈ Разница в доходе</div><div class="metric-num" id="difference">—</div><div class="metric-note">По сравнению с годом без отпуска</div></div>
+  </section>
+        <details class="more-settings">
+          <summary>Доход по месяцам</summary>
+          <div class="more-settings-content" id="monthlyReport"></div>
+        </details>
+      </section>
+      <section class="sources"><h3>Как считаем и что важно знать</h3>
+        <ul>
+          <li><b>Рабочий день:</b> оклад / количество рабочих дней месяца. <b>Отпускной:</b> средний дневной заработок за предыдущие 12 календарных месяцев, ориентир — 29,3 дня за полный месяц.</li>
+          <li><b>Праздники:</b> не расходуют дни отпуска; обычные выходные внутри отпуска расходуют. Рабочая суббота 20 февраля, перенесённые выходные 22 февраля, 5 ноября и 31 декабря учтены.</li>
+          <li><b>Не менее 14 дней подряд:</b> одна часть ежегодного отпуска должна быть не короче 14 календарных отпускных дней. Остальные части — по соглашению с работодателем. Отпуск только по выходным не рекомендуем.</li>
+          <li><b>НДФЛ:</b> 13% до 2,4 млн ₽ годовой налоговой базы, затем 15%, 18%, 20% и 22% по соответствующим ступеням. Налог считается нарастающим итогом с начала года.</li>
+          <li><b>Это оценка:</b> не учитываются вычеты, районные/особые ставки, иные доходы, больничные, отпускные и премии за прошлые периоды, повышенный оклад в прошлом, неполный год работы, отпуск за пределами 2027 года и индивидуальные правила расчёта премий. Даты фактической выплаты могут отличаться; отпускные перечисляют заранее. Премии 2027 года не уменьшаются при отпуске в этой модели.</li>
+          <li><b>Настройки подбора:</b> исключённые месяцы и периоды запрещают только автоматический выбор. Вручную можно выбрать любую непраздничную дату. Равномерное распределение и сезонные приоритеты — рекомендации, а не строгая гарантия.</li>
+          <li><b>Регион:</b> федеральные праздники РФ. Региональные дополнительные праздники, графики смен и шестидневка не включены.</li>
+        </ul>
+        <p>Правовые основания: <a href="https://www.consultant.ru/law/ref/calendar/proizvodstvennye/2027/" target="_blank" rel="noopener">производственный календарь 2027</a>, <a href="https://base.garant.ru/414931980/" target="_blank" rel="noopener">Постановление № 1187</a>, <a href="https://www.consultant.ru/document/cons_doc_LAW_34683/1ea2cd88521106bc484f44be9e24fa81034d13e5/" target="_blank" rel="noopener">ст. 120 ТК РФ</a>, <a href="https://base.garant.ru/411933396/" target="_blank" rel="noopener">Постановление № 540</a>, <a href="https://www.nalog.gov.ru/nu/" target="_blank" rel="noopener">ФНС: ставки НДФЛ</a>.</p>
+      </section>
+    </section>
+  </div>
+</main>
+<div role="status" aria-live="polite" id="toast" class="toast"></div>
+</div>
+        <Footer />
+        <script>
+import { collectRestPeriods, optimizeIntervals } from '../../lib/vacation-optimizer.js';
+import { createVacationPlanner } from '../../lib/vacation-plan.js';
+(()=>{'use strict';
+const YEAR=2027, MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],SHORT=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'],WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+const HOLIDAYS={'01-01':'Новый год','01-02':'Новогодние каникулы','01-03':'Новогодние каникулы','01-04':'Новогодние каникулы','01-05':'Новогодние каникулы','01-06':'Новогодние каникулы','01-07':'Рождество Христово','01-08':'Новогодние каникулы','02-23':'День защитника Отечества','03-08':'Международный женский день','05-01':'Праздник Весны и Труда','05-09':'День Победы','06-12':'День России','11-04':'День народного единства'};
+const TRANSFERS={'02-22':'Выходной перенесён с 20 февраля','05-03':'Перенос выходного с 1 мая','05-10':'Перенос выходного с 9 мая','06-14':'Перенос выходного с 12 июня','11-05':'Выходной перенесён со 2 января','12-31':'Выходной перенесён с 3 января'};
+const SHORTENED=new Set(['02-20','04-30','06-11','11-03']);const WORK_SATURDAYS=new Set(['02-20']);
+const fullDate = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+const pad=n=>String(n).padStart(2,'0'),toKey=(m,d)=>`${YEAR}-${pad(m+1)}-${pad(d)}`,shortKey=key=>key.slice(5),safeNum=(v,max=1e10)=>Math.max(0,Math.min(max,Number(v)||0)),dateObj=(m,d)=>new Date(Date.UTC(YEAR,m,d)),fmtMoney=(v,opts={})=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:opts.decimals??0,minimumFractionDigits:opts.decimals??0}).format(Math.round(v*100)/100)+' ₽',fmtPlain=v=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(Math.round(v)),numdays=m=>new Date(Date.UTC(YEAR,m+1,0)).getUTCDate();
+const days=[];const byKey=new Map();const monthDays=Array.from({length:12},()=>[]);const workCounts=Array(12).fill(0),restCounts=Array(12).fill(0);
+for(let m=0;m<12;m++)for(let d=1;d<=numdays(m);d++){let key=toKey(m,d),short=shortKey(key),date=dateObj(m,d),dow=date.getUTCDay(),holiday=!!HOLIDAYS[short],weekend=(dow===0||dow===6),transferred=!!TRANSFERS[short],off=holiday||transferred||(weekend&&!WORK_SATURDAYS.has(short)),work=!off;let x={key,short,m,d,dow,formatted:fullDate.format(date),holiday,isStatutoryHoliday:holiday,isTransferredDayOff:transferred,isWeekend:weekend,isWorkingDay:work,work,off,label:HOLIDAYS[short]||TRANSFERS[short]||(work?'Рабочий день':'Выходной'),shortened:SHORTENED.has(short),i:days.length};days.push(x);monthDays[m].push(x);byKey.set(key,x);(work?workCounts:restCounts)[m]++;}
+if(workCounts.reduce((a,b)=>a+b,0)!==247)console.error('Проверьте рабочие дни',workCounts);
+const id=()=>Math.floor(Math.random()*1e9).toString(36),DEFAULT=()=>({salary:300000,budget:28,history:0,past14:false,workYearStart:'2027-01-01',recurring:[],oneoff:[],manual:[],auto:[],avoided:[],fourDay:null,theme:'auto',preference:'holidays',blockedMonths:[],blockedRanges:[],minGap:21,gapUnit:'calendar',gapConfigured:false,maxRestDays:10,minPart:5,minParts:1,maxParts:6,weekendPolicy:'allow',weekendRule:'any',minWeekendDays:0,preferredMonths:[],avoidedMonths:[]}),STORE='vakation27:v3';
+const examplePlans = {
+    'january-pay': { title: '11–14 января', month: 0, from: 11, to: 14 },
+    'january-long': { title: '11–15 января', month: 0, from: 11, to: 15 },
+    'april-pay': { title: '5–8 апреля', month: 3, from: 5, to: 8 },
+    'may-holidays': { title: '4–7 мая', month: 4, from: 4, to: 7 },
+    'may-full': { title: '4–10 мая', month: 4, from: 4, to: 10 },
+    'february-holidays': { title: '24–26 февраля', month: 1, from: 24, to: 26 },
+    'february-long': { title: '8–21 февраля', month: 1, from: 8, to: 21 },
+    'june-holidays': { title: '15–18 июня', month: 5, from: 15, to: 18 },
+    'november-holidays': { title: '1–3 ноября', month: 10, from: 1, to: 3 },
+};
+const fourDayWeekdays = { monday: 1, wednesday: 3, friday: 5 };
+const defaultFourDay = { weekday: 'friday', from: 6, to: 8 };
+function validFourDay(value) {
+    return value && Object.hasOwn(fourDayWeekdays, value.weekday) &&
+        Number.isInteger(value.from) && Number.isInteger(value.to) &&
+        value.from >= 1 && value.from <= value.to && value.to <= 12;
+}
+const exampleComparison = ['january-pay', 'april-pay', 'may-holidays'];
+const params = new URLSearchParams(location.search);
+const exampleKey = params.get('example');
+const hasSharedPlan = location.hash.startsWith('#plan=');
+const showExampleComparison = !hasSharedPlan && exampleKey === 'compare-pay';
+const examplePlan = !hasSharedPlan && Object.hasOwn(examplePlans, exampleKey)
+    ? examplePlans[exampleKey]
+    : null;
+const inExample = showExampleComparison || Boolean(examplePlan);
+const linkedFourDay = {
+    weekday: params.get('week'), from: Number(params.get('from')), to: Number(params.get('to')),
+};
+const inFourDayExample = !hasSharedPlan && !inExample && validFourDay(linkedFourDay);
+const exampleDates = ({ month, from, to }) => monthDays[month]
+    .slice(from - 1, to)
+    .filter((day) => !day.holiday)
+    .map((day) => day.key);
+
+let s = DEFAULT();
+if (inExample) {
+    const manual = examplePlan ? exampleDates(examplePlan) : [];
+    s = { ...s, budget: manual.length || 4, past14: true, minPart: 1, manual };
+} else if (inFourDayExample) {
+    s.fourDay = linkedFourDay;
+} else {
+    try{let raw=localStorage.getItem(STORE);if(raw)s={...s,...JSON.parse(raw)};}catch(e){}
+    try{if(hasSharedPlan){let raw=decodeURIComponent(escape(atob(location.hash.slice(6))));s={...DEFAULT(),...JSON.parse(raw)};}}catch(e){console.warn('Не удалось открыть план из ссылки',e)}
+}
+const normalize=()=>{s.salary=safeNum(s.salary,1e9);s.budget=Math.trunc(safeNum(s.budget,120));s.history=safeNum(s.history,1e8);for(let prop of ['manual','auto','avoided'])s[prop]=[...new Set(Array.isArray(s[prop])?s[prop]:[])].filter(k=>byKey.has(k)&&!byKey.get(k).holiday);s.recurring=Array.isArray(s.recurring)?s.recurring.slice(0,80):[];s.oneoff=Array.isArray(s.oneoff)?s.oneoff.slice(0,300):[];s.past14=!!s.past14;s.theme=['auto','light','dark'].includes(s.theme)?s.theme:'auto';
+ s.preference=['summer','spread','holidays','any'].includes(s.preference)?s.preference:'holidays';
+ s.minGap=Math.trunc(safeNum(s.minGap,365));s.gapUnit=['calendar','working'].includes(s.gapUnit)?s.gapUnit:'calendar';s.gapConfigured=!!s.gapConfigured;if(!s.gapConfigured){s.minGap=21;s.gapUnit='calendar';}s.maxRestDays=Math.trunc(Math.max(1,safeNum(s.maxRestDays,365)||10));s.minPart=Math.trunc(Math.max(1,safeNum(s.minPart,120)||5));s.minParts=Math.trunc(Math.max(1,safeNum(s.minParts,20)||1));s.maxParts=Math.trunc(Math.max(s.minParts,safeNum(s.maxParts,20)||6));s.weekendPolicy=['allow','discourage','require'].includes(s.weekendPolicy)?s.weekendPolicy:'allow';s.weekendRule=['any','pair','week','friday','custom'].includes(s.weekendRule)?s.weekendRule:'any';s.minWeekendDays=Math.trunc(safeNum(s.minWeekendDays,14));if(!validWorkYearStart(s.workYearStart))s.workYearStart='2027-01-01';for(let prop of ['preferredMonths','avoidedMonths'])s[prop]=[...new Set(Array.isArray(s[prop])?s[prop].map(Number):[])].filter(m=>Number.isInteger(m)&&m>=0&&m<12);
+ s.blockedMonths=[...new Set(Array.isArray(s.blockedMonths)?s.blockedMonths.map(Number):[])].filter(m=>Number.isInteger(m)&&m>=0&&m<12);
+ s.blockedRanges=(Array.isArray(s.blockedRanges)?s.blockedRanges:[]).filter(r=>r&&byKey.has(r.from)&&byKey.has(r.to)&&r.from<=r.to).slice(0,50).map(r=>({id:String(r.id||id()),from:r.from,to:r.to}));};normalize();
+s.fourDay = validFourDay(s.fourDay) ? s.fourDay : null;
+let data = null;
+let toastTimer;
+let renderPending = false;
+let plannerNotice = '';
+let plannerError = '';
+let alternativePlans = null;
+let fourDayResult = null;
+const planner = createVacationPlanner(days, humanDate);
+const el=id=>document.getElementById(id);
+function persist() {
+    if (inExample || inFourDayExample) return;
+    try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (error) {}
+}
+function validWorkYearStart(value) {
+    if (!/^202[67]-[0-9]{2}-[0-9]{2}$/.test(value) ||
+        value < '2026-01-01' || value > '2027-12-31') return false;
+    const date = new Date(value + 'T00:00:00Z');
+    return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+const selectedSet=()=>new Set([...s.manual,...s.auto]);
+const status=(k)=>s.manual.includes(k)?'manual':s.auto.includes(k)?'auto':'';
+const isBlocked=k=>{let d=byKey.get(k);return !!d&&(s.blockedMonths.includes(d.m)||s.blockedRanges.some(r=>r.from<=k&&k<=r.to));};
+const preferenceHelp={summer:'Отдаём приоритет июню, июлю и августу. Май и сентябрь — запасные варианты.',spread:'Стараемся распределить отпуск по кварталам, не разбивая обязательную непрерывную часть на 14 дней.',holidays:'Ищем мостики к официальным праздникам и переносам выходных.',any:'Никаких сезонных ограничений — только выбранная стратегия отдыха и денег.'};
+const monthRuleOptions = [
+    ['normal', 'Обычный'],
+    ['preferredMonths', 'Предпочитать'],
+    ['avoidedMonths', 'По возможности избегать'],
+    ['blockedMonths', 'Исключить'],
+];
+
+function monthRuleFor(index) {
+    if (s.blockedMonths.includes(index)) return 'blockedMonths';
+    const preferred = s.preferredMonths.includes(index);
+    const avoided = s.avoidedMonths.includes(index);
+    if (preferred === avoided) return 'normal';
+    return preferred ? 'preferredMonths' : 'avoidedMonths';
+}
+
+function renderRestrictions() {
+    el('prefTabs').querySelectorAll('[data-pref]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.pref === s.preference));
+    });
+    el('prefDescription').textContent = preferenceHelp[s.preference];
+    el('clearBlockedAction').hidden = !s.blockedMonths.length && !s.blockedRanges.length;
+    el('blockedRanges').innerHTML = s.blockedRanges.map((range) => {
+        const dates = `${humanDate(range.from)} — ${humanDate(range.to)}`;
+        return `<div class="blocked-item"><span>${dates}</span><button type="button" data-unblock="${escapeAttr(range.id)}" aria-label="Убрать исключение ${dates}">×</button></div>`;
+    }).join('');
+}
+
+function makeBonusPlan(){let b=Array.from({length:12},()=>[]);for(const r of s.recurring){let amount=safeNum(r.amount);if(!amount)continue;let f=r.freq||'monthly',step=({monthly:1,twice:1,thrice:1,quarterly:3,semi:6,annual:12})[f]||1,start=Math.max(1,Math.min(12,Number(r.start)||1)),dates=String(r.dates||'15').split(/[\s,;]+/).map(Number).filter(x=>x>=1&&x<=31).slice(0,10);if(!dates.length)dates=[15];for(let m=start-1;m<12;m+=step)for(const d of dates)b[m].push({day:Math.min(d,numdays(m)),amount,recurring:true});}
+  for(const r of s.oneoff){let m=Math.trunc(Number(r.month))-1;if(m<0||m>=12)continue;let amount=safeNum(r.amount);if(amount)b[m].push({day:Math.min(31,Math.max(1,Number(r.day)||15)),amount,recurring:false});}
+  return b;
+}
+const brackets=[[2400000,.13],[5000000,.15],[20000000,.18],[50000000,.20],[Infinity,.22]];
+function tax(total){let left=Math.max(0,total),prev=0,result=0;for(let [limit,rate] of brackets){let portion=Math.min(left,limit-prev);if(portion>0)result+=portion*rate;left-=portion;if(left<=0)break;prev=limit;}return Math.round(result);}
+const segmentsForSet = planner.partsFor;
+const periodRestRuns = (selection) => collectRestPeriods(days, selection);
+const has14 = (selection) => planner.has14(segmentsForSet(selection), s);
+
+function monthModel(selection = selectedSet(), bonuses = makeBonusPlan()) {
+    const periods = segmentsForSet(selection);
+    const startsByMonth = Array.from({ length: 12 }, () => []);
+    const dailyPay = new Map();
+    for (const part of periods) startsByMonth[part.items[0].m].push(part);
+
+    const previous = Array.from({ length: 12 }, () => ({
+        base: s.salary + s.history, den: 29.3,
+    }));
+    const months = [];
+    let cumBefore = 0;
+    let cumWith = 0;
+    let bonusTotal = 0;
+    for (let m = 0; m < 12; m++) {
+        const b = bonuses[m].reduce((sum, item) => sum + item.amount, 0);
+        bonusTotal += b;
+        const chosen = monthDays[m].filter((day) => selection.has(day.key));
+        const chosenWork = chosen.filter((day) => day.work).length;
+        const baseSalary = s.salary * (1 - chosenWork / workCounts[m]);
+        const rolling = previous.slice(-12);
+        const den = rolling.reduce((sum, month) => sum + month.den, 0);
+        const average = den > 0
+            ? rolling.reduce((sum, month) => sum + month.base, 0) / den
+            : s.salary / 29.3;
+        // Одна ставка на всю часть отпуска, даже если она переходит на следующий месяц.
+        for (const part of startsByMonth[m]) {
+            for (const day of part.items) dailyPay.set(day.key, average);
+        }
+        const vacationPay = chosen.reduce((sum, day) => sum + dailyPay.get(day.key), 0);
+        const withGross = baseSalary + b + vacationPay;
+        const baseline = s.salary + b;
+        const taxBefore = tax(cumBefore + baseline) - tax(cumBefore);
+        const taxWith = tax(cumWith + withGross) - tax(cumWith);
+        cumBefore += baseline;
+        cumWith += withGross;
+        months.push({
+            m, work: workCounts[m], off: restCounts[m], selected: chosen.length,
+            chosenWork, bonus: b, bonusEntries: bonuses[m], salary: baseSalary,
+            baseSalary: s.salary, average, vacationPay, baseline, withGross,
+            baselineNet: baseline - taxBefore, net: withGross - taxWith, taxWith,
+            taxBefore, workday: s.salary / workCounts[m],
+        });
+        previous.push({
+            base: baseSalary + b,
+            den: 29.3 * (numdays(m) - chosen.length) / numdays(m),
+        });
+    }
+    const grossYear = s.salary * 12 + bonusTotal;
+    const baseNet = grossYear - tax(grossYear);
+    const withYear = months.reduce((sum, month) => sum + month.withGross, 0);
+    const withNet = months.reduce((sum, month) => sum + month.net, 0);
+    return {
+        months, grossYear, bonusTotal, baseNet, withYear, withNet,
+        difference: withNet - baseNet, periods, runs: periodRestRuns(selection),
+        selected: selection, dailyPay,
+    };
+}
+function summary(){data=monthModel();}
+function setText(id,t){el(id).textContent=t;}
+function renderTotals(){setText('grossYear',fmtMoney(data.grossYear));setText('netYear',fmtMoney(data.baseNet));setText('leaveNetYear',fmtMoney(data.withNet));setText('grossNote',data.bonusTotal?'Включая премии: '+fmtMoney(data.bonusTotal):'Оклад за 12 месяцев · без премий');setText('leaveNetNote',`${data.selected.size} отпускных дн. · отпускные ${fmtMoney(data.months.reduce((a,x)=>a+x.vacationPay,0))}`);let diff=data.difference;el('difference').className='metric-num '+(diff>1?'plus':diff< -1?'minus':'');setText('difference',(diff>=0?'+':'−')+fmtMoney(Math.abs(diff)));}
+function renderStats() {
+    const used = data.selected.size;
+    const budget = s.budget;
+    const restDays = data.runs.reduce((sum, run) => sum + run.len, 0);
+    const remaining = Math.max(0, budget - used);
+    setText('budgetText', `${used} / ${budget}`);
+    const summaryText = `Использовано ${used} из ${budget} дн. · ${restDays} дн. отдыха`;
+    if (el('planSummaryText').textContent !== summaryText) setText('planSummaryText', summaryText);
+    el('progressFill').style.width = `${budget ? Math.min(100, 100 * used / budget) : 0}%`;
+    el('selectionStats').innerHTML =
+        `<span class="pill">Вручную: ${s.manual.length}</span>` +
+        `<span class="pill">Подобрано: ${s.auto.length}</span>` +
+        `<span class="pill">Осталось: ${remaining}</span>`;
+
+    const fourteen = has14(data.selected);
+    const legalStatus = s.past14 ? '14-дневная часть уже использована.'
+        : fourteen ? '14-дневная часть есть в плане.'
+        : budget ? 'Нужна непрерывная часть из 14 отпускных дней.' : 'Бюджет — 0 дней.';
+    setText('activeRules', `Между периодами: ${s.minGap} ${s.gapUnit === 'working' ? 'рабочих' : 'календарных'} дн. · Минимум в части: ${s.minPart} дн. ${legalStatus}`);
+    const issue = fourDayResult
+        ? fourDayBudgetError(fourDayResult)
+        : planner.manualProblem(s) || plannerError;
+    const weekendOnly = data.periods.some((part) => part.items.every((day) => day.off));
+    const messages = [issue || plannerNotice, legalStatus];
+    if (weekendOnly) messages.push('Есть отпускная часть только на выходных.');
+    if (remaining) messages.push(`Не распределено: ${remaining} дн.`);
+    const bypassed = s.manual.filter(isBlocked).length;
+    if (bypassed) messages.push(`Ручных дней в исключённых периодах: ${bypassed}.`);
+    const hint = el('legalHint');
+    const text = messages.filter(Boolean).join(' ');
+    if (hint.textContent !== text) hint.textContent = text;
+    hint.className = 'hint-state ' +
+        (issue || weekendOnly || (budget && !s.past14 && !fourteen) ? 'warn' : 'good');
+    const calendarStatus = el('calendarStatus');
+    const calendarMessage = issue || plannerNotice;
+    if (calendarStatus.textContent !== calendarMessage) calendarStatus.textContent = calendarMessage;
+    calendarStatus.hidden = !calendarMessage;
+    calendarStatus.classList.toggle('warn', Boolean(issue));
+}
+function renderMonths(){let bonusDates=Array.from({length:12},(_,m)=>new Set(data.months[m].bonusEntries.map(b=>b.day)));const html=MONTHS.map((name,m)=>{let month=monthDays[m],gap=(month[0].dow+6)%7,chosen=month.filter(d=>data.selected.has(d.key)).length,mm=data.months[m];let grid='<div class="days">'+Array.from({length:gap},()=>'<span class="day blank"></span>').join('')+month.map(d=>{let st=status(d.key),classList=['day',d.holiday?'holiday':d.off?'off':'',d.shortened?'short':'',bonusDates[m].has(d.d)?'bonusday':'',st?'selected-'+st:'',s.avoided.includes(d.key)?'avoided':'',isBlocked(d.key)?'blocked':''].filter(Boolean).join(' ');let title=`${d.formatted} — ${d.label}`+(d.shortened?' · сокращённый на 1 час':'')+(bonusDates[m].has(d.d)?' · премия':'')+(st?` · отпуск (${st==='manual'?'ручной':'пресет'})`:'')+(isBlocked(d.key)?' · не выбирать автоматически':'');return `<button type="button" class="${classList}" data-date="${d.key}" title="${escapeAttr(title)}" aria-label="${escapeAttr(title)}" aria-pressed="${st?'true':'false'}">${d.d}</button>`;}).join('')+'</div>';
+return `<section class="month${s.blockedMonths.includes(m)?' blocked-month':''}" aria-label="${name} 2027"><div class="month-head"><h3>${name}</h3><span class="month-tag">${chosen?chosen+' дн. отпуска':'2027'}</span></div><div class="month-overview">${mm.work} рабочих · ${mm.off} выходных и праздников</div><div class="weekdays">${WD.map(d=>`<span>${d}</span>`).join('')}</div>${grid}<div class="month-bottom"><div class="month-kpi"><small>Рабочий день · гросс</small><strong>${fmtMoney(mm.workday)}</strong></div><div class="month-kpi"><small>Отпускной день при старте в этом месяце</small><strong>${fmtMoney(mm.average)}</strong></div><div class="month-income"><span>На руки с отпуском</span><strong>${fmtMoney(mm.net)}</strong></div></div></section>`;}).join('');const calendar = el('months');
+    const focusedDate = document.activeElement?.dataset?.date;
+    calendar.innerHTML = html;
+    if (focusedDate && byKey.has(focusedDate)) {
+        calendar.querySelector(`[data-date="${focusedDate}"]`)?.focus({ preventScroll: true });
+    }
+}
+function renderPeriods(){if(!data.runs.length){el('periods').innerHTML='<p class="help">Пока отпускные дни не выбраны.</p>';return;}el('periods').innerHTML=data.runs.map((run,i)=>{const start=byKey.get(run.start).i,end=byKey.get(run.end).i,leaveDays=days.slice(start,end+1).filter(d=>data.selected.has(d.key)),parts=segmentsForSet(new Set(leaveDays.map(d=>d.key))),pay=leaveDays.reduce((sum,d)=>sum+data.dailyPay.get(d.key),0),dateRange=run.start===run.end?humanDate(run.start):`${humanDate(run.start)} — ${humanDate(run.end)}`,firstLeave=leaveDays[0],advance=new Date(Date.UTC(YEAR,firstLeave.m,firstLeave.d-4)),earliest=`${pad(advance.getUTCDate())}.${pad(advance.getUTCMonth()+1)}.${advance.getUTCFullYear()}`;return `<div class="period"><div><strong>${i+1}. ${dateRange}</strong><small>${leaveDays.length} отпускных дн. · ${run.len} дней отдыха${parts.length>1?` · ${parts.length} части отпуска`:''}</small><small>Отпускные — ориентир не позднее ${earliest}</small></div><div class="period-price">${fmtMoney(pay)}<small>гросс</small></div></div>`;}).join('');}
+function humanDate(key){let [y,m,d]=key.split('-').map(Number);return `${d} ${SHORT[m-1]}`;}
+function renderPrintPeriods() {
+    const formatDate = (key) => {
+        const [, month, day] = key.split('-');
+        return `${day}.${month}`;
+    };
+    const { runs } = data;
+    el('printRestPeriods').hidden = runs.length === 0;
+    el('vacationCalendar').dataset.printDensity = runs.length > 40
+        ? 'dense' : runs.length > 9 ? 'compact' : 'normal';
+    el('printRestList').innerHTML = runs.map(({ start, end, len }) => {
+        const dates = start === end ? formatDate(start) : `${formatDate(start)}–${formatDate(end)}`;
+        return `<li><strong>${dates}</strong> · ${len} дн.</li>`;
+    }).join('');
+}
+function renderMonthly() {
+    const salary = data.months.reduce((sum, month) => sum + month.salary, 0);
+    const vacationPay = data.months.reduce((sum, month) => sum + month.vacationPay, 0);
+    el('monthlyReport').innerHTML = `
+        <table class="monthly-table" aria-label="Доход по месяцам">
+            <thead><tr><th scope="col">Месяц</th><th scope="col">Отпуск</th>
+            <th scope="col">Зарплата до НДФЛ</th><th scope="col">Отпускные до НДФЛ</th>
+            <th scope="col">Премии до НДФЛ</th><th scope="col">На руки</th></tr></thead>
+            <tbody>${data.months.map((month) => `<tr><td>${MONTHS[month.m]}</td>
+                <td>${month.selected} дн.</td><td>${fmtPlain(month.salary)}</td>
+                <td>${fmtPlain(month.vacationPay)}</td><td>${fmtPlain(month.bonus)}</td>
+                <td><b>${fmtPlain(month.net)}</b></td></tr>`).join('')}</tbody>
+            <tfoot><tr><td>Год</td><td>${data.selected.size} дн.</td>
+            <td>${fmtMoney(salary)}</td><td>${fmtMoney(vacationPay)}</td>
+            <td>${fmtMoney(data.bonusTotal)}</td><td>${fmtMoney(data.withNet)}</td></tr></tfoot>
+        </table>`;
+}
+function renderExample() {
+    if (!inExample) return;
+
+    const rest = el('exampleRest');
+    rest.hidden = showExampleComparison || !data.runs.length;
+    if (!rest.hidden) {
+        rest.textContent = data.runs.map((run) => {
+            const start = byKey.get(run.start).formatted;
+            const end = byKey.get(run.end).formatted;
+            const dates = start === end ? start : `с ${start} по ${end}`;
+            return `${run.len} дн. отдыха ${dates} за ${run.leaves} отпускных дн.`;
+        }).join(' ');
+    }
+
+    const bonuses = showExampleComparison ? makeBonusPlan() : null;
+    const rows = showExampleComparison
+        ? exampleComparison.map((key) => {
+            const plan = examplePlans[key];
+            const { months } = monthModel(new Set(exampleDates(plan)), bonuses);
+            const label = `<a href="?example=${key}">${plan.title}</a>`;
+            return { label, month: months[plan.month] };
+        })
+        : data.months.filter((month) => month.selected).map((month) => ({
+            label: MONTHS[month.m], month,
+        }));
+
+    el('exampleValues').innerHTML = rows.length ? `
+        <table class="monthly-table" aria-label="Начисления до НДФЛ">
+            <thead><tr><th scope="col">${showExampleComparison ? 'Даты отпуска' : 'Месяц'}</th>
+            <th scope="col">Отпускные</th><th scope="col">Доход с отпуском</th>
+            <th scope="col">Разница с обычным месяцем</th></tr></thead>
+            <tbody>${rows.map(({ label, month }) => {
+                const difference = month.withGross - month.baseline;
+                const rounded = Math.round(difference);
+                const sign = rounded < 0 ? '−' : rounded > 0 ? '+' : '';
+                return `<tr><td>${label}</td><td>${fmtMoney(month.vacationPay)}</td>
+                    <td>${fmtMoney(month.withGross)}</td>
+                    <td>${sign}${fmtMoney(Math.abs(rounded))}</td></tr>`;
+            }).join('')}</tbody>
+        </table>` : '';
+}
+function escapeAttr(st){return String(st).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fourDayBudgetError(result) {
+    if (result.fits) return '';
+    if (s.manual.length > s.budget) {
+        return `Вручную выбрано ${s.manual.length} дн. при бюджете ${s.budget}. ` +
+            'Увеличьте бюджет или снимите выбор с лишних ручных дат.';
+    }
+    const needed = s.manual.length + result.requested;
+    return `На ручные даты и четырёхдневку нужно ${needed} дн. отпуска при бюджете ${s.budget}. ` +
+        'Выберите меньший период или увеличьте бюджет.';
+}
+
+function updateFourDayPlan() {
+    fourDayResult = null;
+    if (!s.fourDay) return;
+    const { weekday, from, to } = s.fourDay;
+    fourDayResult = planner.fourDayPlan(s, {
+        dow: fourDayWeekdays[weekday], from, to,
+    });
+    s.auto = fourDayResult.selected;
+}
+
+function showFourDayResult(message, warn = false) {
+    const result = el('fourDayResult');
+    if (result.textContent !== message) result.textContent = message;
+    result.classList.toggle('warn', warn);
+}
+
+function renderFourDay() {
+    const result = fourDayResult;
+    const hasDates = Boolean(result?.fits && (result.requested || result.existing.length));
+    el('fourDayLinks').hidden = !hasDates;
+    el('removeFourDay').hidden = !result;
+    if (!result) {
+        showFourDayResult('');
+        return;
+    }
+    if (!result.fits) {
+        showFourDayResult(fourDayBudgetError(result), true);
+        return;
+    }
+    const { from, to } = s.fourDay;
+    const range = from === to
+        ? MONTHS[from - 1]
+        : `${MONTHS[from - 1]}–${MONTHS[to - 1].toLowerCase()}`;
+    const existing = result.existing.length;
+    const messages = [`${range}. Отпускных дней по графику: ${result.requested + existing}.`];
+    if (existing) messages.push(`Из них уже выбрано вручную: ${existing}.`);
+    if (result.off) messages.push(`Нерабочих дат пропущено: ${result.off}.`);
+    if (result.excluded) messages.push(`Дат из исключений пропущено: ${result.excluded}.`);
+    if (hasDates) {
+        const baseline = monthModel(new Set(s.manual));
+        const periodNet = (model) => model.months.slice(from - 1, to)
+            .reduce((sum, month) => sum + month.net, 0);
+        const net = periodNet(data);
+        const formatChange = (value) => {
+            const rounded = Math.round(value);
+            const sign = rounded > 0 ? '+' : rounded < 0 ? '−' : '';
+            return sign + fmtMoney(Math.abs(rounded));
+        };
+        const baselineLabel = s.manual.length ? 'с ручным планом' : 'с расчётом без отпуска';
+        const periodChange = formatChange(net - periodNet(baseline));
+        const yearChange = formatChange(data.withNet - baseline.withNet);
+        messages.push(
+            `За этот период на руки ${fmtMoney(net)}. Разница ${baselineLabel} за период ${periodChange}, за год ${yearChange}.`,
+        );
+    }
+    const remaining = s.budget - data.selected.size;
+    const needsDays = hasDates && !s.past14 && !has14(data.selected) && remaining < 14;
+    if (needsDays) {
+        messages.push(`Остаток ${remaining} дн. Для обязательной части нужно оставить не менее 14 дн., если вы её ещё не использовали.`);
+    }
+    showFourDayResult(messages.join(' '), needsDays);
+}
+
+function renderAll() {
+    updateFourDayPlan();
+    summary();
+    renderTotals();
+    renderStats();
+    renderMonths();
+    renderPeriods();
+    renderPrintPeriods();
+    renderMonthly();
+    renderExample();
+    renderFourDay();
+    persist();
+}
+function scheduleRender(){if(renderPending)return;renderPending=true;requestAnimationFrame(()=>{renderPending=false;renderAll();});}
+function toast(message){let e=el('toast');e.textContent=message;e.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('visible'),3100);}
+function renderWeekendControls() {
+    const custom = s.weekendRule === 'custom';
+    el('weekendMinimum').hidden = !custom;
+    el('minWeekendDays').disabled = !custom;
+}
+
+function setControls() {
+    for (const id of ruleControlIds) el(id).value = s[id];
+    el('past14').checked = s.past14;
+    renderWeekendControls();
+    el('bonusesPanel').open = Boolean(s.history || s.recurring.length || s.oneoff.length);
+}
+function invalidateComparison() {
+    if (!alternativePlans) return;
+    alternativePlans = null;
+    el('alternativePlans').textContent = 'Условия изменились. Сравните варианты заново.';
+}
+
+function planChanged(recheckAuto = false) {
+    invalidateComparison();
+    plannerError = '';
+    plannerNotice = '';
+    if (recheckAuto && !s.fourDay) {
+        const previous = s.auto.length;
+        s.auto = planner.retainedAuto(s);
+        const removed = previous - s.auto.length;
+        if (removed) {
+            plannerNotice = `Убрано ${removed} автодн., которые больше не подходят под условия.`;
+        }
+    }
+    scheduleRender();
+}
+
+const numericLimits = {
+    salary: [0, 1e9], budget: [0, 120], history: [0, 1e8],
+    minGap: [0, 365], maxRestDays: [1, 365], minPart: [1, 120],
+    minParts: [1, 20], maxParts: [1, 20], minWeekendDays: [0, 14],
+};
+
+const ruleControlIds = [
+    ...Object.keys(numericLimits), 'gapUnit', 'workYearStart', 'weekendPolicy', 'weekendRule',
+];
+
+function updateRule(id) {
+    const control = el(id);
+    control.addEventListener('change', () => {
+        let value = control.value;
+        const bounds = numericLimits[id];
+        if (bounds && value !== '' && Number.isFinite(Number(value))) {
+            value = Math.max(bounds[0], Math.min(bounds[1], Number(value)));
+            if (id !== 'salary' && id !== 'history') value = Math.trunc(value);
+        } else if (bounds || (id === 'workYearStart' && !validWorkYearStart(value))) {
+            control.value = s[id];
+            if (id === 'workYearStart') toast('Укажите дату начала рабочего года.');
+            return;
+        }
+        control.value = value;
+        if (s[id] === value) return;
+        s[id] = value;
+        if (id === 'minGap' || id === 'gapUnit') s.gapConfigured = true;
+        if (id === 'minParts' && s.minParts > s.maxParts) {
+            s.maxParts = s.minParts;
+            el('maxParts').value = s.maxParts;
+        }
+        if (id === 'maxParts' && s.maxParts < s.minParts) {
+            s.minParts = s.maxParts;
+            el('minParts').value = s.minParts;
+        }
+        if (id === 'weekendRule') renderWeekendControls();
+        planChanged(id !== 'salary' && id !== 'history');
+    });
+}
+
+for (const id of ruleControlIds) updateRule(id);
+
+el('past14').addEventListener('change', (event) => {
+    s.past14 = event.target.checked;
+    planChanged();
+});
+const selectOptions=[['monthly','Каждый месяц'],['quarterly','Раз в квартал'],['semi','Раз в полгода'],['annual','Раз в год']];
+function makeSelect(opts,val){return opts.map(([v,t])=>`<option value="${v}"${String(v)===String(val)?' selected':''}>${t}</option>`).join('');}
+function renderBonusRules() {
+    const monthOptions = MONTHS.map((month, index) => [index + 1, month]);
+    el('recurringRules').innerHTML = s.recurring.map((rule, index) => {
+        const prefix = `recurring-${index}`;
+        const key = escapeAttr(rule.id);
+        const frequency = ['twice', 'thrice'].includes(rule.freq) ? 'monthly' : rule.freq;
+        return `<div class="rule">
+            <div class="rule-head">
+                <b>Регулярная премия ${index + 1}</b>
+                <button aria-label="Удалить регулярную премию ${index + 1}" class="remove" data-remove="recurring" data-id="${key}">×</button>
+            </div>
+            <div class="compact-grid">
+                <div><label class="tiny-label" for="${prefix}-frequency">Как часто</label>
+                    <select class="compact-select" id="${prefix}-frequency" data-kind="recurring" data-field="freq" data-id="${key}">${makeSelect(selectOptions, frequency)}</select></div>
+                <div><label class="tiny-label" for="${prefix}-amount">Сумма одной выплаты, ₽</label>
+                    <input class="compact-input" id="${prefix}-amount" type="number" inputmode="numeric" min="0" step="1000" value="${Number(rule.amount) || ''}" data-kind="recurring" data-field="amount" data-id="${key}"></div>
+            </div>
+            <div class="compact-grid" style="margin-top:8px">
+                <div><label class="tiny-label" for="${prefix}-dates">Числа месяца через запятую</label>
+                    <input class="compact-input" id="${prefix}-dates" type="text" maxlength="40" placeholder="10, 25" value="${escapeAttr(rule.dates || '15')}" data-kind="recurring" data-field="dates" data-id="${key}"></div>
+                <div><label class="tiny-label" for="${prefix}-start">Первый месяц выплаты</label>
+                    <select class="compact-select" id="${prefix}-start" data-kind="recurring" data-field="start" data-id="${key}">${makeSelect(monthOptions, rule.start || 1)}</select></div>
+            </div>
+        </div>`;
+    }).join('');
+    el('oneoffRules').innerHTML = s.oneoff.map((rule, index) => {
+        const prefix = `oneoff-${index}`;
+        const key = escapeAttr(rule.id);
+        return `<div class="rule">
+            <div class="rule-head">
+                <b>Разовая премия ${index + 1}</b>
+                <button aria-label="Удалить разовую премию ${index + 1}" class="remove" data-remove="oneoff" data-id="${key}">×</button>
+            </div>
+            <div class="compact-grid three">
+                <div><label class="tiny-label" for="${prefix}-month">Месяц</label>
+                    <select class="compact-select" id="${prefix}-month" data-kind="oneoff" data-field="month" data-id="${key}">${makeSelect(monthOptions, rule.month)}</select></div>
+                <div><label class="tiny-label" for="${prefix}-day">Число</label>
+                    <input class="compact-input" id="${prefix}-day" min="1" max="31" type="number" inputmode="numeric" value="${Number(rule.day) || 15}" data-kind="oneoff" data-field="day" data-id="${key}"></div>
+                <div><label class="tiny-label" for="${prefix}-amount">Сумма, ₽</label>
+                    <input class="compact-input" id="${prefix}-amount" min="0" step="1000" type="number" inputmode="numeric" value="${Number(rule.amount) || ''}" data-kind="oneoff" data-field="amount" data-id="${key}"></div>
+            </div>
+        </div>`;
+    }).join('');
+}
+el('addRecurring').addEventListener('click', () => {
+    s.recurring.push({ id: id(), amount: 0, freq: 'monthly', dates: '15', start: 1 });
+    renderBonusRules();
+    el(`recurring-${s.recurring.length - 1}-amount`).focus();
+    planChanged();
+});
+el('addOneoff').addEventListener('click', () => {
+    s.oneoff.push({ id: id(), month: 12, day: 25, amount: 0 });
+    renderBonusRules();
+    el(`oneoff-${s.oneoff.length - 1}-amount`).focus();
+    planChanged();
+});
+for(let container of ['recurringRules','oneoffRules']){el(container).addEventListener('click',e=>{let btn=e.target.closest('[data-remove]');if(!btn)return;let kind=btn.dataset.remove;s[kind]=s[kind].filter(x=>x.id!==btn.dataset.id);renderBonusRules();planChanged();});el(container).addEventListener('change',e=>{let t=e.target;if(!t.dataset.kind)return;let obj=s[t.dataset.kind].find(x=>x.id===t.dataset.id);if(!obj)return;obj[t.dataset.field]=['amount','start','day','month'].includes(t.dataset.field)?Number(t.value):t.value;planChanged();});el(container).addEventListener('input',e=>{let t=e.target;if(!t.dataset.kind||!['amount','dates','day'].includes(t.dataset.field))return;let obj=s[t.dataset.kind].find(x=>x.id===t.dataset.id);if(!obj)return;obj[t.dataset.field]=t.dataset.field==='dates'?t.value:Number(t.value);planChanged();});}
+function selectManual(keys) {
+    const manual = [...new Set([...s.manual, ...keys])];
+    if (manual.length > s.budget) {
+        toast(`Ручной выбор займёт ${manual.length} дн. при бюджете ${s.budget}.`);
+        return false;
+    }
+    const additions = new Set(keys);
+    s.manual = manual;
+    s.auto = s.auto.filter((key) => !additions.has(key));
+    s.avoided = s.avoided.filter((key) => !additions.has(key));
+    planChanged(true);
+    return true;
+}
+
+function toggleDay(key, force) {
+    const day = byKey.get(key);
+    if (!day) return;
+    if (day.holiday) {
+        toast(`Это праздник: ${day.label}. Он не расходует отпускные дни.`);
+        return;
+    }
+    const current = status(key);
+    if (force ?? !current) {
+        selectManual([key]);
+    } else {
+        s.manual = s.manual.filter((item) => item !== key);
+        s.auto = s.auto.filter((item) => item !== key);
+        const inFourDaySchedule = s.fourDay && fourDayResult?.existing.includes(key);
+        if ((current === 'auto' || inFourDaySchedule) && !s.avoided.includes(key)) {
+            s.avoided.push(key);
+        }
+        planChanged(true);
+    }
+}
+
+el('showPeriods').addEventListener('click', () => {
+    const periods = el('periodList');
+    periods.open = true;
+    periods.scrollIntoView({ block: 'start' });
+    periods.querySelector('summary').focus({ preventScroll: true });
+});
+
+el('rangeForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const from = byKey.get(el('rangeFrom').value);
+    const to = byKey.get(el('rangeTo').value);
+    if (!from || !to || from.i > to.i) {
+        setText('rangeStatus', 'Укажите начало и конец диапазона в 2027 году.');
+        return;
+    }
+    const keys = days.slice(from.i, to.i + 1).filter((day) => !day.holiday).map((day) => day.key);
+    if (!keys.length) {
+        setText('rangeStatus', 'В этом диапазоне только праздники.');
+        return;
+    }
+    const added = keys.filter((key) => !s.manual.includes(key)).length;
+    const applied = selectManual(keys);
+    setText('rangeStatus', applied
+        ? `${humanDate(from.key)} — ${humanDate(to.key)}. Добавлено вручную: ${added} дн.`
+        : 'Диапазон превышает бюджет. Выберите меньше дней или увеличьте бюджет.');
+});
+// Долгое нажатие + движение пальцем или мышью, обычное нажатие = переключение.
+const board=el('months');let pointerGesture=null;
+board.addEventListener('pointerdown',e=>{let btn=e.target.closest('button[data-date]');if(!btn||e.button>0)return;e.preventDefault();let key=btn.dataset.date,day=byKey.get(key);if(!day)return;let g={id:e.pointerId,at:Date.now(),key,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,dragging:false,cancelled:false,paint:!status(key),visited:new Set(),timer:null};pointerGesture=g;g.timer=setTimeout(()=>{if(pointerGesture!==g||g.cancelled)return;g.dragging=true;document.body.style.userSelect='none';paintAt(g,key);},360);});
+function paintAt(g,key){if(g.visited.has(key))return;g.visited.add(key);toggleDay(key,g.paint);}
+window.addEventListener('pointermove',e=>{let g=pointerGesture;if(!g||e.pointerId!==g.id)return;g.x=e.clientX;g.y=e.clientY;if(!g.dragging){if(Math.hypot(e.clientX-g.startX,e.clientY-g.startY)>12){g.cancelled=true;clearTimeout(g.timer);}return;}e.preventDefault();let btn=document.elementFromPoint(e.clientX,e.clientY)?.closest('button[data-date]');if(btn)paintAt(g,btn.dataset.date);},{passive:false});
+window.addEventListener('touchmove',e=>{if(pointerGesture?.dragging&&e.cancelable)e.preventDefault();},{passive:false});
+function finishPointer(e){let g=pointerGesture;if(!g||(e&&e.pointerId!==g.id))return;clearTimeout(g.timer);pointerGesture=null;document.body.style.userSelect='';if(!g.cancelled&&!g.dragging)toggleDay(g.key);else if(g.dragging)toast(`Выделено в проходе: ${g.visited.size} дн.`);}
+window.addEventListener('pointerup',finishPointer);window.addEventListener('pointercancel',e=>{let g=pointerGesture;if(g){clearTimeout(g.timer);pointerGesture=null;document.body.style.userSelect='';}});
+board.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-date]');
+    if (button && event.detail === 0) toggleDay(button.dataset.date);
+});
+el('prefTabs').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-pref]');
+    if (!button || s.preference === button.dataset.pref) return;
+    s.preference = button.dataset.pref;
+    renderRestrictions();
+    planChanged();
+});
+
+el('monthRules').innerHTML = MONTHS.map((month, index) => `
+    <div>
+        <label class="tiny-label" for="month-rule-${index}">${month}</label>
+        <select class="compact-select" id="month-rule-${index}" data-month-rule="${index}">
+            ${makeSelect(monthRuleOptions, monthRuleFor(index))}
+        </select>
+    </div>`).join('');
+el('monthRules').addEventListener('change', (event) => {
+    const control = event.target.closest('[data-month-rule]');
+    if (!control) return;
+    const index = Number(control.dataset.monthRule);
+    for (const [rule] of monthRuleOptions.slice(1)) {
+        s[rule] = s[rule].filter((month) => month !== index);
+        if (control.value === rule) s[rule].push(index);
+    }
+    renderRestrictions();
+    planChanged(control.value === 'blockedMonths');
+});
+
+el('addBlocked').addEventListener('click', () => {
+    const from = el('blockFrom').value;
+    const to = el('blockTo').value;
+    if (!byKey.has(from) || !byKey.has(to) || from > to) {
+        toast('Выберите корректные даты внутри 2027 года');
+        return;
+    }
+    if (s.blockedRanges.length >= 50) {
+        toast('Можно добавить не более 50 периодов');
+        return;
+    }
+    if (s.blockedRanges.some((range) => range.from === from && range.to === to)) return;
+    s.blockedRanges.push({ id: id(), from, to });
+    el('blockFrom').value = '';
+    el('blockTo').value = '';
+    renderRestrictions();
+    planChanged(true);
+});
+el('blockedRanges').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-unblock]');
+    if (!button) return;
+    s.blockedRanges = s.blockedRanges.filter((range) => range.id !== button.dataset.unblock);
+    renderRestrictions();
+    planChanged();
+});
+el('clearBlocked').addEventListener('click', () => {
+    s.blockedMonths = [];
+    s.blockedRanges = [];
+    for (const control of el('monthRules').querySelectorAll('[data-month-rule]')) {
+        control.value = monthRuleFor(Number(control.dataset.monthRule));
+    }
+    renderRestrictions();
+    planChanged();
+    toast('Исключения дат и месяцев сняты');
+});
+const styleLabels = {
+    rest: 'Максимум отдыха',
+    money: 'Больше денег',
+    balanced: 'Сбалансированный',
+};
+
+function planningInput() {
+    const error = planner.manualProblem(s);
+    if (error) return { error };
+    const manual = new Set(s.manual);
+    const options = planner.solverOptions(s, segmentsForSet(manual));
+    if (options.minParts > 0 && options.budget < s.minPart) {
+        return {
+            error: 'Оставшихся отпускных дней меньше минимума в части. Увеличьте бюджет или уменьшите минимум.',
+        };
+    }
+    const bonuses = makeBonusPlan();
+    const baseline = monthModel(manual, bonuses);
+    const unit = Math.max(1, (s.salary + s.history) / 29.3, ...baseline.months.map((m) => m.average));
+    const summerWeights = [-1.7, -1.4, -.3, .1, .9, 3.3, 4.3, 4.3, 1.3, .2, -.7, -1.2];
+    const candidates = planner.candidatesFor(s).map((candidate) => {
+        let estimatedNet = 0;
+        let preference = 0;
+        for (const part of candidate.parts) {
+            const rate = baseline.months[part.items[0].m].average;
+            for (const day of part.items) {
+                estimatedNet += rate - (day.work ? s.salary / workCounts[day.m] : 0);
+                if (s.preferredMonths.includes(day.m)) preference += 1.8;
+                if (s.avoidedMonths.includes(day.m)) preference -= 1.8;
+                if (s.preference === 'summer') preference += summerWeights[day.m] / 10;
+            }
+            if (s.weekendPolicy === 'discourage' && part.items.every((day) => day.work)) {
+                preference -= Math.max(.1, part.items.length * .03);
+            }
+        }
+        if (s.preference === 'holidays') {
+            const rest = days.slice(candidate.restStartIndex, candidate.restEndIndex + 1);
+            preference += rest.filter((day) => day.holiday || day.isTransferredDayOff).length * 1.25;
+        }
+        return { ...candidate, estimatedNet: estimatedNet / unit, preference };
+    });
+    if (options.requires14 && !options.hasCompleted14DayPart &&
+        !candidates.some((candidate) => candidate.has14DayPart)) {
+        return {
+            error: 'Не найдено места для 14 отпускных дней подряд в заданном рабочем году. Проверьте бюджет, исключённые даты и промежутки до ручных периодов.',
+        };
+    }
+    return { manual, options, candidates, bonuses };
+}
+
+function spreadScore(plan) {
+    const totalParts = plan.reduce((sum, candidate) => sum + candidate.partCount, 0);
+    let parts = 0;
+    return plan.reduce((score, candidate) => {
+        parts += candidate.partCount;
+        const position = (candidate.centerIndex + .5) / days.length;
+        return score - (position - (parts - .5) / totalParts) ** 2;
+    }, 0);
+}
+
+function keysFor(plan) {
+    return plan.flatMap((candidate) => candidate.leaveKeys).sort();
+}
+
+function improveMoneyPlan(input, initialPlans) {
+    const { candidates, options, bonuses, manual } = input;
+    const evaluate = (plan) => {
+        const model = monthModel(new Set([...manual, ...keysFor(plan)]), bonuses);
+        const preference = plan.reduce((sum, candidate) => sum + candidate.preference, 0);
+        return {
+            net: model.withNet,
+            preference: s.preference === 'spread' ? spreadScore(plan) : preference,
+        };
+    };
+    const better = (score, best) => score.net > best.net + .005 ||
+        (Math.abs(score.net - best.net) <= .005 && score.preference > best.preference);
+    let best = initialPlans[0];
+    let bestScore = evaluate(best);
+    for (const plan of initialPlans.slice(1)) {
+        const score = evaluate(plan);
+        if (better(score, bestScore)) {
+            best = plan;
+            bestScore = score;
+        }
+    }
+
+    // Пересчитываем доход по полной модели для замен отдельных периодов.
+    // Число частей и расход бюджета при такой замене сохраняются.
+    for (let pass = 0; pass < 2; pass++) {
+        const current = best;
+        for (const replaced of current) {
+            const others = current.filter((candidate) => candidate !== replaced);
+            const needs14 = options.requires14 && !options.hasCompleted14DayPart &&
+                !others.some((candidate) => candidate.has14DayPart);
+            for (const candidate of candidates) {
+                if (candidate.cost !== replaced.cost || candidate.partCount !== replaced.partCount ||
+                    (needs14 && !candidate.has14DayPart)) continue;
+                if (!others.every((other) => planner.compatible(candidate, other, s))) continue;
+                const plan = [...others, candidate].sort((a, b) => a.restStartIndex - b.restStartIndex);
+                const score = evaluate(plan);
+                if (better(score, bestScore)) {
+                    best = plan;
+                    bestScore = score;
+                }
+            }
+        }
+        if (best === current) break;
+    }
+    return best;
+}
+
+function solvePresets(styles) {
+    const input = planningInput();
+    const results = new Map();
+    if (input.error) {
+        for (const style of styles) results.set(style, { error: input.error });
+        return results;
+    }
+    const spread = s.preference === 'spread';
+    const options = {
+        ...input.options,
+        yearLength: spread ? days.length : undefined,
+        spreadWeight: spread ? 16 : 0,
+    };
+    const seeds = new Map();
+    const searchStyles = styles.includes('money') ? Object.keys(styleLabels) : styles;
+    for (const style of searchStyles) {
+        const scored = input.candidates.map((candidate) => {
+            const rest = candidate.restLength;
+            const money = candidate.estimatedNet;
+            const preference = candidate.preference;
+            const score = style === 'money' ? money + .06 * preference
+                : style === 'rest' ? rest + rest ** 1.16 * .25 + preference
+                : rest * .45 + rest ** 1.12 * .15 + money * .85 + preference;
+            return { ...candidate, score, priority: style === 'rest' ? rest : 0 };
+        });
+        const result = optimizeIntervals(scored, options);
+        if (result.status === 'optimal') seeds.set(style, result.plan);
+    }
+    for (const style of styles) {
+        const seed = seeds.get(style);
+        if (!seed) {
+            results.set(style, {
+                error: 'Допустимый план не найден. Попробуйте увеличить доступное окно, уменьшить минимум дней в части или изменить число частей.',
+            });
+            continue;
+        }
+        const plan = style === 'money'
+            ? improveMoneyPlan(input, [seed, ...[...seeds.entries()]
+                .filter(([key]) => key !== 'money').map(([, value]) => value)])
+            : seed;
+        const selected = keysFor(plan);
+        const error = planner.validate(s, selected);
+        results.set(style, error ? { error } : { selected });
+    }
+    return results;
+}
+
+function applyPlan(selected, style) {
+    s.fourDay = null;
+    s.auto = selected;
+    plannerError = '';
+    plannerNotice = selected.length
+        ? `«${styleLabels[style]}». Подобрано ${selected.length} дн.`
+        : 'Ручной план прошёл проверку.';
+    scheduleRender();
+    toast(plannerNotice);
+}
+
+function optimize(style) {
+    const solved = solvePresets([style]).get(style);
+    if (!solved.error) {
+        applyPlan(solved.selected, style);
+        return;
+    }
+    s.fourDay = null;
+    s.auto = [];
+    plannerNotice = '';
+    plannerError = solved.error;
+    toast(plannerError);
+    scheduleRender();
+}
+
+function showAlternativePlans() {
+    alternativePlans = solvePresets(Object.keys(styleLabels));
+    el('alternativePlans').innerHTML = [...alternativePlans].map(([style, solved]) => {
+        const title = styleLabels[style];
+        if (solved.error) {
+            return `<div class="alternative-card"><strong>${title}</strong><small>${escapeAttr(solved.error)}</small></div>`;
+        }
+        const keys = [...s.manual, ...solved.selected];
+        const model = monthModel(new Set(keys));
+        const restDays = model.runs.reduce((sum, run) => sum + run.len, 0);
+        const remaining = Math.max(0, s.budget - keys.length);
+        const dates = (intervals) => intervals.map(({ start, end }) =>
+            start === end ? humanDate(start) : `${humanDate(start)} — ${humanDate(end)}`,
+        ).join(' · ');
+        return `<article class="alternative-card">
+            <strong>${title}</strong>
+            <span>${keys.length} из ${s.budget} отпускных дн. · ${restDays} дн. отдыха · остаток ${remaining}</span>
+            <small>Отпуск: ${dates(model.periods) || 'даты не выбраны'}</small>
+            <small>Отдых: ${dates(model.runs) || 'даты не выбраны'}</small>
+            <small>На руки за год: ${fmtMoney(model.withNet)} · разница: ${model.difference >= 0 ? '+' : '−'}${fmtMoney(Math.abs(model.difference))}</small>
+            <button type="button" class="small-btn" data-alternative="${style}" aria-label="Применить вариант «${title}»">Применить</button>
+        </article>`;
+    }).join('');
+}
+
+el('compareAlternatives').addEventListener('click', showAlternativePlans);
+el('alternativePlans').addEventListener('click', (event) => {
+    const style = event.target.closest('[data-alternative]')?.dataset.alternative;
+    const selection = alternativePlans?.get(style)?.selected;
+    if (selection) applyPlan(selection, style);
+});
+for (const button of document.querySelectorAll('[data-preset]')) {
+    button.addEventListener('click', () => optimize(button.dataset.preset));
+}
+el('fourDayForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const fourDay = {
+        weekday: el('fourDayWeekday').value,
+        from: Number(el('fourDayFrom').value),
+        to: Number(el('fourDayTo').value),
+    };
+    if (!validFourDay(fourDay)) {
+        showFourDayResult('Последний месяц должен совпадать с первым или быть позже.', true);
+        return;
+    }
+    s.fourDay = fourDay;
+    planChanged();
+});
+el('removeFourDay').addEventListener('click', () => {
+    s.fourDay = null;
+    s.auto = [];
+    planChanged();
+    el('runFourDay').focus();
+});
+el('clearSelection').addEventListener('click', () => {
+    s.manual = [];
+    s.auto = [];
+    s.avoided = [];
+    s.fourDay = null;
+    planChanged();
+    setText('rangeStatus', '');
+    toast('Отпускные даты очищены');
+});
+function downloadFile(name,type,content){let blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+const icsDate=key=>key.replaceAll('-','');function nextDate(key){let d=new Date(key+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;}
+el('ics').addEventListener('click',()=>{if(!data.periods.length){toast('Сначала выберите дни отпуска');return;}let lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Vacation Planner 2027//RU','CALSCALE:GREGORIAN'];for(let [i,p] of data.periods.entries()){lines.push('BEGIN:VEVENT','UID:vacation2027-'+i+'-'+icsDate(p.start)+'@offline','DTSTAMP:20261108T000000Z','DTSTART;VALUE=DATE:'+icsDate(p.start),'DTEND;VALUE=DATE:'+icsDate(nextDate(p.end)),'SUMMARY:Отпуск','DESCRIPTION:Ежегодный оплачиваемый отпуск. '+p.items.length+' дней.','END:VEVENT');}lines.push('END:VCALENDAR');downloadFile('otpusk-2027.ics','text/calendar;charset=utf-8',lines.join('\r\n'));});
+el('csv').addEventListener('click',()=>{let rows=[['Месяц','Рабочих','Выходных','Отпускных дней','Оклад гросс','Премии гросс','Отпускные гросс','Начислено гросс','НДФЛ','На руки']];for(const m of data.months)rows.push([MONTHS[m.m],m.work,m.off,m.selected,Math.round(m.salary),Math.round(m.bonus),Math.round(m.vacationPay),Math.round(m.withGross),Math.round(m.taxWith),Math.round(m.net)]);downloadFile('otpusk-2027.csv','text/csv;charset=utf-8','\ufeff'+rows.map(row=>row.join(';')).join('\r\n'));});
+el('print').addEventListener('click',()=>window.print());
+const summaryText=()=>`План отпуска — 2027\nОклад: ${fmtMoney(s.salary)} / мес.\nПремии за 2027: ${fmtMoney(data.bonusTotal)}\nГод без отпуска: ${fmtMoney(data.grossYear)} гросс / ${fmtMoney(data.baseNet)} на руки\nС отпуском: ${fmtMoney(data.withYear)} гросс / ${fmtMoney(data.withNet)} на руки\nРазница: ${fmtMoney(data.difference)}\nДней отпуска: ${data.selected.size} из ${s.budget}\n${data.runs.map(run=>`${humanDate(run.start)} — ${humanDate(run.end)} (${run.leaves} отпускных дн., ${run.len} дней отдыха)`).join('\n')}`;
+function copy(text){if(navigator.clipboard?.writeText)return navigator.clipboard.writeText(text).then(()=>true).catch(()=>fallbackCopy(text));return Promise.resolve(fallbackCopy(text));}function fallbackCopy(text){let a=document.createElement('textarea');a.value=text;document.body.append(a);a.select();let success=document.execCommand('copy');a.remove();return success;}
+el('copySummary').addEventListener('click',async()=>{let ok=await copy(summaryText());toast(ok?'Итоги скопированы':'Не удалось скопировать, выделите текст вручную');});
+el('share').addEventListener('click',async()=>{let obj={...s};let json=JSON.stringify(obj),hash='#plan='+btoa(unescape(encodeURIComponent(json))),url=location.origin+location.pathname+hash;if(location.protocol==='file:'){toast('Для ссылки разместите HTML на сайте. Сейчас открыт локальный файл.');return;}if(url.length>7000){toast('План слишком большой для удобной ссылки. Используйте CSV или .ics.');return;}let ok=await copy(url);toast(ok?'Ссылка на план скопирована. Она содержит информацию о зарплате!':'Не удалось скопировать ссылку');});
+setControls();renderBonusRules();renderRestrictions();
+const { weekday, from, to } = s.fourDay || defaultFourDay;
+const fourDayMonths = MONTHS.map((month, index) => [index + 1, month]);
+el('fourDayWeekday').value = weekday;
+el('fourDayFrom').innerHTML = makeSelect(fourDayMonths, from);
+el('fourDayTo').innerHTML = makeSelect(fourDayMonths, to);
+el('vacationFourDay').open = Boolean(s.fourDay) || location.hash === '#vacationFourDay';
+el('fourDayExample').hidden = !inFourDayExample;
+if (inFourDayExample) {
+    setText('storageHelp', 'Изменения в примере действуют до перезагрузки страницы.');
+}
+if (inExample) {
+    setText('exampleTitle', showExampleComparison ? 'Сравнение отпусков по доходу' : `Отпуск ${examplePlan.title}`);
+    setText('exampleIntro', showExampleComparison
+        ? 'Суммы до НДФЛ по текущим настройкам. Откройте даты в таблице, чтобы посмотреть отдельный вариант в календаре.'
+        : 'Суммы до НДФЛ по выбранным датам. Изменения в примере действуют до перезагрузки страницы.');
+    setText('storageHelp', 'Изменения в примере действуют до перезагрузки страницы.');
+    el('vacationExample').hidden = false;
+    if (examplePlan) el('periodList').open = true;
+}
+if (!s.fourDay) {
+    const savedAutoCount = s.auto.length;
+    s.auto = planner.retainedAuto(s);
+    if (s.auto.length < savedAutoCount) {
+        plannerNotice = `Из сохранённого плана убрано ${savedAutoCount - s.auto.length} автодн., нарушавших ограничения.`;
+    }
+}
+renderAll();
+})();
+</script>
+    </body>
+</html>

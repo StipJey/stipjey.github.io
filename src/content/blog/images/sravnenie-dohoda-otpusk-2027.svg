@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="320" viewBox="0 0 640 320" role="img" aria-labelledby="title description">
+    <title id="title">Как четыре дня отпуска меняют доход</title>
+    <desc id="description">При окладе 300 000 рублей до НДФЛ. В январе доход снижается на 39 044 рубля, в апреле на 13 590 рублей, в мае на 22 202 рубля.</desc>
+    <rect width="640" height="320" rx="24" fill="#f4f7fb"/>
+    <g font-family="system-ui, sans-serif" fill="#172943">
+        <text x="28" y="47" font-size="28" font-weight="700">На сколько снизится доход</text>
+        <text x="28" y="79" font-size="20" fill="#405570">Четыре дня отпуска при окладе 300 000 ₽, до НДФЛ</text>
+        <g font-size="24" font-weight="650">
+            <text x="28" y="147">Январь</text>
+            <text x="28" y="213">Апрель</text>
+            <text x="28" y="279">Май</text>
+        </g>
+        <g>
+            <rect x="130" y="122" width="345" height="34" rx="7" fill="#425dc5"/>
+            <rect x="130" y="188" width="120" height="34" rx="7" fill="#00776b"/>
+            <rect x="130" y="254" width="196" height="34" rx="7" fill="#425dc5"/>
+        </g>
+        <g font-size="25" font-weight="700" text-anchor="end">
+            <text x="612" y="148">39 044 ₽</text>
+            <text x="612" y="214">13 590 ₽</text>
+            <text x="612" y="280">22 202 ₽</text>
+        </g>
+    </g>
+</svg>

@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# Playwright test output
+test-results/
+
 # dependencies
 node_modules/
 

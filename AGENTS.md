@@ -17,7 +17,7 @@ Use the repository's `.prettierrc`: 4-space indentation, single quotes in JavaSc
 
 ## Testing Guidelines
 
-There is no configured test framework or `npm test` script. Run `npm run build` before submitting changes; it checks Astro and content types as well as the production build. For visual or content edits, inspect affected pages with `npm run dev` or `npm run preview`, including mobile layouts where relevant. If you add automated tests, document their command and naming convention in this guide.
+Run `npm test` for unit tests in `tests/*.test.js`. Run `npx playwright install chromium` once, then `npm run test:e2e` for browser tests in `e2e/*.spec.js`. Run `npm run build` before submitting changes; it checks Astro and content types as well as the production build. For visual or content edits, inspect affected pages with `npm run dev` or `npm run preview`, including mobile layouts where relevant.
 
 ## Commit & Pull Request Guidelines
 

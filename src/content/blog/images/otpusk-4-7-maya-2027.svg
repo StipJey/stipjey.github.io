@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="276" viewBox="0 0 640 276" role="img" aria-labelledby="title description">
+    <title id="title">Десять дней отдыха в мае 2027 года</title>
+    <desc id="description">Отдых с 1 по 10 мая. Дни отпуска с 4 по 7 мая, остальные даты приходятся на праздники и выходные.</desc>
+    <rect width="640" height="276" rx="24" fill="#f4f7fb"/>
+    <g font-family="system-ui, sans-serif" fill="#172943">
+        <text x="28" y="48" font-size="28" font-weight="700">10 дней отдыха в мае 2027 года</text>
+        <text x="28" y="81" font-size="21" fill="#405570">В отпуск входят только 4, 5, 6 и 7 мая</text>
+        <g fill="#dde6f4">
+            <rect x="29" y="132" width="51" height="59" rx="9"/>
+            <rect x="88" y="132" width="51" height="59" rx="9"/>
+            <rect x="147" y="132" width="51" height="59" rx="9"/>
+            <rect x="442" y="132" width="51" height="59" rx="9"/>
+            <rect x="501" y="132" width="51" height="59" rx="9"/>
+            <rect x="560" y="132" width="51" height="59" rx="9"/>
+        </g>
+        <g fill="#00776b">
+            <rect x="206" y="132" width="51" height="59" rx="9"/>
+            <rect x="265" y="132" width="51" height="59" rx="9"/>
+            <rect x="324" y="132" width="51" height="59" rx="9"/>
+            <rect x="383" y="132" width="51" height="59" rx="9"/>
+        </g>
+        <g text-anchor="middle" font-size="17" fill="#405570">
+            <text x="54.5" y="121">сб</text><text x="113.5" y="121">вс</text>
+            <text x="172.5" y="121">пн</text><text x="231.5" y="121">вт</text>
+            <text x="290.5" y="121">ср</text><text x="349.5" y="121">чт</text>
+            <text x="408.5" y="121">пт</text><text x="467.5" y="121">сб</text>
+            <text x="526.5" y="121">вс</text><text x="585.5" y="121">пн</text>
+        </g>
+        <g text-anchor="middle" font-size="29" font-weight="700">
+            <text x="54.5" y="171">1</text><text x="113.5" y="171">2</text>
+            <text x="172.5" y="171">3</text>
+            <g fill="#fff">
+                <text x="231.5" y="171">4</text><text x="290.5" y="171">5</text>
+                <text x="349.5" y="171">6</text><text x="408.5" y="171">7</text>
+            </g>
+            <text x="467.5" y="171">8</text><text x="526.5" y="171">9</text>
+            <text x="585.5" y="171">10</text>
+        </g>
+        <rect x="29" y="222" width="22" height="22" rx="5" fill="#00776b"/>
+        <text x="61" y="239" font-size="21">Отпуск</text>
+        <rect x="180" y="222" width="22" height="22" rx="5" fill="#dde6f4"/>
+        <text x="212" y="239" font-size="21">Выходные и праздники</text>
+    </g>
+</svg>

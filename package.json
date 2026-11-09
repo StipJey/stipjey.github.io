@@ -6,6 +6,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "test": "node --test",
+    "test:e2e": "playwright test",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -17,5 +19,8 @@
     "animejs": "^4.5.0",
     "astro": "^5.17.1",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
   }
 }
