@@ -278,21 +278,32 @@ test('opens the article examples with their dates and visible rest periods', asy
         ['february-long', '8–21 февраля', '18 дн. отдыха с 6 февраля по 23 февраля за 14'],
         ['june-holidays', '15–18 июня', '9 дн. отдыха с 12 июня по 20 июня за 4'],
         ['november-holidays', '1–3 ноября', '9 дн. отдыха с 30 октября по 7 ноября за 3'],
-        ['may-full', '4–10 мая', '10 дн. отдыха с 1 мая по 10 мая за 6'],
     ];
 
     for (const [key, dates, rest] of examples) {
         await page.goto(vacationArticle);
-        await page.locator(`a[href$="?example=${key}"]`).first().click();
+        if (key === 'may-holidays') {
+            await page.getByRole('link', { name: 'Открыть 4–7 мая в калькуляторе' }).click();
+        } else {
+            await page.locator(`a[href$="?example=${key}"]`).first().click();
+        }
         await expect(page.locator('#exampleTitle')).toHaveText(`Отпуск ${dates}`);
         await expect(page.locator('#exampleRest')).toContainText(rest);
         await expect(page.locator('#periodList')).toHaveAttribute('open', '');
+        if (key === 'may-holidays') {
+            expect(await selectedDates(page, 'manual')).toEqual([
+                '2027-05-04', '2027-05-05', '2027-05-06', '2027-05-07',
+            ]);
+        }
         if (key === 'january-long') {
             await expect(page.getByRole('table', { name: 'Начисления до НДФЛ' })
                 .getByRole('row').filter({ hasText: 'Январь' }).getByRole('cell'))
                 .toHaveText(['Январь', '51 195 ₽', '251 195 ₽', '−48 805 ₽']);
         }
     }
+    await page.goto(vacationPage + '?example=may-full');
+    await expect(page.locator('#exampleRest'))
+        .toContainText('10 дн. отдыха с 1 мая по 10 мая за 6');
     await expect(day(page, '2027-05-08')).toHaveAttribute('aria-pressed', 'true');
     await expect(day(page, '2027-05-09')).toHaveAttribute('aria-pressed', 'false');
     await expect(day(page, '2027-05-10')).toHaveAttribute('aria-pressed', 'true');
