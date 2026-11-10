@@ -79,6 +79,70 @@ test('equal-score plans use a deterministic year-wide placement tie-break', () =
     assert.deepEqual(result.plan.map((x) => x.startIndex), [40, 280]);
 });
 
+test('the mandatory-period exception prefers fewer weekend leave days', () => {
+    const withFourOffDays = candidate(0, 13, 20, {
+        priority: 30,
+        offDays: 4,
+        has14DayPart: true,
+    });
+    const withTwoOffDays = candidate(40, 53, 18, {
+        priority: 25,
+        offDays: 2,
+        has14DayPart: true,
+    });
+    const options = {
+        budget: 14,
+        minParts: 1,
+        maxParts: 1,
+        requires14: true,
+        minimizeOffDays: true,
+    };
+
+    const result = optimizeIntervals([withFourOffDays, withTwoOffDays], options);
+
+    assert.equal(result.status, 'optimal');
+    assert.equal(result.plan[0].offDays, 2);
+    assert.equal(result.offDays, 2);
+});
+
+test('spread compares weekend leave across different part counts', () => {
+    const onePart = candidate(0, 15, 50, { offDays: 4 });
+    const longPart = candidate(40, 53, 10, { offDays: 3 });
+    const shortPart = candidate(70, 71, 10);
+    const options = {
+        budget: 16, minParts: 1, maxParts: 2, yearLength: 365,
+        minimizeOffDays: true, preferCoverage: true,
+    };
+    const candidates = [onePart, longPart, shortPart];
+    const result = optimizeIntervals(candidates, options);
+    assert.deepEqual(result.plan.map((item) => item.startIndex), [40, 70]);
+    assert.equal(result.offDays, 3);
+
+    const empty = optimizeIntervals([longPart], {
+        ...options, minParts: 0, requires14: false, preferCoverage: false,
+    });
+    assert.deepEqual(empty.plan, []);
+    assert.equal(empty.offDays, 0);
+});
+
+test('excludes entire plans while keeping their periods available for alternatives', () => {
+    const first = candidate(0, 0, 9);
+    const earlier = candidate(5, 5, 5);
+    const later = candidate(6, 6, 4);
+    const candidates = [first, earlier, later];
+    const options = {
+        budget: 2, minParts: 2, maxParts: 2, minGap: 2, requires14: false,
+    };
+
+    const best = optimizeIntervals(candidates, options);
+    const next = optimizeIntervals(candidates, { ...options, excludedPlans: [best.plan] });
+    assert.deepEqual(best.plan.map((item) => item.startIndex), [0, 5]);
+    assert.deepEqual(next.plan.map((item) => item.startIndex), [0, 6]);
+    assert.equal(optimizeIntervals(candidates, {
+        ...options, excludedPlans: [best.plan, next.plan],
+    }).status, 'infeasible');
+});
+
 test('calendar minimum gap is enforced between intervals', () => {
     const result = optimizeIntervals(
         [candidate(10, 23, 9), candidate(35, 48, 9)],

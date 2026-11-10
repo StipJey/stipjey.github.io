@@ -43,6 +43,7 @@ export const toolData = {
   .alternative-plans{display:grid;gap:8px;margin-top:10px}.alternative-card{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px;color:var(--text);font-size:11px;line-height:1.5}.alternative-card:hover{border-color:var(--accent);background:var(--panel2)}.alternative-card strong,.alternative-card small{display:block}.alternative-card small{color:var(--muted);margin-top:3px}
   .plan-preferences h3{font-size:13px;margin:0 0 7px;letter-spacing:-.02em}.plan-preferences .help{margin:0 0 12px}
   .rule-controls{display:grid;gap:10px;margin:10px 0}.rule-controls>label{min-width:0}.rule-controls select,.rule-controls input{min-width:0;width:100%;min-height:40px;border:1px solid var(--line);border-radius:9px;padding:8px;background:var(--panel2);color:var(--text);font-size:12px}.inline-control{display:flex;gap:7px}.inline-control input[type=number]{width:78px;flex:none}.inline-control select{flex:1}.rule-controls .tiny-label{font-size:11px}
+  .weekday-choices{border:0;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.weekday-choices legend{grid-column:1/-1;padding:0;margin-bottom:2px}.weekday-choices label{min-width:0;position:relative;cursor:pointer}.weekday-choices input{position:absolute;opacity:0;inset:0;width:100%;height:100%;min-height:0;margin:0;padding:0;border:0;background:transparent}.weekday-choices span{display:flex;min-height:40px;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--muted);font-size:12px;font-weight:700}.weekday-choices input:checked+span{border-color:var(--accent);background:var(--panel3);color:var(--text)}.weekday-choices input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
   .pref-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
   .pref-choice{min-height:48px;border-radius:10px;padding:10px 8px;border:1px solid var(--line);color:var(--muted);background:var(--panel);font-size:12px;font-weight:750;text-align:left;display:flex;gap:7px;align-items:center;cursor:pointer}
   .pref-choice[aria-pressed="true"]{border:1px solid var(--accent);background:var(--blue-pale);color:var(--text);box-shadow:inset 0 0 0 1px rgba(120,120,240,.15)}
@@ -81,6 +82,7 @@ export const toolData = {
   .day.blocked:not(.selected-manual):not(.selected-auto):not(.holiday){background:repeating-linear-gradient(-45deg,rgba(232,96,113,.12) 0,rgba(232,96,113,.12) 3px,transparent 3px,transparent 7px);color:var(--faint);box-shadow:inset 0 0 0 1px rgba(228,127,142,.25)}
   .month.blocked-month{border-color:rgba(232,96,113,.27)}.dot.blocked{background:repeating-linear-gradient(-45deg,rgba(234,112,128,.7) 0 3px,rgba(234,112,128,.18) 3px 6px)}
   .preset{width:100%;display:flex;text-align:left;gap:12px;background:var(--panel2);border:1px solid var(--line);padding:12px;border-radius:12px;margin-top:9px;color:var(--text);align-items:center}.preset:hover{border-color:var(--accent);background:var(--panel3)}.preset .emoji{font-size:23px;display:grid;place-items:center;width:38px;height:38px;background:var(--panel);border-radius:10px;flex-shrink:0}.preset b{font-size:13px;display:block}.preset small{font-size:11px;color:var(--muted);display:block;margin-top:2px}.progressline{height:7px;background:var(--panel3);border-radius:99px;overflow:hidden;margin:12px 0 8px}.progressfill{background:linear-gradient(90deg,#7777f7,#65d8bd);height:100%;border-radius:inherit;width:0;transition:width .25s}.progresslabel{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.hint-state{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12px;color:var(--muted);line-height:1.5}.hint-state.good{border-color:rgba(90,199,156,.35);color:var(--good)}.hint-state.warn{border-color:rgba(249,191,112,.35);color:var(--warn)}
+  .calculation-status{display:flex;align-items:center;gap:9px;margin:12px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--muted);font-size:12px}.calculation-status[hidden]{display:none}.calculation-spinner{width:16px;height:16px;flex:0 0 16px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:calculation-spin .75s linear infinite}@keyframes calculation-spin{to{transform:rotate(360deg)}}#vacationPresets[aria-busy="true"] .preset{opacity:.7;cursor:wait}@media(prefers-reduced-motion:reduce){.calculation-spinner{animation-duration:1.8s}}
   .content-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:5px 0 15px}.content-title h2{margin:0}.caption{font-size:12px;color:var(--muted)}.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:11px;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:middle}.dot.work{background:var(--muted)}.dot.off{background:var(--off)}.dot.holiday{background:var(--holiday)}.dot.vac{background:var(--manual)}.dot.suggest{background:var(--accent2)}
   .months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.month{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px 14px 14px;min-width:0;box-shadow:var(--shadow)}.month-head{display:flex;justify-content:space-between;gap:7px;align-items:flex-start}.month h3{font-weight:800;letter-spacing:-.04em;font-size:19px;line-height:1.15;margin:0}.month-tag{background:var(--panel2);padding:4px 7px;border:1px solid var(--line);border-radius:7px;color:var(--muted);font-size:10px;white-space:nowrap}.month-overview{font-size:11px;color:var(--faint);margin:5px 0 15px}.weekdays,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.weekdays{margin-bottom:5px}.weekdays span{text-align:center;color:var(--faint);font-size:10px;font-weight:700;padding:4px 0}.weekdays span:nth-child(n+6){color:var(--holiday)}.day{width:100%;border:1px solid transparent;border-radius:8px;min-width:0;position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:var(--text);background:transparent;font-size:12px;font-weight:650;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:background .11s,transform .09s}.day:hover{background:var(--panel3)}.day.off{color:var(--off);background:rgba(236,155,92,.055)}.day.holiday{color:var(--holiday);background:rgba(232,96,113,.13);font-weight:800}.day.holiday::after{content:"";width:3px;height:3px;background:var(--holiday);border-radius:100%;position:absolute;bottom:3px}.day.short::before{content:"·";position:absolute;top:-5px;right:3px;font-size:17px;color:var(--warn)}.day.bonusday::before{content:"•";position:absolute;top:-3px;right:3px;font-size:16px;color:var(--good)}.day.selected-manual{background:linear-gradient(145deg,#2dcdb5,#2595a8);color:#061924;font-weight:850;border-color:transparent;box-shadow:0 2px 9px rgba(36,188,170,.23)}.day.selected-auto{background:linear-gradient(145deg,#8485f2,#6156ce);color:white;font-weight:850;box-shadow:0 2px 9px rgba(113,108,244,.23)}.day.selected-manual::after,.day.selected-auto::after{content:"";width:3px;height:3px;background:currentColor;opacity:.6;border-radius:100%;position:absolute;bottom:3px}.day[aria-pressed="true"]:hover{filter:brightness(1.12)}.day.avoided:not(.holiday){box-shadow:inset 0 0 0 1px rgba(238,145,145,.35)}.day.blank{visibility:hidden}.day:active{transform:scale(.92)}.month-bottom{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:9px 5px}.month-kpi small{display:block;color:var(--faint);font-size:10px}.month-kpi strong{display:block;font-size:13px;margin-top:1px;letter-spacing:-.025em;white-space:nowrap}.month-income{grid-column:1/-1;color:var(--muted);background:var(--panel2);border-radius:8px;padding:8px 9px;display:flex;gap:6px;align-items:center;justify-content:space-between;font-size:11px}.month-income strong{color:var(--text)}
   .mini-panel{border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:20px;min-width:0}.mini-panel h3{margin:0 0 6px;font-size:16px;letter-spacing:-.03em}.period{display:flex;align-items:start;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:11px 0}.period:first-child{border-top:0}.period strong{font-size:12px}.period small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.period-price{font-size:12px;font-weight:750;text-align:right;white-space:nowrap}.monthly-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}.monthly-table th{text-align:right;font-weight:600;color:var(--muted);padding:9px 4px;border-bottom:1px solid var(--line)}.monthly-table th:first-child{text-align:left}.monthly-table td{text-align:right;padding:9px 4px;border-bottom:1px solid var(--line);white-space:nowrap}.monthly-table td:first-child{text-align:left}.monthly-table tfoot td{font-weight:800;border-bottom:0}.sources{margin-top:19px;border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:18px 20px}.sources h3{margin:0 0 8px;font-size:15px}.sources p,.sources li{font-size:11px;color:var(--muted);line-height:1.6}.sources ul{padding-left:17px;margin:8px 0}.sources a{color:var(--accent)}
@@ -436,6 +438,18 @@ export const toolData = {
         <button type="button" class="preset" data-preset="rest"><span class="emoji">🌴</span><span><b>Максимум отдыха</b><small>Больше дней отдыха при заданных ограничениях</small></span></button>
         <button type="button" class="preset" data-preset="money"><span class="emoji">💸</span><span><b>Больше денег</b><small>Приоритет расчётного дохода за год</small></span></button>
         <button type="button" class="preset" data-preset="balanced"><span class="emoji">⚖️</span><span><b>Сбалансированный</b><small>Хорошие периоды отдыха без лишних денежных потерь</small></span></button>
+        <p class="calculation-status" id="calculationStatus" role="status" aria-live="polite" hidden><span class="calculation-spinner" aria-hidden="true"></span>Подбираем подходящие даты…</p>
+        <p class="help">
+          «Максимум отдыха» использует рабочие дни. Исключение — обязательная
+          14-дневная часть: в ней допускается до четырёх выходных, и калькулятор
+          старается выбрать меньше. Такие даты расходуют отпускные дни. Соседние
+          выходные и праздники увеличивают непрерывный отдых.
+        </p>
+        <div id="nextPlanControls" hidden>
+          <p class="help">Калькулятор показывает лучший из найденных вариантов. С теми же настройками могут подойти и другие даты. Число дней отдыха и доход могут отличаться.</p>
+          <button type="button" class="button" id="nextPlan">Попробовать следующий вариант</button>
+          <p class="help" id="nextPlanStatus" role="status"></p>
+        </div>
         <p class="restriction-note" id="activeRules"></p>
         <label class="toggleline"><input type="checkbox" id="past14"><span>Обязательная 14-дневная часть уже использована в этом рабочем году</span></label>
         <div class="actions-inline">
@@ -495,37 +509,41 @@ export const toolData = {
           </div>
         </details>
         <details class="more-settings" id="vacationFourDay">
-          <summary>Четырёхдневная рабочая неделя</summary>
+          <summary>Сокращённая рабочая неделя</summary>
           <form class="more-settings-content rule-controls" id="fourDayForm">
             <p class="help">
-              Берите один рабочий день отпуска в неделю. Праздники и перенесённые
-              выходные пропускаем. Подбор заменит автодаты и сохранит ручные.
+              Отметьте будни и период. После применения выбранные даты попадут в
+              ручной план. Это быстрый способ отметить даты в календаре.
             </p>
-            <label for="fourDayWeekday">
-              <span class="tiny-label">Какой день брать в отпуск</span>
-              <select id="fourDayWeekday">
-                <option value="monday">Понедельник</option>
-                <option value="wednesday">Среда</option>
-                <option value="friday" selected>Пятница</option>
-              </select>
-            </label>
+            <fieldset class="weekday-choices" id="fourDayWeekdays">
+              <legend class="tiny-label">Какие дни недели выбрать</legend>
+              <label><input type="checkbox" value="monday"><span>Пн</span></label>
+              <label><input type="checkbox" value="tuesday"><span>Вт</span></label>
+              <label><input type="checkbox" value="wednesday"><span>Ср</span></label>
+              <label><input type="checkbox" value="thursday"><span>Чт</span></label>
+              <label><input type="checkbox" value="friday"><span>Пт</span></label>
+            </fieldset>
             <div class="block-date-grid">
               <label for="fourDayFrom"><span class="tiny-label">Первый месяц</span><select id="fourDayFrom"></select></label>
               <label for="fourDayTo"><span class="tiny-label">Последний месяц</span><select id="fourDayTo"></select></label>
             </div>
             <p class="help">
-              Здесь действуют бюджет и исключения дат. Настройки длины и числа
-              частей, выходных и промежутков относятся к обычному подбору.
-              Согласуйте деление отпуска с работодателем и предусмотрите одну
-              часть не короче 14 календарных дней.
+              Этот подбор только ускоряет ручной выбор и не использует настройки
+              автоматического распределения. Праздники и другие нерабочие даты
+              пропускаются.
+            </p>
+            <p class="help">
+              При применении все автодаты сбрасываются. Если новому графику не
+              хватает бюджета вместе с текущим ручным планом, он заменяется датами
+              нового графика. Если не помещается даже сам график, применяются
+              только первые даты, которые входят в бюджет.
             </p>
             <div class="actions-inline">
-              <button class="button" id="runFourDay" type="submit">Рассчитать четырёхдневку</button>
-              <button class="small-btn" id="removeFourDay" type="button" hidden>Убрать четырёхдневку</button>
+              <button class="button" id="runFourDay" type="submit">Применить как ручные даты</button>
             </div>
             <p id="fourDayResult" class="hint-state" role="status"></p>
             <div id="fourDayLinks" class="actions-inline" hidden>
-              <a class="button small" href="#vacationCalendar">К выбранным датам</a>
+              <a class="button small" href="#vacationCalendar">К календарю</a>
               <a class="button small" href="#vacationIncome">К доходу за год</a>
             </div>
             <div id="fourDayExample" class="actions-inline" hidden>
@@ -612,7 +630,7 @@ export const toolData = {
         <ul>
           <li><b>Рабочий день:</b> оклад / количество рабочих дней месяца. <b>Отпускной:</b> средний дневной заработок за предыдущие 12 календарных месяцев, ориентир — 29,3 дня за полный месяц.</li>
           <li><b>Праздники:</b> не расходуют дни отпуска; обычные выходные внутри отпуска расходуют. Рабочая суббота 20 февраля, перенесённые выходные 22 февраля, 5 ноября и 31 декабря учтены.</li>
-          <li><b>Не менее 14 дней подряд:</b> одна часть ежегодного отпуска должна быть не короче 14 календарных отпускных дней. Остальные части — по соглашению с работодателем. Отпуск только по выходным не рекомендуем.</li>
+          <li><b>Правила частей отпуска:</b> одна часть ежегодного отпуска должна быть не короче 14 календарных отпускных дней. Автоподбор не предлагает части только из выходных. Это позиция Минтруда; <a href="https://онлайнинспекция.рф/questions/view/105644" target="_blank" rel="noreferrer">ответ Роструда</a> уточняет, что остальные части на выходные могут быть согласованы после обязательной 14-дневной части.</li>
           <li><b>НДФЛ:</b> 13% до 2,4 млн ₽ годовой налоговой базы, затем 15%, 18%, 20% и 22% по соответствующим ступеням. Налог считается нарастающим итогом с начала года.</li>
           <li><b>Это оценка:</b> не учитываются вычеты, районные/особые ставки, иные доходы, больничные, отпускные и премии за прошлые периоды, повышенный оклад в прошлом, неполный год работы, отпуск за пределами 2027 года и индивидуальные правила расчёта премий. Даты фактической выплаты могут отличаться; отпускные перечисляют заранее. Премии 2027 года не уменьшаются при отпуске в этой модели.</li>
           <li><b>Настройки подбора:</b> исключённые месяцы и периоды запрещают только автоматический выбор. Вручную можно выбрать любую непраздничную дату. Равномерное распределение и сезонные приоритеты — рекомендации, а не строгая гарантия.</li>
@@ -639,7 +657,7 @@ const pad=n=>String(n).padStart(2,'0'),toKey=(m,d)=>`${YEAR}-${pad(m+1)}-${pad(d
 const days=[];const byKey=new Map();const monthDays=Array.from({length:12},()=>[]);const workCounts=Array(12).fill(0),restCounts=Array(12).fill(0);
 for(let m=0;m<12;m++)for(let d=1;d<=numdays(m);d++){let key=toKey(m,d),short=shortKey(key),date=dateObj(m,d),dow=date.getUTCDay(),holiday=!!HOLIDAYS[short],weekend=(dow===0||dow===6),transferred=!!TRANSFERS[short],off=holiday||transferred||(weekend&&!WORK_SATURDAYS.has(short)),work=!off;let x={key,short,m,d,dow,formatted:fullDate.format(date),holiday,isStatutoryHoliday:holiday,isTransferredDayOff:transferred,isWeekend:weekend,isWorkingDay:work,work,off,label:HOLIDAYS[short]||TRANSFERS[short]||(work?'Рабочий день':'Выходной'),shortened:SHORTENED.has(short),i:days.length};days.push(x);monthDays[m].push(x);byKey.set(key,x);(work?workCounts:restCounts)[m]++;}
 if(workCounts.reduce((a,b)=>a+b,0)!==247)console.error('Проверьте рабочие дни',workCounts);
-const id=()=>Math.floor(Math.random()*1e9).toString(36),DEFAULT=()=>({salary:300000,budget:28,history:0,past14:false,workYearStart:'2027-01-01',recurring:[],oneoff:[],manual:[],auto:[],avoided:[],fourDay:null,theme:'auto',preference:'holidays',blockedMonths:[],blockedRanges:[],minGap:21,gapUnit:'calendar',gapConfigured:false,maxRestDays:10,minPart:5,minParts:1,maxParts:6,weekendPolicy:'allow',weekendRule:'any',minWeekendDays:0,preferredMonths:[],avoidedMonths:[]}),STORE='vakation27:v3';
+const id=()=>Math.floor(Math.random()*1e9).toString(36),DEFAULT=()=>({salary:300000,budget:28,history:0,past14:false,workYearStart:'2027-01-01',recurring:[],oneoff:[],manual:[],auto:[],avoided:[],fourDay:null,theme:'auto',preference:'holidays',blockedMonths:[],blockedRanges:[],minGap:10,gapUnit:'working',gapConfigured:false,maxRestDays:10,minPart:1,minPartConfigured:false,minParts:1,maxParts:6,weekendPolicy:'allow',weekendRule:'any',minWeekendDays:0,preferredMonths:[],avoidedMonths:[]}),STORE='vakation27:v3';
 const examplePlans = {
     'january-pay': { title: '11–14 января', month: 0, from: 11, to: 14 },
     'january-long': { title: '11–15 января', month: 0, from: 11, to: 15 },
@@ -651,13 +669,19 @@ const examplePlans = {
     'june-holidays': { title: '15–18 июня', month: 5, from: 15, to: 18 },
     'november-holidays': { title: '1–3 ноября', month: 10, from: 1, to: 3 },
 };
-const fourDayWeekdays = { monday: 1, wednesday: 3, friday: 5 };
-const defaultFourDay = { weekday: 'friday', from: 6, to: 8 };
-function validFourDay(value) {
-    return value && Object.hasOwn(fourDayWeekdays, value.weekday) &&
-        Number.isInteger(value.from) && Number.isInteger(value.to) &&
-        value.from >= 1 && value.from <= value.to && value.to <= 12;
+const fourDayWeekdays = { monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5 };
+const defaultFourDay = { days: ['friday'], from: 6, to: 8 };
+function normalizeFourDay(value) {
+    if (!value) return null;
+    const days = Array.isArray(value.days)
+        ? value.days
+        : Object.hasOwn(fourDayWeekdays, value.weekday) ? [value.weekday] : [];
+    const validDays = [...new Set(days)].filter((day) => Object.hasOwn(fourDayWeekdays, day));
+    if (!validDays.length || !Number.isInteger(value.from) || !Number.isInteger(value.to) ||
+        value.from < 1 || value.from > value.to || value.to > 12) return null;
+    return { days: validDays, from: value.from, to: value.to };
 }
+const validFourDay = (value) => Boolean(normalizeFourDay(value));
 const exampleComparison = ['january-pay', 'april-pay', 'may-holidays'];
 const params = new URLSearchParams(location.search);
 const exampleKey = params.get('example');
@@ -667,8 +691,9 @@ const examplePlan = !hasSharedPlan && Object.hasOwn(examplePlans, exampleKey)
     ? examplePlans[exampleKey]
     : null;
 const inExample = showExampleComparison || Boolean(examplePlan);
+const linkedDays = params.get('days')?.split(',') || [params.get('week')].filter(Boolean);
 const linkedFourDay = {
-    weekday: params.get('week'), from: Number(params.get('from')), to: Number(params.get('to')),
+    days: linkedDays, from: Number(params.get('from')), to: Number(params.get('to')),
 };
 const inFourDayExample = !hasSharedPlan && !inExample && validFourDay(linkedFourDay);
 const exampleDates = ({ month, from, to }) => monthDays[month]
@@ -683,22 +708,24 @@ if (inExample) {
 } else if (inFourDayExample) {
     s.fourDay = linkedFourDay;
 } else {
-    try{let raw=localStorage.getItem(STORE);if(raw)s={...s,...JSON.parse(raw)};}catch(e){}
+    try{let raw=localStorage.getItem(STORE);if(raw){const saved=JSON.parse(raw);s={...s,...saved};if(saved.minPartConfigured!==true&&Number(saved.minPart)===5)s.minPart=1;}}catch(e){}
     try{if(hasSharedPlan){let raw=decodeURIComponent(escape(atob(location.hash.slice(6))));s={...DEFAULT(),...JSON.parse(raw)};}}catch(e){console.warn('Не удалось открыть план из ссылки',e)}
 }
 const normalize=()=>{s.salary=safeNum(s.salary,1e9);s.budget=Math.trunc(safeNum(s.budget,120));s.history=safeNum(s.history,1e8);for(let prop of ['manual','auto','avoided'])s[prop]=[...new Set(Array.isArray(s[prop])?s[prop]:[])].filter(k=>byKey.has(k)&&!byKey.get(k).holiday);s.recurring=Array.isArray(s.recurring)?s.recurring.slice(0,80):[];s.oneoff=Array.isArray(s.oneoff)?s.oneoff.slice(0,300):[];s.past14=!!s.past14;s.theme=['auto','light','dark'].includes(s.theme)?s.theme:'auto';
  s.preference=['summer','spread','holidays','any'].includes(s.preference)?s.preference:'holidays';
- s.minGap=Math.trunc(safeNum(s.minGap,365));s.gapUnit=['calendar','working'].includes(s.gapUnit)?s.gapUnit:'calendar';s.gapConfigured=!!s.gapConfigured;if(!s.gapConfigured){s.minGap=21;s.gapUnit='calendar';}s.maxRestDays=Math.trunc(Math.max(1,safeNum(s.maxRestDays,365)||10));s.minPart=Math.trunc(Math.max(1,safeNum(s.minPart,120)||5));s.minParts=Math.trunc(Math.max(1,safeNum(s.minParts,20)||1));s.maxParts=Math.trunc(Math.max(s.minParts,safeNum(s.maxParts,20)||6));s.weekendPolicy=['allow','discourage','require'].includes(s.weekendPolicy)?s.weekendPolicy:'allow';s.weekendRule=['any','pair','week','friday','custom'].includes(s.weekendRule)?s.weekendRule:'any';s.minWeekendDays=Math.trunc(safeNum(s.minWeekendDays,14));if(!validWorkYearStart(s.workYearStart))s.workYearStart='2027-01-01';for(let prop of ['preferredMonths','avoidedMonths'])s[prop]=[...new Set(Array.isArray(s[prop])?s[prop].map(Number):[])].filter(m=>Number.isInteger(m)&&m>=0&&m<12);
+ s.minGap=Math.trunc(safeNum(s.minGap,365));s.gapUnit=['calendar','working'].includes(s.gapUnit)?s.gapUnit:'working';s.gapConfigured=!!s.gapConfigured;if(!s.gapConfigured){s.minGap=10;s.gapUnit='working';}s.maxRestDays=Math.trunc(Math.max(1,safeNum(s.maxRestDays,365)||10));s.minPart=Math.trunc(Math.max(1,safeNum(s.minPart,120)||1));s.minParts=Math.trunc(Math.max(1,safeNum(s.minParts,20)||1));s.maxParts=Math.trunc(Math.max(s.minParts,safeNum(s.maxParts,20)||6));s.weekendPolicy=['allow','discourage','require'].includes(s.weekendPolicy)?s.weekendPolicy:'allow';s.weekendRule=['any','pair','week','friday','custom'].includes(s.weekendRule)?s.weekendRule:'any';s.minWeekendDays=Math.trunc(safeNum(s.minWeekendDays,14));if(!validWorkYearStart(s.workYearStart))s.workYearStart='2027-01-01';for(let prop of ['preferredMonths','avoidedMonths'])s[prop]=[...new Set(Array.isArray(s[prop])?s[prop].map(Number):[])].filter(m=>Number.isInteger(m)&&m>=0&&m<12);
  s.blockedMonths=[...new Set(Array.isArray(s.blockedMonths)?s.blockedMonths.map(Number):[])].filter(m=>Number.isInteger(m)&&m>=0&&m<12);
  s.blockedRanges=(Array.isArray(s.blockedRanges)?s.blockedRanges:[]).filter(r=>r&&byKey.has(r.from)&&byKey.has(r.to)&&r.from<=r.to).slice(0,50).map(r=>({id:String(r.id||id()),from:r.from,to:r.to}));};normalize();
-s.fourDay = validFourDay(s.fourDay) ? s.fourDay : null;
 let data = null;
 let toastTimer;
 let renderPending = false;
 let plannerNotice = '';
 let plannerError = '';
 let alternativePlans = null;
+let planSearch = null;
 let fourDayResult = null;
+let fourDayDraft = normalizeFourDay(s.fourDay);
+delete s.fourDay;
 const planner = createVacationPlanner(days, humanDate);
 const el=id=>document.getElementById(id);
 function persist() {
@@ -832,9 +859,7 @@ function renderStats() {
         : fourteen ? '14-дневная часть есть в плане.'
         : budget ? 'Нужна непрерывная часть из 14 отпускных дней.' : 'Бюджет — 0 дней.';
     setText('activeRules', `Между периодами: ${s.minGap} ${s.gapUnit === 'working' ? 'рабочих' : 'календарных'} дн. · Минимум в части: ${s.minPart} дн. ${legalStatus}`);
-    const issue = fourDayResult
-        ? fourDayBudgetError(fourDayResult)
-        : planner.manualProblem(s) || plannerError;
+    const issue = planner.manualProblem(s) || plannerError;
     const weekendOnly = data.periods.some((part) => part.items.every((day) => day.off));
     const messages = [issue || plannerNotice, legalStatus];
     if (weekendOnly) messages.push('Есть отпускная часть только на выходных.');
@@ -935,25 +960,13 @@ function renderExample() {
         </table>` : '';
 }
 function escapeAttr(st){return String(st).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fourDayBudgetError(result) {
-    if (result.fits) return '';
-    if (s.manual.length > s.budget) {
-        return `Вручную выбрано ${s.manual.length} дн. при бюджете ${s.budget}. ` +
-            'Увеличьте бюджет или снимите выбор с лишних ручных дат.';
-    }
-    const needed = s.manual.length + result.requested;
-    return `На ручные даты и четырёхдневку нужно ${needed} дн. отпуска при бюджете ${s.budget}. ` +
-        'Выберите меньший период или увеличьте бюджет.';
-}
-
 function updateFourDayPlan() {
     fourDayResult = null;
-    if (!s.fourDay) return;
-    const { weekday, from, to } = s.fourDay;
+    if (!fourDayDraft) return;
+    const { days: weekdays, from, to } = fourDayDraft;
     fourDayResult = planner.fourDayPlan(s, {
-        dow: fourDayWeekdays[weekday], from, to,
+        dows: weekdays.map((weekday) => fourDayWeekdays[weekday]), from, to,
     });
-    s.auto = fourDayResult.selected;
 }
 
 function showFourDayResult(message, warn = false) {
@@ -964,49 +977,46 @@ function showFourDayResult(message, warn = false) {
 
 function renderFourDay() {
     const result = fourDayResult;
-    const hasDates = Boolean(result?.fits && (result.requested || result.existing.length));
+    const hasDates = Boolean(result?.required);
     el('fourDayLinks').hidden = !hasDates;
-    el('removeFourDay').hidden = !result;
     if (!result) {
         showFourDayResult('');
         return;
     }
-    if (!result.fits) {
-        showFourDayResult(fourDayBudgetError(result), true);
-        return;
-    }
-    const { from, to } = s.fourDay;
+    const { from, to } = fourDayDraft;
     const range = from === to
         ? MONTHS[from - 1]
         : `${MONTHS[from - 1]}–${MONTHS[to - 1].toLowerCase()}`;
     const existing = result.existing.length;
-    const messages = [`${range}. Отпускных дней по графику: ${result.requested + existing}.`];
+    const messages = [`${range}. Отпускных дней по графику: ${result.required}.`];
     if (existing) messages.push(`Из них уже выбрано вручную: ${existing}.`);
-    if (result.off) messages.push(`Нерабочих дат пропущено: ${result.off}.`);
-    if (result.excluded) messages.push(`Дат из исключений пропущено: ${result.excluded}.`);
+    if (result.excluded) messages.push(`Нерабочих дат пропущено: ${result.excluded}.`);
+    if (s.auto.length) messages.push('При применении автодаты будут сброшены.');
+    if (!result.fits) {
+        messages.push(`В бюджет поместятся первые ${result.appliedDates.length} дн. по графику. Прежний ручной план будет заменён.`);
+    } else if (result.needsManualReset) {
+        messages.push('Текущий ручной план будет заменён графиком, чтобы он поместился в бюджет.');
+    }
     if (hasDates) {
-        const baseline = monthModel(new Set(s.manual));
+        const current = data;
+        const preview = monthModel(new Set(result.manualAfter));
         const periodNet = (model) => model.months.slice(from - 1, to)
             .reduce((sum, month) => sum + month.net, 0);
-        const net = periodNet(data);
+        const net = periodNet(preview);
         const formatChange = (value) => {
             const rounded = Math.round(value);
             const sign = rounded > 0 ? '+' : rounded < 0 ? '−' : '';
             return sign + fmtMoney(Math.abs(rounded));
         };
-        const baselineLabel = s.manual.length ? 'с ручным планом' : 'с расчётом без отпуска';
-        const periodChange = formatChange(net - periodNet(baseline));
-        const yearChange = formatChange(data.withNet - baseline.withNet);
+        const periodChange = formatChange(net - periodNet(current));
+        const yearChange = formatChange(preview.withNet - current.withNet);
         messages.push(
-            `За этот период на руки ${fmtMoney(net)}. Разница ${baselineLabel} за период ${periodChange}, за год ${yearChange}.`,
+            `Если применить даты вручную, на руки за этот период ${fmtMoney(net)}. ` +
+            `По сравнению с текущим планом за период ${periodChange}, за год ${yearChange}.`,
         );
     }
-    const remaining = s.budget - data.selected.size;
-    const needsDays = hasDates && !s.past14 && !has14(data.selected) && remaining < 14;
-    if (needsDays) {
-        messages.push(`Остаток ${remaining} дн. Для обязательной части нужно оставить не менее 14 дн., если вы её ещё не использовали.`);
-    }
-    showFourDayResult(messages.join(' '), needsDays);
+    messages.push('Нажмите «Применить как ручные даты», чтобы отметить их в календаре.');
+    showFourDayResult(messages.join(' '), !result.fits);
 }
 
 function renderAll() {
@@ -1044,9 +1054,10 @@ function invalidateComparison() {
 
 function planChanged(recheckAuto = false) {
     invalidateComparison();
+    resetPlanSearch();
     plannerError = '';
     plannerNotice = '';
-    if (recheckAuto && !s.fourDay) {
+    if (recheckAuto) {
         const previous = s.auto.length;
         s.auto = planner.retainedAuto(s);
         const removed = previous - s.auto.length;
@@ -1083,6 +1094,7 @@ function updateRule(id) {
         control.value = value;
         if (s[id] === value) return;
         s[id] = value;
+        if (id === 'minPart') s.minPartConfigured = true;
         if (id === 'minGap' || id === 'gapUnit') s.gapConfigured = true;
         if (id === 'minParts' && s.minParts > s.maxParts) {
             s.maxParts = s.minParts;
@@ -1164,13 +1176,14 @@ el('addOneoff').addEventListener('click', () => {
 for(let container of ['recurringRules','oneoffRules']){el(container).addEventListener('click',e=>{let btn=e.target.closest('[data-remove]');if(!btn)return;let kind=btn.dataset.remove;s[kind]=s[kind].filter(x=>x.id!==btn.dataset.id);renderBonusRules();planChanged();});el(container).addEventListener('change',e=>{let t=e.target;if(!t.dataset.kind)return;let obj=s[t.dataset.kind].find(x=>x.id===t.dataset.id);if(!obj)return;obj[t.dataset.field]=['amount','start','day','month'].includes(t.dataset.field)?Number(t.value):t.value;planChanged();});el(container).addEventListener('input',e=>{let t=e.target;if(!t.dataset.kind||!['amount','dates','day'].includes(t.dataset.field))return;let obj=s[t.dataset.kind].find(x=>x.id===t.dataset.id);if(!obj)return;obj[t.dataset.field]=t.dataset.field==='dates'?t.value:Number(t.value);planChanged();});}
 function selectManual(keys) {
     const manual = [...new Set([...s.manual, ...keys])];
-    if (manual.length > s.budget) {
-        toast(`Ручной выбор займёт ${manual.length} дн. при бюджете ${s.budget}.`);
+    const auto = s.auto.filter((key) => !keys.includes(key));
+    if (manual.length + auto.length > s.budget) {
+        toast(`Ручной выбор займёт ${manual.length + auto.length} дн. при бюджете ${s.budget}.`);
         return false;
     }
     const additions = new Set(keys);
     s.manual = manual;
-    s.auto = s.auto.filter((key) => !additions.has(key));
+    s.auto = auto;
     s.avoided = s.avoided.filter((key) => !additions.has(key));
     planChanged(true);
     return true;
@@ -1189,8 +1202,7 @@ function toggleDay(key, force) {
     } else {
         s.manual = s.manual.filter((item) => item !== key);
         s.auto = s.auto.filter((item) => item !== key);
-        const inFourDaySchedule = s.fourDay && fourDayResult?.existing.includes(key);
-        if ((current === 'auto' || inFourDaySchedule) && !s.avoided.includes(key)) {
+        if (current === 'auto' && !s.avoided.includes(key)) {
             s.avoided.push(key);
         }
         planChanged(true);
@@ -1308,11 +1320,6 @@ function planningInput() {
     if (error) return { error };
     const manual = new Set(s.manual);
     const options = planner.solverOptions(s, segmentsForSet(manual));
-    if (options.minParts > 0 && options.budget < s.minPart) {
-        return {
-            error: 'Оставшихся отпускных дней меньше минимума в части. Увеличьте бюджет или уменьшите минимум.',
-        };
-    }
     const bonuses = makeBonusPlan();
     const baseline = monthModel(manual, bonuses);
     const unit = Math.max(1, (s.salary + s.history) / 29.3, ...baseline.months.map((m) => m.average));
@@ -1338,12 +1345,6 @@ function planningInput() {
         }
         return { ...candidate, estimatedNet: estimatedNet / unit, preference };
     });
-    if (options.requires14 && !options.hasCompleted14DayPart &&
-        !candidates.some((candidate) => candidate.has14DayPart)) {
-        return {
-            error: 'Не найдено места для 14 отпускных дней подряд в заданном рабочем году. Проверьте бюджет, исключённые даты и промежутки до ручных периодов.',
-        };
-    }
     return { manual, options, candidates, bonuses };
 }
 
@@ -1361,7 +1362,7 @@ function keysFor(plan) {
     return plan.flatMap((candidate) => candidate.leaveKeys).sort();
 }
 
-function improveMoneyPlan(input, initialPlans) {
+function improveMoneyPlan(input, initialPlans, excludedSelections) {
     const { candidates, options, bonuses, manual } = input;
     const evaluate = (plan) => {
         const model = monthModel(new Set([...manual, ...keysFor(plan)]), bonuses);
@@ -1375,7 +1376,10 @@ function improveMoneyPlan(input, initialPlans) {
         (Math.abs(score.net - best.net) <= .005 && score.preference > best.preference);
     let best = initialPlans[0];
     let bestScore = evaluate(best);
+    const used = keysFor(best).length;
     for (const plan of initialPlans.slice(1)) {
+        const keys = keysFor(plan);
+        if (keys.length !== used || excludedSelections.has(keys.join(','))) continue;
         const score = evaluate(plan);
         if (better(score, bestScore)) {
             best = plan;
@@ -1396,6 +1400,7 @@ function improveMoneyPlan(input, initialPlans) {
                     (needs14 && !candidate.has14DayPart)) continue;
                 if (!others.every((other) => planner.compatible(candidate, other, s))) continue;
                 const plan = [...others, candidate].sort((a, b) => a.restStartIndex - b.restStartIndex);
+                if (excludedSelections.size && excludedSelections.has(keysFor(plan).join(','))) continue;
                 const score = evaluate(plan);
                 if (better(score, bestScore)) {
                     best = plan;
@@ -1408,7 +1413,20 @@ function improveMoneyPlan(input, initialPlans) {
     return best;
 }
 
-function solvePresets(styles) {
+function scoreAndSolve(style, candidates, options) {
+    const scored = candidates.map((candidate) => {
+        const rest = candidate.restLength;
+        const money = candidate.estimatedNet;
+        const preference = candidate.preference;
+        const score = style === 'money' ? money + .06 * preference
+            : style === 'rest' ? rest + rest ** 1.16 * .25 + preference
+            : rest * .45 + rest ** 1.12 * .15 + money * .85 + preference;
+        return { ...candidate, score, priority: style === 'rest' ? rest : 0 };
+    });
+    return optimizeIntervals(scored, options);
+}
+
+function solvePresets(styles, excludedPlans = []) {
     const input = planningInput();
     const results = new Map();
     if (input.error) {
@@ -1418,67 +1436,179 @@ function solvePresets(styles) {
     const spread = s.preference === 'spread';
     const options = {
         ...input.options,
+        excludedPlans,
         yearLength: spread ? days.length : undefined,
         spreadWeight: spread ? 16 : 0,
     };
-    const seeds = new Map();
-    const searchStyles = styles.includes('money') ? Object.keys(styleLabels) : styles;
-    for (const style of searchStyles) {
-        const scored = input.candidates.map((candidate) => {
-            const rest = candidate.restLength;
-            const money = candidate.estimatedNet;
-            const preference = candidate.preference;
-            const score = style === 'money' ? money + .06 * preference
-                : style === 'rest' ? rest + rest ** 1.16 * .25 + preference
-                : rest * .45 + rest ** 1.12 * .15 + money * .85 + preference;
-            return { ...candidate, score, priority: style === 'rest' ? rest : 0 };
-        });
-        const result = optimizeIntervals(scored, options);
-        if (result.status === 'optimal') seeds.set(style, result.plan);
+    const excludedSelections = new Set(excludedPlans.map((plan) => keysFor(plan).join(',')));
+    const unrestrictedPlans = new Map();
+    function solveUnrestricted(style) {
+        if (!unrestrictedPlans.has(style)) {
+            unrestrictedPlans.set(style, scoreAndSolve(style, input.candidates, options));
+        }
+        return unrestrictedPlans.get(style);
     }
     for (const style of styles) {
-        const seed = seeds.get(style);
-        if (!seed) {
+        const workdaysOnly = style === 'rest';
+        const needs14 = options.requires14 && !options.hasCompleted14DayPart;
+        const notice = '';
+        const settings = s;
+        const styleOptions = workdaysOnly && needs14
+            ? { ...options, minimizeOffDays: true }
+            : options;
+        const candidates = workdaysOnly
+            ? input.candidates.filter((candidate) => {
+                  const mandatoryPart = needs14
+                      ? candidate.parts.find((part) => planner.has14([part], s))
+                      : null;
+                  return candidate.parts.every((part) => {
+                      if (part.items.every((day) => day.work)) return true;
+                      return part === mandatoryPart &&
+                          part.items.length >= 14 &&
+                          part.items.filter((day) => day.off).length <= 4;
+                  });
+              }).map((candidate) => ({
+                  ...candidate,
+                  offDays: candidate.parts
+                      .reduce((sum, part) => sum + part.items.filter((day) => day.off).length, 0),
+              }))
+            : input.candidates;
+
+        let error = '';
+        if (styleOptions.budget < 0 || styleOptions.maxParts < 0) {
+            error = 'Для обязательной части нужно оставить 14 дней и одну часть. Добавьте её вручную или увеличьте бюджет и число частей.';
+        } else if (styleOptions.minParts > 0 && styleOptions.budget < s.minPart) {
+            error = 'Оставшихся отпускных дней меньше минимума в части. Увеличьте бюджет или уменьшите минимум.';
+        } else if (workdaysOnly && needs14 &&
+            !candidates.some((candidate) => candidate.has14DayPart)) {
+            error = 'Не найден обязательный период из 14 отпускных дней с максимум четырьмя выходными. Проверьте исключённые даты, месяцы и промежутки до ручных периодов.';
+        } else if (!workdaysOnly && needs14 &&
+            !candidates.some((candidate) => candidate.has14DayPart)) {
+            error = 'Не найдено места для 14 отпускных дней подряд в заданном рабочем году. Проверьте бюджет, исключённые даты и промежутки до ручных периодов.';
+        }
+        if (error) {
+            results.set(style, { error });
+            continue;
+        }
+
+        const solved = workdaysOnly
+            ? scoreAndSolve(style, candidates, styleOptions)
+            : solveUnrestricted(style);
+        if (solved.status !== 'optimal') {
             results.set(style, {
                 error: 'Допустимый план не найден. Попробуйте увеличить доступное окно, уменьшить минимум дней в части или изменить число частей.',
             });
             continue;
         }
-        const plan = style === 'money'
-            ? improveMoneyPlan(input, [seed, ...[...seeds.entries()]
-                .filter(([key]) => key !== 'money').map(([, value]) => value)])
-            : seed;
+        let plan = solved.plan;
+        if (style === 'money') {
+            const otherSeeds = ['rest', 'balanced']
+                .map(solveUnrestricted)
+                .filter((result) => result.status === 'optimal')
+                .map((result) => result.plan);
+            plan = improveMoneyPlan(input, [plan, ...otherSeeds], excludedSelections);
+        }
         const selected = keysFor(plan);
-        const error = planner.validate(s, selected);
-        results.set(style, error ? { error } : { selected });
+        error = planner.validate(settings, selected);
+        results.set(style, error ? { error } : { selected, plan, notice });
     }
     return results;
 }
 
-function applyPlan(selected, style) {
-    s.fourDay = null;
+function applyPlan({ selected, notice }, style) {
     s.auto = selected;
     plannerError = '';
     plannerNotice = selected.length
         ? `«${styleLabels[style]}». Подобрано ${selected.length} дн.`
-        : 'Ручной план прошёл проверку.';
+        : 'Автоматические даты не добавлены. Ручные даты сохранены.';
+    if (notice) plannerNotice = selected.length ? `${plannerNotice} ${notice}` : notice;
     scheduleRender();
     toast(plannerNotice);
+}
+
+function resetPlanSearch() {
+    planSearch = null;
+    el('nextPlanControls').hidden = true;
+    el('nextPlan').disabled = false;
+    setText('nextPlanStatus', '');
+}
+
+function startPlanSearch(solved, style) {
+    resetPlanSearch();
+    applyPlan(solved, style);
+    if (!solved.selected.length) return;
+    planSearch = { style, used: solved.selected.length, shown: [solved.plan] };
+    el('nextPlanControls').hidden = false;
+}
+
+let calculationInProgress = false;
+async function runWithCalculationSpinner(calculate) {
+    if (calculationInProgress) return;
+    calculationInProgress = true;
+    const panel = el('vacationPresets');
+    const status = el('calculationStatus');
+    const controls = [...panel.querySelectorAll(
+        '[data-preset], #compareAlternatives, #nextPlan',
+    )];
+    const disabled = controls.map((control) => control.disabled);
+    let restoreDisabled = disabled;
+    const shownAt = performance.now();
+    panel.setAttribute('aria-busy', 'true');
+    status.hidden = false;
+    controls.forEach((control) => { control.disabled = true; });
+    try {
+        // Let the browser paint the status before the synchronous search starts.
+        await new Promise((resolve) => window.setTimeout(resolve, 40));
+        controls.forEach((control, index) => { control.disabled = disabled[index]; });
+        calculate();
+        for (const control of panel.querySelectorAll('[data-alternative]')) {
+            if (controls.includes(control)) continue;
+            controls.push(control);
+            disabled.push(control.disabled);
+        }
+        restoreDisabled = controls.map((control) => control.disabled);
+        controls.forEach((control) => { control.disabled = true; });
+        const remaining = 180 - (performance.now() - shownAt);
+        if (remaining > 0) {
+            await new Promise((resolve) => window.setTimeout(resolve, remaining));
+        }
+    } finally {
+        controls.forEach((control, index) => {
+            control.disabled = restoreDisabled[index] ?? disabled[index];
+        });
+        status.hidden = true;
+        panel.setAttribute('aria-busy', 'false');
+        calculationInProgress = false;
+    }
 }
 
 function optimize(style) {
     const solved = solvePresets([style]).get(style);
     if (!solved.error) {
-        applyPlan(solved.selected, style);
+        startPlanSearch(solved, style);
         return;
     }
-    s.fourDay = null;
+    resetPlanSearch();
     s.auto = [];
     plannerNotice = '';
     plannerError = solved.error;
     toast(plannerError);
     scheduleRender();
 }
+
+el('nextPlan').addEventListener('click', () => runWithCalculationSpinner(() => {
+    if (!planSearch) return;
+    const { style, used, shown } = planSearch;
+    const solved = solvePresets([style], shown).get(style);
+    if (solved.error || solved.selected.length !== used) {
+        setText('nextPlanStatus', 'Других вариантов с таким же числом отпускных дней не найдено.');
+        el('nextPlan').disabled = true;
+        return;
+    }
+    shown.push(solved.plan);
+    applyPlan(solved, style);
+    setText('nextPlanStatus', `Показан вариант № ${shown.length}.`);
+}));
 
 function showAlternativePlans() {
     alternativePlans = solvePresets(Object.keys(styleLabels));
@@ -1500,45 +1630,63 @@ function showAlternativePlans() {
             <small>Отпуск: ${dates(model.periods) || 'даты не выбраны'}</small>
             <small>Отдых: ${dates(model.runs) || 'даты не выбраны'}</small>
             <small>На руки за год: ${fmtMoney(model.withNet)} · разница: ${model.difference >= 0 ? '+' : '−'}${fmtMoney(Math.abs(model.difference))}</small>
+            ${solved.notice ? `<small>${escapeAttr(solved.notice)}</small>` : ''}
             <button type="button" class="small-btn" data-alternative="${style}" aria-label="Применить вариант «${title}»">Применить</button>
         </article>`;
     }).join('');
 }
 
-el('compareAlternatives').addEventListener('click', showAlternativePlans);
+el('compareAlternatives').addEventListener('click', () =>
+    runWithCalculationSpinner(showAlternativePlans),
+);
 el('alternativePlans').addEventListener('click', (event) => {
+    if (calculationInProgress) return;
     const style = event.target.closest('[data-alternative]')?.dataset.alternative;
-    const selection = alternativePlans?.get(style)?.selected;
-    if (selection) applyPlan(selection, style);
+    const solved = alternativePlans?.get(style);
+    if (solved?.selected) startPlanSearch(solved, style);
 });
 for (const button of document.querySelectorAll('[data-preset]')) {
-    button.addEventListener('click', () => optimize(button.dataset.preset));
+    button.addEventListener('click', () =>
+        runWithCalculationSpinner(() => optimize(button.dataset.preset)),
+    );
 }
 el('fourDayForm').addEventListener('submit', (event) => {
     event.preventDefault();
-    const fourDay = {
-        weekday: el('fourDayWeekday').value,
-        from: Number(el('fourDayFrom').value),
-        to: Number(el('fourDayTo').value),
-    };
+    const fourDay = fourDayFormValue();
     if (!validFourDay(fourDay)) {
-        showFourDayResult('Последний месяц должен совпадать с первым или быть позже.', true);
+        showFourDayResult('Отметьте хотя бы один день недели и проверьте выбранный период.', true);
         return;
     }
-    s.fourDay = fourDay;
-    planChanged();
-});
-el('removeFourDay').addEventListener('click', () => {
-    s.fourDay = null;
+    fourDayDraft = fourDay;
+    updateFourDayPlan();
+    const { appliedDates, fits, manualAfter, needsManualReset, required } = fourDayResult;
+    const resetWarning = !fits
+        ? `Новый график требует ${required} дн. при бюджете ${s.budget}. Прежний план будет заменён частичным графиком. `
+        : needsManualReset
+            ? 'Текущий ручной план будет заменён, чтобы освободить бюджет. '
+            : '';
+    if (!window.confirm(
+        `Применение сокращённой недели сбросит все автоматические даты. ${resetWarning}Продолжить?`
+    )) return;
+
+    fourDayDraft = null;
     s.auto = [];
+    s.manual = manualAfter;
+    s.avoided = s.avoided.filter((key) => !appliedDates.includes(key));
     planChanged();
-    el('runFourDay').focus();
+    if (!fits) {
+        toast(`Автодаты и прежний ручной план сброшены. Применён частичный график: ${appliedDates.length} дн.`);
+        return;
+    }
+    toast(needsManualReset
+        ? `Автодаты сброшены. Старый ручной выбор заменён: ${appliedDates.length} дн.`
+        : `Автодаты сброшены. Добавлено вручную: ${appliedDates.length} дн.`);
 });
 el('clearSelection').addEventListener('click', () => {
     s.manual = [];
     s.auto = [];
     s.avoided = [];
-    s.fourDay = null;
+    fourDayDraft = null;
     planChanged();
     setText('rangeStatus', '');
     toast('Отпускные даты очищены');
@@ -1553,12 +1701,29 @@ function copy(text){if(navigator.clipboard?.writeText)return navigator.clipboard
 el('copySummary').addEventListener('click',async()=>{let ok=await copy(summaryText());toast(ok?'Итоги скопированы':'Не удалось скопировать, выделите текст вручную');});
 el('share').addEventListener('click',async()=>{let obj={...s};let json=JSON.stringify(obj),hash='#plan='+btoa(unescape(encodeURIComponent(json))),url=location.origin+location.pathname+hash;if(location.protocol==='file:'){toast('Для ссылки разместите HTML на сайте. Сейчас открыт локальный файл.');return;}if(url.length>7000){toast('План слишком большой для удобной ссылки. Используйте CSV или .ics.');return;}let ok=await copy(url);toast(ok?'Ссылка на план скопирована. Она содержит информацию о зарплате!':'Не удалось скопировать ссылку');});
 setControls();renderBonusRules();renderRestrictions();
-const { weekday, from, to } = s.fourDay || defaultFourDay;
+const { days: initialFourDayDays, from, to } = fourDayDraft || defaultFourDay;
 const fourDayMonths = MONTHS.map((month, index) => [index + 1, month]);
-el('fourDayWeekday').value = weekday;
+const fourDayFormValue = () => normalizeFourDay({
+    days: [...el('fourDayWeekdays').querySelectorAll('input:checked')].map((input) => input.value),
+    from: Number(el('fourDayFrom').value),
+    to: Number(el('fourDayTo').value),
+});
+for (const input of el('fourDayWeekdays').querySelectorAll('input')) {
+    input.checked = initialFourDayDays.includes(input.value);
+    input.addEventListener('change', () => {
+        fourDayDraft = fourDayFormValue();
+        scheduleRender();
+    });
+}
 el('fourDayFrom').innerHTML = makeSelect(fourDayMonths, from);
 el('fourDayTo').innerHTML = makeSelect(fourDayMonths, to);
-el('vacationFourDay').open = Boolean(s.fourDay) || location.hash === '#vacationFourDay';
+for (const id of ['fourDayFrom', 'fourDayTo']) {
+    el(id).addEventListener('change', () => {
+        fourDayDraft = fourDayFormValue();
+        scheduleRender();
+    });
+}
+el('vacationFourDay').open = Boolean(fourDayDraft) || location.hash === '#vacationFourDay';
 el('fourDayExample').hidden = !inFourDayExample;
 if (inFourDayExample) {
     setText('storageHelp', 'Изменения в примере действуют до перезагрузки страницы.');
@@ -1572,12 +1737,10 @@ if (inExample) {
     el('vacationExample').hidden = false;
     if (examplePlan) el('periodList').open = true;
 }
-if (!s.fourDay) {
-    const savedAutoCount = s.auto.length;
-    s.auto = planner.retainedAuto(s);
-    if (s.auto.length < savedAutoCount) {
-        plannerNotice = `Из сохранённого плана убрано ${savedAutoCount - s.auto.length} автодн., нарушавших ограничения.`;
-    }
+const savedAutoCount = s.auto.length;
+s.auto = planner.retainedAuto(s);
+if (s.auto.length < savedAutoCount) {
+    plannerNotice = `Из сохранённого плана убрано ${savedAutoCount - s.auto.length} автодн., нарушавших ограничения.`;
 }
 renderAll();
 })();

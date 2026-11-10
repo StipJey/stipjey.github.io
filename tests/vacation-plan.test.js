@@ -19,7 +19,7 @@ const planner = createVacationPlanner(calendar, (key) => key);
 const dates = (from, to) => calendar.filter(({ key }) => from <= key && key <= to)
     .map(({ key }) => key);
 const settings = (overrides = {}) => ({
-    budget: 28, minGap: 21, gapUnit: 'calendar', minPart: 5,
+    budget: 28, minGap: 10, gapUnit: 'working', minPart: 1,
     minParts: 1, maxParts: 6, maxRestDays: 10,
     workYearStart: '2027-01-01', past14: true,
     weekendPolicy: 'allow', weekendRule: 'any', minWeekendDays: 0,
@@ -27,25 +27,44 @@ const settings = (overrides = {}) => ({
     ...overrides,
 });
 
-test('a four-day schedule skips holidays, transfers and exclusions without duplicating manual dates', () => {
-    const january = planner.fourDayPlan(settings(), { dow: 5, from: 1, to: 1 });
-    assert.equal(january.off, 1);
-    assert.deepEqual(january.selected, [
-        '2027-01-08', '2027-01-15', '2027-01-22', '2027-01-29',
-    ]);
-
+test('the short-week selector supports multiple weekdays and ignores automatic-only exclusions', () => {
     const may = planner.fourDayPlan(settings({
         manual: ['2027-05-17'],
+        auto: ['2027-05-07'],
         blockedRanges: [{ from: '2027-05-17', to: '2027-05-24' }],
-        avoided: ['2027-06-07'],
-        blockedMonths: [6],
-    }), { dow: 1, from: 5, to: 7 });
-    assert.equal(may.off, 2);
+        avoided: ['2027-05-31'],
+        blockedMonths: [4],
+    }), { dows: [1, 4, 5], from: 5, to: 5 });
     assert.deepEqual(may.existing, ['2027-05-17']);
-    assert.equal(may.excluded, 6);
+    assert.equal(may.excluded, 2);
     assert.deepEqual(may.selected, [
-        '2027-05-31', '2027-06-14', '2027-06-21', '2027-06-28',
+        '2027-05-06', '2027-05-07', '2027-05-13', '2027-05-14',
+        '2027-05-20', '2027-05-21',
+        '2027-05-24', '2027-05-27', '2027-05-28', '2027-05-31',
     ]);
+    assert.equal(may.fits, true);
+    assert.equal(may.needsManualReset, false);
+});
+
+test('the short-week application replaces old manual dates when only the proposed days fit', () => {
+    const plan = planner.fourDayPlan(settings({
+        budget: 4,
+        manual: ['2027-06-04', '2027-08-10'],
+        auto: ['2027-10-04'],
+    }), { dows: [5], from: 6, to: 6 });
+    assert.deepEqual(plan.existing, ['2027-06-04']);
+    assert.deepEqual(plan.selected, ['2027-06-11', '2027-06-18', '2027-06-25']);
+    assert.equal(plan.required, 4);
+    assert.equal(plan.fits, true);
+    assert.equal(plan.needsManualReset, true);
+});
+
+test('the short-week application rejects a proposed schedule larger than the budget', () => {
+    const plan = planner.fourDayPlan(settings({ budget: 2 }), {
+        dows: [5], from: 6, to: 6,
+    });
+    assert.equal(plan.required, 4);
+    assert.equal(plan.fits, false);
 });
 
 test('the minimum applies to each paid part, even inside one rest period', () => {
@@ -64,9 +83,46 @@ test('the minimum applies to each paid part, even inside one rest period', () =>
     ));
 });
 
+test('combines two leave parts separated by transferred and official holidays', () => {
+    const february = calendar.map((day) => {
+        if (day.key === '2027-02-22') return { ...day, off: true, work: false, isWorkingDay: false };
+        if (day.key === '2027-02-23') return { ...day, holiday: true, off: true, work: false, isWorkingDay: false };
+        return day;
+    });
+    const februaryPlanner = createVacationPlanner(february, (key) => key);
+    const plan = settings({
+        budget: 15, minGap: 0, gapUnit: 'calendar', minPart: 1,
+        minParts: 2, maxParts: 2, maxRestDays: 10, past14: false,
+        blockedRanges: [
+            { from: '2027-01-01', to: '2027-02-07' },
+            { from: '2027-02-25', to: '2027-12-31' },
+        ],
+    });
+    const selected = [
+        ...dates('2027-02-08', '2027-02-21'), '2027-02-24',
+    ];
+    const candidates = februaryPlanner.candidatesFor(plan);
+    const candidate = candidates.find((item) =>
+        item.leaveKeys.join() === selected.join(),
+    );
+
+    assert.ok(candidate);
+    assert.equal(candidate.partCount, 2);
+    assert.equal(candidate.has14DayPart, true);
+    assert.equal(candidate.restLength, 19);
+    assert.equal(februaryPlanner.validate(plan, selected), '');
+    const solved = optimizeIntervals(
+        candidates.map((item) => ({ ...item, score: item.cost })),
+        februaryPlanner.solverOptions(plan, []),
+    );
+    assert.equal(solved.status, 'optimal');
+    assert.equal(solved.used, 15);
+    assert.equal(solved.plan.reduce((sum, item) => sum + item.partCount, 0), 2);
+});
+
 test('zero gap still requires a working separator from fixed manual dates', () => {
     const plan = settings({
-        budget: 6, minGap: 0, manual: ['2027-08-10'],
+        budget: 6, minGap: 0, minPart: 5, manual: ['2027-08-10'],
         blockedRanges: [
             { from: '2027-01-01', to: '2027-08-10' },
             { from: '2027-08-16', to: '2027-10-03' },
@@ -91,17 +147,29 @@ test('old plans retain compatible automatic periods when a different period is i
 
 test('a short saved part does not remove a valid part connected by a weekend', () => {
     const week = dates('2027-06-14', '2027-06-18');
-    const plan = settings({ auto: ['2027-06-11', ...week] });
+    const plan = settings({ minPart: 5, auto: ['2027-06-11', ...week] });
     assert.deepEqual(planner.retainedAuto(plan), week);
 });
 
-test('manual errors report the excess number of parts and the next possible date', () => {
+test('saved automatic plans discard a leave part made only of weekend days', () => {
+    const plan = settings({
+        budget: 3,
+        past14: true,
+        minGap: 0,
+        auto: ['2027-06-12', '2027-06-13', '2027-06-15'],
+    });
+
+    assert.deepEqual(planner.retainedAuto(plan), ['2027-06-15']);
+    assert.notEqual(planner.validate(plan, plan.auto), '');
+});
+
+test('manual dates are exempt from configured part-count and gap validation', () => {
     const plan = settings({
         budget: 2, manual: ['2027-08-10', '2027-08-31'],
     });
-    assert.match(planner.manualProblem({ ...plan, maxParts: 1 }), /2 частей при максимуме 1/);
-    assert.match(planner.manualProblem(plan), /20 полных.*21.*2027-09-01/);
-    assert.equal(planner.manualProblem({ ...plan, manual: ['2027-08-10', '2027-09-01'] }), '');
+    assert.equal(planner.manualProblem({ ...plan, maxParts: 1 }), '');
+    assert.equal(planner.manualProblem(plan), '');
+    assert.equal(planner.validate(plan, []), '');
 });
 
 test('different strategy scores still use the largest feasible share of the budget', () => {

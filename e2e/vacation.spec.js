@@ -46,7 +46,7 @@ async function selectRange(page, start, end) {
     await page.getByRole('button', { name: 'Добавить даты вручную' }).click();
 }
 
-test('shows a 20-day gap immediately and preserves manual dates on budget edits', async ({
+test('does not validate manually selected intervals and preserves them on budget edits', async ({
     page,
 }) => {
     await openCalendar(page, { budget: 2, past14: true });
@@ -57,18 +57,16 @@ test('shows a 20-day gap immediately and preserves manual dates on budget edits'
 
     await first.click();
     await tooEarly.click();
-    await expect(calendarStatus).toHaveText(
-        /20 полных календарных дн\. Нужно 21.*1 сен/
-    );
+    await expect(calendarStatus).toBeHidden();
     await page.getByRole('button', { name: /Максимум отдыха/ }).click();
-    await expect(calendarStatus).toHaveText(/20 полных календарных дн\./);
+    await expect(calendarStatus).not.toContainText(/полных календарных дн\./);
 
     await tooEarly.click();
     await allowed.click();
     await expect(calendarStatus).toBeHidden();
     await page.getByRole('button', { name: /Максимум отдыха/ }).click();
     await expect(page.locator('#legalHint')).toContainText(
-        'Ручной план прошёл проверку.'
+        'Автоматические даты не добавлены. Ручные даты сохранены.'
     );
 
     const budget = page.locator('#budget');
@@ -312,6 +310,7 @@ test('opens the article examples with their dates and visible rest periods', asy
 test('opens the four-day summer example, calculates net income and keeps the personal plan', async ({
     page,
 }) => {
+    page.on('dialog', (dialog) => dialog.accept());
     const personalDates = ['2027-09-01'];
     await openCalendar(page, { salary: 185000, manual: personalDates });
     await page.getByRole('link', { name: 'Когда выгодно брать отпуск' }).click();
@@ -322,26 +321,31 @@ test('opens the four-day summer example, calculates net income and keeps the per
     await exampleLink.click();
     await expect(page).toHaveURL(vacationPage + '?week=friday&from=6&to=8#vacationFourDay');
     await expect(page.locator('#salary')).toHaveValue('300000');
-    await expect(page.getByLabel('Какой день брать в отпуск')).toHaveValue('friday');
+    await expect(page.locator('#fourDayWeekdays input[value="friday"]')).toBeChecked();
     await expect(page.locator('#fourDayResult')).toContainText('Июнь–август. Отпускных дней по графику: 13.');
     await expect(page.locator('#fourDayResult')).toContainText(
-        /за период −41\s275 ₽, за год −40\s326 ₽/,
+        /По сравнению с текущим планом за период −41\s275 ₽, за год −40\s326 ₽/,
     );
-    expect(await selectedDates(page, 'auto')).toEqual([
+    expect(await selectedDates(page, 'manual')).toEqual([]);
+    expect(await selectedDates(page, 'auto')).toEqual([]);
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect.poll(() => selectedDates(page, 'manual')).toEqual([
         '2027-06-04', '2027-06-11', '2027-06-18', '2027-06-25',
         '2027-07-02', '2027-07-09', '2027-07-16', '2027-07-23', '2027-07-30',
         '2027-08-06', '2027-08-13', '2027-08-20', '2027-08-27',
     ]);
 
-    await page.getByLabel('Какой день брать в отпуск').selectOption('monday');
+    await page.locator('#fourDayWeekdays input[value="friday"]').uncheck();
+    await page.locator('#fourDayWeekdays input[value="monday"]').check();
     await page.getByLabel('Последний месяц').selectOption('6');
-    await page.getByRole('button', { name: 'Рассчитать четырёхдневку' }).click();
-    await expect(page.locator('#fourDayResult')).toHaveText(
-        /Июнь\. Отпускных дней по графику: 3\. Нерабочих дат пропущено: 1\. За этот период на руки 250\s438 ₽.*−10\s562 ₽/,
-    );
-    expect(await selectedDates(page, 'auto')).toEqual([
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect(page.locator('#fourDayResult')).toBeHidden();
+    await expect.poll(() => selectedDates(page, 'manual')).toEqual([
         '2027-06-07', '2027-06-21', '2027-06-28',
-    ]);
+        '2027-06-04', '2027-06-11', '2027-06-18', '2027-06-25',
+        '2027-07-02', '2027-07-09', '2027-07-16', '2027-07-23', '2027-07-30',
+        '2027-08-06', '2027-08-13', '2027-08-20', '2027-08-27',
+    ].sort());
     await expect(day(page, '2027-06-14')).toHaveAttribute('aria-pressed', 'false');
     await page.getByRole('link', { name: 'Перейти к своему плану' }).click();
     await expect(page.locator('#salary')).toHaveValue('185000');
@@ -349,38 +353,235 @@ test('opens the four-day summer example, calculates net income and keeps the per
     expect(await selectedDates(page, 'auto')).toEqual([]);
 });
 
-test('keeps manual dates and recalculates the four-day schedule after budget changes and reloads', async ({
+test('applies any selected weekdays as manual dates without automatic-plan rules', async ({
     page,
 }) => {
     const personalDates = ['2027-06-07', '2027-08-10'];
-    await openCalendar(page, { budget: 3, manual: personalDates });
+    await openCalendar(page, {
+        budget: 3,
+        past14: true,
+        manual: personalDates,
+        auto: ['2027-10-04'],
+    });
     await expect(page.locator('#salary')).toHaveValue('300000');
-    await page.getByText('Четырёхдневная рабочая неделя', { exact: true }).click();
-    await page.getByLabel('Какой день брать в отпуск').selectOption('monday');
+    await page.getByText('Сокращённая рабочая неделя', { exact: true }).click();
+    await page.locator('#fourDayWeekdays input[value="friday"]').uncheck();
+    await page.locator('#fourDayWeekdays input[value="monday"]').check();
     await page.getByLabel('Последний месяц').selectOption('6');
-    await page.getByRole('button', { name: 'Рассчитать четырёхдневку' }).click();
     const result = page.locator('#fourDayResult');
-    await expect(result).toContainText('нужно 4 дн. отпуска при бюджете 3');
-    expect(await selectedDates(page, 'manual')).toEqual(personalDates);
+    await expect(result).toContainText('автодаты будут сброшены.');
+    await expect(result).toContainText('Текущий ручной план будет заменён');
+    await expect(day(page, '2027-10-04')).toHaveAttribute('aria-pressed', 'true');
+    page.once('dialog', (dialog) => dialog.accept());
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect.poll(() => selectedDates(page, 'manual')).toEqual([
+        '2027-06-07', '2027-06-21', '2027-06-28',
+    ]);
     expect(await selectedDates(page, 'auto')).toEqual([]);
-
-    const budget = page.locator('#budget');
-    await budget.fill('4');
-    await budget.blur();
-    await expect(result).toContainText('Из них уже выбрано вручную: 1.');
-    await expect(result).toContainText('Для обязательной части нужно оставить не менее 14 дн.');
-    await expect(page.locator('#budgetText')).toHaveText('4 / 4');
+    await expect(page.locator('#budgetText')).toHaveText('3 / 3');
+    await expect(day(page, '2027-06-14')).toHaveAttribute('aria-pressed', 'false');
     await page.reload();
-    await expect(result).toContainText('Отпускных дней по графику: 3.');
-    expect(await selectedDates(page, 'manual')).toEqual(personalDates);
-    expect(await selectedDates(page, 'auto')).toEqual(['2027-06-21', '2027-06-28']);
+    expect(await selectedDates(page, 'manual')).toEqual([
+        '2027-06-07', '2027-06-21', '2027-06-28',
+    ]);
+    expect(await selectedDates(page, 'auto')).toEqual([]);
     await day(page, '2027-06-07').click();
     await expect(day(page, '2027-06-07')).toHaveAttribute('aria-pressed', 'false');
-    await expect(result).toContainText('Отпускных дней по графику: 2.');
-    await page.getByRole('button', { name: 'Убрать четырёхдневку' }).click();
     await expect(result).toBeHidden();
-    expect(await selectedDates(page, 'manual')).toEqual(['2027-08-10']);
+    expect(await selectedDates(page, 'manual')).toEqual([
+        '2027-06-21', '2027-06-28',
+    ]);
     expect(await selectedDates(page, 'auto')).toEqual([]);
+});
+
+test('applies as much of the selected weekday schedule as the budget allows', async ({
+    page,
+}) => {
+    await openCalendar(page, {
+        budget: 2,
+        past14: true,
+        manual: ['2027-01-11'],
+        auto: ['2027-10-04'],
+    });
+    await page.getByText('Сокращённая рабочая неделя', { exact: true }).click();
+    await page.locator('#fourDayWeekdays input[value="friday"]').uncheck();
+    await page.locator('#fourDayWeekdays input[value="monday"]').check();
+    await page.getByLabel('Первый месяц').selectOption('6');
+    await page.getByLabel('Последний месяц').selectOption('6');
+    const result = page.locator('#fourDayResult');
+    await expect(result).toContainText('первые 2 дн. по графику');
+    await expect(result).toContainText('Прежний ручной план будет заменён');
+
+    page.once('dialog', (dialog) => dialog.accept());
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect.poll(() => selectedDates(page, 'manual')).toEqual([
+        '2027-06-07', '2027-06-21',
+    ]);
+    await expect.poll(() => selectedDates(page, 'auto')).toEqual([]);
+    await expect(page.locator('#toast')).toContainText('Применён частичный график: 2 дн.');
+});
+
+test('four-day income forecast matches the exact plan that will be applied', async ({
+    page,
+}) => {
+    page.on('dialog', (dialog) => dialog.accept());
+    await openCalendar(page, {
+        salary: 300000,
+        budget: 4,
+        past14: true,
+        manual: ['2027-08-10'],
+    });
+    await page.getByText('Сокращённая рабочая неделя', { exact: true }).click();
+    await page.locator('#fourDayWeekdays input[value="friday"]').check();
+    await page.locator('#fourDayFrom').selectOption('6');
+    await page.locator('#fourDayTo').selectOption('6');
+
+    const forecast = page.locator('#fourDayResult');
+    await expect(forecast).toContainText('ручной план будет заменён');
+    await expect(forecast).toContainText(/за год −10\s872 ₽/);
+    const annualIncome = page.locator('#leaveNetYear');
+    const previousIncome = await annualIncome.textContent();
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect.poll(() => selectedDates(page, 'manual')).toEqual([
+        '2027-06-04', '2027-06-11', '2027-06-18', '2027-06-25',
+    ]);
+    const appliedIncome = await annualIncome.textContent();
+    const rubles = (text) => Number(text.replace(/[^\d]/g, ''));
+    expect(rubles(appliedIncome) - rubles(previousIncome)).toBe(-10872);
+
+    await page.locator('#fourDayTo').selectOption('7');
+    await page.locator('#fourDayTo').selectOption('6');
+    await expect(forecast).toContainText('за период 0 ₽, за год 0 ₽');
+});
+
+test('editing the short-week draft does not leave automatic dates over budget after cancel', async ({
+    page,
+}) => {
+    await openCalendar(page, {
+        budget: 5,
+        past14: true,
+        auto: ['2027-06-07', '2027-06-08', '2027-06-09', '2027-06-10'],
+    });
+    await page.getByText('Сокращённая рабочая неделя', { exact: true }).click();
+    await page.locator('#fourDayWeekdays input[value="friday"]').uncheck();
+    await page.locator('#fourDayWeekdays input[value="monday"]').check();
+
+    page.once('dialog', (dialog) => dialog.dismiss());
+    await page.getByRole('button', { name: 'Применить как ручные даты' }).click();
+    await expect(page.locator('#budgetText')).toHaveText('4 / 5');
+
+    const budget = page.locator('#budget');
+    await budget.fill('3');
+    await budget.blur();
+    await expect.poll(() => selectedDates(page, 'auto')).toEqual([]);
+    expect(await selectedDates(page, 'manual')).toEqual([]);
+
+    await expect(page.locator('#budgetText')).toHaveText('0 / 3');
+});
+
+test('all presets find two paid parts inside the February holiday rest period', async ({
+    page,
+}) => {
+    await openCalendar(page, {
+        budget: 15,
+        past14: false,
+        minGap: 0,
+        gapUnit: 'calendar',
+        gapConfigured: true,
+        minParts: 2,
+        maxParts: 2,
+        maxRestDays: 10,
+        blockedRanges: [
+            { from: '2027-01-01', to: '2027-02-07' },
+            { from: '2027-02-25', to: '2027-12-31' },
+        ],
+    });
+    for (const strategy of ['rest', 'money', 'balanced']) {
+        await page.locator(`[data-preset="${strategy}"]`).click();
+        await expect(page.locator('#budgetText')).toHaveText('15 / 15');
+        expect(await selectedDates(page, 'auto')).toHaveLength(15);
+        await expect(page.locator('#legalHint')).toContainText('14-дневная часть есть в плане.');
+    }
+});
+
+test('shows a spinner while automatic dates are being calculated', async ({ page }) => {
+    await openCalendar(page, { past14: true, minGap: 0, gapConfigured: true });
+    const spinner = page.locator('#calculationStatus');
+
+    const spinnerWasVisible = await page.evaluate(() => {
+        document.querySelector('[data-preset="money"]').click();
+        return !document.querySelector('#calculationStatus').hidden;
+    });
+    expect(spinnerWasVisible).toBe(true);
+    await expect(page.locator('#vacationPresets')).toHaveAttribute('aria-busy', 'false');
+    await expect(spinner).toBeHidden();
+    await expect(page.locator('#budgetText')).not.toHaveText('0 / 28');
+});
+
+test('cleans weekend-only automatic parts from a saved plan', async ({ page }) => {
+    await openCalendar(page, {
+        budget: 3,
+        past14: true,
+        minGap: 0,
+        gapConfigured: true,
+        auto: ['2027-06-19', '2027-06-20', '2027-06-22'],
+    });
+
+    expect(await selectedDates(page, 'auto')).toEqual(['2027-06-22']);
+    await expect(page.locator('#legalHint')).toContainText('убрано 2 автодн.');
+});
+
+test('finds two short leave parts connected by a Sunday without using it', async ({
+    page,
+}) => {
+    await openCalendar(page, {
+        budget: 8,
+        past14: true,
+        minPart: 2,
+        minParts: 2,
+        maxParts: 2,
+        weekendPolicy: 'require',
+        blockedRanges: [
+            { from: '2027-01-01', to: '2027-08-05' },
+            { from: '2027-08-15', to: '2027-12-31' },
+        ],
+    });
+    const expected = [
+        '2027-08-06', '2027-08-07', '2027-08-09', '2027-08-10',
+        '2027-08-11', '2027-08-12', '2027-08-13', '2027-08-14',
+    ];
+    for (const strategy of ['money', 'balanced']) {
+        await page.locator(`[data-preset="${strategy}"]`).click();
+        await expect.poll(() => selectedDates(page, 'auto')).toEqual(expected);
+    }
+});
+
+test('finds three short leave parts in one continuous rest period', async ({ page }) => {
+    await openCalendar(page, {
+        budget: 14,
+        past14: true,
+        minPart: 2,
+        minParts: 3,
+        maxParts: 3,
+        maxRestDays: 17,
+        weekendPolicy: 'require',
+        blockedRanges: [
+            { from: '2027-01-01', to: '2027-08-05' },
+            { from: '2027-08-22', to: '2027-12-31' },
+        ],
+    });
+    const expected = [
+        '2027-08-06', '2027-08-07',
+        '2027-08-09', '2027-08-10', '2027-08-11', '2027-08-12', '2027-08-13', '2027-08-14',
+        '2027-08-16', '2027-08-17', '2027-08-18', '2027-08-19', '2027-08-20', '2027-08-21',
+    ];
+    for (const strategy of ['money', 'balanced']) {
+        await page.locator(`[data-preset="${strategy}"]`).click();
+        await expect.poll(() => selectedDates(page, 'auto')).toEqual(expected);
+        await expect(page.locator('#planSummaryText')).toHaveText(
+            'Использовано 14 из 14 дн. · 17 дн. отдыха',
+        );
+    }
 });
 
 test('loads the article illustrations on mobile and opens a personal calculation', async ({
@@ -415,29 +616,74 @@ test('loads the article illustrations on mobile and opens a personal calculation
     ]);
 });
 
-test('maximizes rest before applying seasonal preferences and finds short holiday bridges', async ({
+test('tries distinct automatic plans with the same conditions until they run out', async ({
+    page,
+}) => {
+    await openCalendar(page, {
+        budget: 2,
+        minPart: 1,
+        maxParts: 2,
+        past14: true,
+        manual: ['2027-02-15'],
+        blockedMonths: [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11],
+        blockedRanges: [{ from: '2027-05-07', to: '2027-05-31' }],
+    });
+    await page.getByRole('button', { name: /Максимум отдыха/ }).click();
+    await expect(day(page, '2027-05-04')).toHaveAttribute('aria-pressed', 'true');
+
+    const next = page.getByRole('button', { name: 'Попробовать следующий вариант' });
+    const notice = page.locator('#nextPlanStatus');
+    const seen = ['2027-05-04'];
+    for (const number of [2, 3]) {
+        await next.click();
+        await expect(notice).toHaveText(`Показан вариант № ${number}.`);
+        await expect.poll(async () => {
+            const dates = await selectedDates(page, 'auto');
+            return dates.length === 1 && !seen.includes(dates[0]);
+        }).toBe(true);
+        seen.push(...await selectedDates(page, 'auto'));
+    }
+    expect(seen.sort()).toEqual(['2027-05-04', '2027-05-05', '2027-05-06']);
+    const last = await selectedDates(page, 'auto');
+    await next.click();
+    await expect(next).toBeDisabled();
+    await expect(notice).toContainText('Других вариантов');
+    expect(await selectedDates(page, 'auto')).toEqual(last);
+    expect(await selectedDates(page, 'manual')).toEqual(['2027-02-15']);
+    await day(page, '2027-02-15').press('Enter');
+    await expect(next).toBeHidden();
+});
+
+test('maximizes rest and minimizes weekends in the mandatory 14-day part', async ({
     page,
 }) => {
     await openCalendar(page);
     const maximize = page.getByRole('button', { name: /Максимум отдыха/ });
     const summary = page.locator('#planSummaryText');
+    const nonworkingLeave = page.locator('.selected-auto.off[data-date]');
 
     await page.getByRole('button', { name: /Больше летом/ }).click();
     await maximize.click();
-    await expect(summary).toHaveText('Использовано 28 из 28 дн. · 48 дн. отдыха');
+    await expect(summary).toContainText('Использовано 28 из 28 дн.');
+    await expect(page.locator('#activeRules')).toContainText('14-дневная часть есть в плане');
+    expect(await nonworkingLeave.count()).toBeLessThanOrEqual(4);
 
+    await page.getByRole('button', { name: 'Попробовать следующий вариант' }).click();
+    await expect(page.locator('#nextPlanStatus')).toContainText('Показан вариант № 2');
+    await expect(summary).toContainText('Использовано 28 из 28 дн.');
+    expect(await nonworkingLeave.count()).toBeLessThanOrEqual(4);
+
+    await page.locator('#past14').check();
     await page.getByRole('button', { name: /К праздникам/ }).click();
     await page.getByText('Больше настроек', { exact: true }).click();
     const minimum = page.getByLabel('Минимум дней в части', { exact: true });
     await minimum.fill('3');
     await minimum.blur();
     await maximize.click();
-    await expect(summary).toHaveText('Использовано 28 из 28 дн. · 60 дн. отдыха');
+    await expect(summary).toHaveText('Использовано 28 из 28 дн. · 57 дн. отдыха');
+    await expect(nonworkingLeave).toHaveCount(0);
 
     const dates = await selectedDates(page, 'auto');
-    expect(dates.filter((date) => date.startsWith('2027-05-'))).toEqual([
-        '2027-05-04', '2027-05-05', '2027-05-06', '2027-05-07',
-    ]);
     expect(dates.filter((date) => date.startsWith('2027-11-'))).toEqual([
         '2027-11-01', '2027-11-02', '2027-11-03',
     ]);
@@ -446,6 +692,10 @@ test('maximizes rest before applying seasonal preferences and finds short holida
 test('shows relevant planning fields and keeps one rule per month', async ({ page }) => {
     await openCalendar(page, { preferredMonths: [4], blockedMonths: [4] });
     await page.getByText('Больше настроек', { exact: true }).click();
+
+    await expect(page.getByLabel('Минимум дней в части', { exact: true })).toHaveValue('1');
+    await expect(page.getByLabel('Минимум дней между периодами отдыха')).toHaveValue('10');
+    await expect(page.getByLabel('Какие дни считать')).toHaveValue('working');
 
     const parts = page.getByRole('group', { name: 'Количество частей отпуска' });
     await expect(parts.getByLabel('От', { exact: true })).toHaveValue('1');

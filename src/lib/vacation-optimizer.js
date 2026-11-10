@@ -3,8 +3,11 @@ const EPSILON = 1e-9;
 const stableKey = (candidate) =>
     `${candidate.startKey}/${candidate.endKey}/${candidate.leaveKeys.join(',')}`;
 
-function betterPlan(candidate, current) {
+function betterPlan(candidate, current, minimizeOffDays = false) {
     if (!current) return true;
+    if (minimizeOffDays && candidate.offDays !== current.offDays) {
+        return candidate.offDays < current.offDays;
+    }
     if (candidate.priority !== current.priority) {
         return candidate.priority > current.priority;
     }
@@ -23,7 +26,7 @@ const stateKey = (used, parts, has14) => `${used}:${parts}:${Number(has14)}`;
  * constraints (budget, part count, overlap/gap, and the 14-day requirement)
  * are enforced by the recurrence.
  */
-function optimizeForPartCount(candidates, options) {
+function optimizeForPartCount(candidates, options, excludedKeys, excludedPrefixes) {
     const {
         budget,
         minParts = 1,
@@ -37,6 +40,7 @@ function optimizeForPartCount(candidates, options) {
         yearLength,
         spreadWeight = 0,
         preferCoverage = false,
+        minimizeOffDays = false,
         targetParts = maxParts,
     } = options;
 
@@ -61,8 +65,8 @@ function optimizeForPartCount(candidates, options) {
         );
 
     if ((!safeCandidates.length || budget <= 0 || maxParts <= 0) && minParts === 0 &&
-        (!requires14 || hasCompleted14DayPart)) {
-        return { status: 'optimal', plan: [], priority: 0, score: 0, spreadScore: 0, used: 0, key: '' };
+        (!requires14 || hasCompleted14DayPart) && !excludedKeys.has('')) {
+        return { status: 'optimal', plan: [], priority: 0, score: 0, spreadScore: 0, used: 0, offDays: 0, key: '' };
     }
     if (!safeCandidates.length || budget <= 0 || maxParts <= 0) {
         return { status: 'infeasible', plan: [], score: -Infinity };
@@ -99,6 +103,7 @@ function optimizeForPartCount(candidates, options) {
         parts: 0,
         has14: false,
         priority: 0,
+        offDays: 0,
         score: 0,
         spreadScore: 0,
         plan: [],
@@ -136,19 +141,25 @@ function optimizeForPartCount(candidates, options) {
                     parts,
                     has14,
                     priority: source.priority + (candidate.priority ?? 0),
+                    offDays: source.offDays + (candidate.offDays ?? 0),
                     score: source.score + candidate.score + spreadWeight * spread,
                     spreadScore: source.spreadScore + spread,
                     plan: [...source.plan, candidate],
                     key: source.key ? `${source.key}|${candidate.key}` : candidate.key,
                 };
-                const key = stateKey(used, parts, has14);
-                if (betterPlan(next, groupStates.get(key))) groupStates.set(key, next);
+                // Keep prefixes of excluded plans separate so they cannot
+                // displace a viable alternative with the same state.
+                const baseKey = stateKey(used, parts, has14);
+                const key = excludedPrefixes.has(next.key)
+                    ? `${baseKey}:${next.key}`
+                    : baseKey;
+                if (betterPlan(next, groupStates.get(key), minimizeOffDays)) groupStates.set(key, next);
             }
         }
 
         const merged = new Map(cumulative);
         for (const [key, state] of groupStates) {
-            if (betterPlan(state, merged.get(key))) merged.set(key, state);
+            if (betterPlan(state, merged.get(key), minimizeOffDays)) merged.set(key, state);
         }
         cumulative = merged;
         prefixStates.push({ end, states: cumulative });
@@ -158,7 +169,8 @@ function optimizeForPartCount(candidates, options) {
     for (const state of cumulative.values()) {
         if (state.parts < minParts || state.parts > maxParts) continue;
         if (requires14 && !hasCompleted14DayPart && !state.has14) continue;
-        if (betterFinalPlan(state, best, preferCoverage)) best = state;
+        if (excludedKeys.has(state.key)) continue;
+        if (betterFinalPlan(state, best, preferCoverage, minimizeOffDays)) best = state;
     }
     if (!best) return { status: 'infeasible', plan: [], score: -Infinity };
     return {
@@ -168,22 +180,34 @@ function optimizeForPartCount(candidates, options) {
         score: best.score,
         spreadScore: best.spreadScore,
         used: best.used,
+        offDays: best.offDays,
         key: best.key,
     };
 }
 
-function betterFinalPlan(candidate, current, preferCoverage) {
+function betterFinalPlan(candidate, current, preferCoverage, minimizeOffDays = false) {
     if (current && preferCoverage && candidate.used !== current.used) {
         return candidate.used > current.used;
     }
-    return betterPlan(candidate, current);
+    return betterPlan(candidate, current, minimizeOffDays);
 }
 
 export function optimizeIntervals(candidates, options) {
     const minParts = Math.max(0, options.minParts ?? 1);
     const maxParts = Math.max(minParts, options.maxParts ?? 6);
+    const excludedKeys = new Set();
+    const excludedPrefixes = new Set();
+    for (const plan of options.excludedPlans ?? []) {
+        const keys = plan.map(stableKey);
+        excludedKeys.add(keys.join('|'));
+        for (let length = 1; length <= keys.length; length++) {
+            excludedPrefixes.add(keys.slice(0, length).join('|'));
+        }
+    }
     if (!options.yearLength) {
-        return optimizeForPartCount(candidates, { ...options, minParts, maxParts });
+        return optimizeForPartCount(
+            candidates, { ...options, minParts, maxParts }, excludedKeys, excludedPrefixes,
+        );
     }
     let best = null;
     for (let targetParts = minParts; targetParts <= maxParts; targetParts++) {
@@ -192,9 +216,9 @@ export function optimizeIntervals(candidates, options) {
             minParts: targetParts,
             maxParts: targetParts,
             targetParts,
-        });
+        }, excludedKeys, excludedPrefixes);
         if (result.status !== 'optimal') continue;
-        if (betterFinalPlan(result, best, options.preferCoverage)) {
+        if (betterFinalPlan(result, best, options.preferCoverage, options.minimizeOffDays)) {
             best = result;
         }
     }

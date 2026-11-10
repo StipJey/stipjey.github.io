@@ -92,18 +92,13 @@ export function createVacationPlanner(days, humanDate) {
             return `Вручную выбрано ${settings.manual.length} дн. при бюджете ${settings.budget}. ` +
                 'Увеличьте бюджет или снимите выбор с лишних дат.';
         }
-        const manual = new Set(settings.manual);
-        const count = partsFor(manual).length;
-        if (count > settings.maxParts) {
-            return `Вручную выбрано ${count} частей при максимуме ${settings.maxParts}. ` +
-                'Увеличьте максимум или измените ручные даты.';
-        }
-        return gapProblem(collectRestPeriods(days, manual), settings);
+        return '';
     }
 
     function allowsPart(part, settings) {
         const { items } = part;
         if (items.length < settings.minPart) return false;
+        if (!items.some((day) => day.work)) return false;
         const off = items.filter((day) => day.off);
         if (settings.weekendPolicy === 'require' && !off.length) return false;
         switch (settings.weekendRule) {
@@ -147,24 +142,30 @@ export function createVacationPlanner(days, humanDate) {
             settings.blockedRanges.some((range) => range.from <= day.key && day.key <= range.to);
     }
 
-    function fourDayPlan(settings, { dow, from, to }) {
+    function fourDayPlan(settings, { dows, from, to }) {
         const manual = new Set(settings.manual);
         const matches = days.filter((day) =>
-            day.dow === dow && day.m >= from - 1 && day.m <= to - 1,
+            dows.includes(day.dow) && day.m >= from - 1 && day.m <= to - 1,
         );
-        const working = matches.filter((day) => day.work);
-        const existing = working.filter((day) => manual.has(day.key));
-        const available = working.filter((day) =>
-            !manual.has(day.key) && !autoExcluded(day, settings),
-        );
-        const fits = manual.size + available.length <= settings.budget;
+        // This is a shortcut for manual selection. Automatic-plan restrictions
+        // do not apply here, but already nonworking dates need no leave day.
+        const selectable = matches.filter((day) => day.work);
+        const existing = selectable.filter((day) => manual.has(day.key));
+        const selected = selectable.filter((day) => !manual.has(day.key));
+        const schedule = selectable.map((day) => day.key);
+        const combinedWithManual = [...new Set([...manual, ...schedule])];
+        const appliedDates = schedule.slice(0, settings.budget);
+        const needsManualReset = combinedWithManual.length > settings.budget;
         return {
-            selected: fits ? available.map((day) => day.key) : [],
-            requested: available.length,
+            selected: selected.map((day) => day.key),
+            requested: selected.length,
             existing: existing.map((day) => day.key),
-            off: matches.length - working.length,
-            excluded: working.length - existing.length - available.length,
-            fits,
+            excluded: matches.length - selectable.length,
+            required: schedule.length,
+            fits: schedule.length <= settings.budget,
+            needsManualReset,
+            appliedDates,
+            manualAfter: needsManualReset ? appliedDates : combinedWithManual,
         };
     }
 
@@ -214,6 +215,50 @@ export function createVacationPlanner(days, humanDate) {
                 }
             }
         }
+        // Adjacent paid parts can belong to one continuous rest period when
+        // the dates between them are weekends or holidays. Compose those
+        // parts explicitly instead of requiring every intervening off day to
+        // be charged to the leave budget.
+        const baseCount = candidates.length;
+        const candidatesByStart = new Map();
+        for (const candidate of candidates) {
+            const group = candidatesByStart.get(candidate.startIndex) || [];
+            group.push(candidate);
+            candidatesByStart.set(candidate.startIndex, group);
+        }
+        for (let firstIndex = 0; firstIndex < candidates.length; firstIndex++) {
+            const firstPart = candidates[firstIndex];
+            const extendingRun = firstIndex >= baseCount;
+            if (firstPart.cost + settings.minPart > remaining) continue;
+            if (extendingRun && firstPart.partCount >= settings.maxParts) continue;
+            const { restStartIndex } = firstPart;
+            let separatesParts = false;
+            for (let nextIndex = firstPart.endIndex + 1; nextIndex < days.length; nextIndex++) {
+                for (const nextPart of candidatesByStart.get(nextIndex) || []) {
+                    if (extendingRun && !separatesParts) continue;
+                    if (firstPart.cost + nextPart.cost > remaining) continue;
+                    const partCount = firstPart.partCount + nextPart.partCount -
+                        Number(!separatesParts);
+                    if (partCount > settings.maxParts) continue;
+                    const { restEndIndex } = nextPart;
+                    const restLength = restEndIndex - restStartIndex + 1;
+                    // Keep expanding runs within the configured limit. The
+                    // 14-day exception can still combine two base candidates.
+                    if (restLength > settings.maxRestDays &&
+                        (extendingRun || (!firstPart.has14DayPart && !nextPart.has14DayPart))) continue;
+                    const leaveKeys = [...firstPart.leaveKeys, ...nextPart.leaveKeys];
+                    const signature = leaveKeys.join(',');
+                    if (seen.has(signature)) continue;
+                    seen.add(signature);
+                    const leave = leaveKeys.map((key) => byKey.get(key));
+                    const bounds = { restStartIndex, restEndIndex };
+                    const combined = describeCandidate(leave, bounds, manualBounds, settings);
+                    if (combined) candidates.push(combined);
+                }
+                if (!days[nextIndex].off) break;
+                if (!days[nextIndex].holiday) separatesParts = true;
+            }
+        }
         return candidates;
     }
 
@@ -244,7 +289,7 @@ export function createVacationPlanner(days, humanDate) {
         return best.plan.flatMap((candidate) => candidate.leaveKeys).sort();
     }
 
-    function validate(settings, auto) {
+    function validate(settings, auto, { requires14 = true } = {}) {
         const manualError = manualProblem(settings);
         if (manualError) return manualError;
         const all = [...settings.manual, ...auto];
@@ -252,16 +297,11 @@ export function createVacationPlanner(days, humanDate) {
         if (unique.size !== all.length || all.length > settings.budget) {
             return 'Даты повторяются или превышают бюджет.';
         }
-        const parts = partsFor(unique);
-        if (parts.length < settings.minParts || parts.length > settings.maxParts) {
-            return `Нужно от ${settings.minParts} до ${settings.maxParts} частей отпуска.`;
-        }
         if (retainedAuto({ ...settings, auto }).length !== auto.length) {
             return 'Автоматические даты нарушают ограничения подбора.';
         }
-        const intervalError = gapProblem(collectRestPeriods(days, unique), settings);
-        if (intervalError) return intervalError;
-        if (settings.budget > 0 && !settings.past14 && !has14(parts, settings)) {
+        const parts = partsFor(unique);
+        if (requires14 && settings.budget > 0 && !settings.past14 && !has14(parts, settings)) {
             return 'Не найдена непрерывная часть из 14 отпускных дней в заданном рабочем году.';
         }
         return '';
