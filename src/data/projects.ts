@@ -253,10 +253,9 @@ export const projects = [
         id: 'vtb',
         demo: {
             file: 'vtb-online',
-            still: 'Карусель уровней программы лояльности в разделе «Расти с ВТБ»',
-            width: 648,
-            height: 706,
-            caption: 'ВТБ Онлайн · «Расти с ВТБ»',
+            width: 1092,
+            height: 982,
+            caption: 'ВТБ Онлайн · «Выгода» и «Расти с ВТБ»',
         },
         period: '2020 — сейчас',
         company: 'ВТБ',
