@@ -1,0 +1,188 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { projects } from '../data/projects';
+import '../styles/projects.css';
+---
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <BaseHead
+            title="Проекты — Евгений Черкасов"
+            description="История рабочих проектов: Clash Tyrane, Binevo, LuckyBroker, ChequePay, справочные системы и программа лояльности ВТБ."
+        />
+    </head>
+    <body>
+        <Header />
+        <main class="project-history">
+            <header class="history-intro">
+                <p class="history-eyebrow">Евгений Черкасов / Проекты</p>
+                <h1>От первых сайтов<br />до <em>банковских систем.</em></h1>
+                <div class="intro-bottom">
+                    <p>Мои проекты в веб-разработке, играх, финтехе и банковских сервисах.</p>
+                    <a href="#first-websites" class="start-link">К проектам ↓</a>
+                </div>
+            </header>
+            <div class="history-layout">
+                <aside class="history-stage" aria-label="Навигация по проектам">
+                    <div class="stage-top"><span>Проект за проектом</span><span id="chapter-count">01 / {projects.length}</span></div>
+                    <div class="stage-art" aria-hidden="true">
+                        {projects.map((project, index) => (
+                            <div class:list={['project-scene', { 'is-active': index === 0 }]} data-scene={project.id}>
+                                {project.demo ? (
+                                    <img class="scene-preview" src={`/projects/${project.demo.poster ?? project.demo.file}.webp`} alt="" loading="lazy" decoding="async" />
+                                ) : (
+                                    <>
+                                        <span class="scene-period">{project.period}</span>
+                                        <span class="scene-mark">{project.mark}</span>
+                                        <div class="scene-nodes">{project.nodes.map((node) => <span>{node}</span>)}</div>
+                                    </>
+                                )}
+                                <span class="scene-caption">{project.title}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <nav class="chapter-nav" aria-label="Этапы истории">
+                        {projects.map((project, index) => (
+                            <a href={`#${project.id}`} aria-label={`${project.title}, ${project.period}`} aria-current={index === 0 ? 'step' : undefined} data-chapter={project.id}>
+                                <span class="chapter-dot"></span><span class="chapter-label">{project.title}</span>
+                            </a>
+                        ))}
+                    </nav>
+                    <p class="stage-note">2012 — сейчас <span>Разработка → архитектура → команда</span></p>
+                </aside>
+                <div class="history-chapters">
+                    {projects.map((project, index) => (
+                        <section class="history-chapter" id={project.id} data-project aria-labelledby={`${project.id}-title`}>
+                            <div class="chapter-meta"><span>{project.period}</span><span>{String(index + 1).padStart(2, '0')}</span></div>
+                            <p class="chapter-company">{project.company}</p>
+                            <h2 id={`${project.id}-title`}>{project.title}</h2>
+                            <p class="chapter-intro">{project.intro}</p>
+                            {[project.demo, project.additionalDemo].map((demo) => demo && (
+                                <figure class:list={['chapter-demo', { 'chapter-demo-portrait': demo.height > demo.width * 1.5 }]}>
+                                    <div class="chapter-demo-media">
+                                        {demo.still ? (
+                                            <img
+                                                src={`/projects/${demo.file}.webp`}
+                                                width={demo.width}
+                                                height={demo.height}
+                                                alt={demo.still}
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                        ) : (
+                                            <video
+                                                muted
+                                                loop
+                                                playsinline
+                                                preload="none"
+                                                poster={`/projects/${demo.poster ?? demo.file}.webp`}
+                                                src={`/projects/${demo.file}.mp4`}
+                                                width={demo.width}
+                                                height={demo.height}
+                                                aria-label={`${project.title}. ${demo.caption}`}
+                                            ></video>
+                                        )}
+                                    </div>
+                                    <figcaption>{demo.caption}</figcaption>
+                                </figure>
+                            ))}
+                            <ul class="chapter-details">{project.details.map((detail) => <li>{detail}</li>)}</ul>
+                            <div class="chapter-stack" aria-label="Технологии и направления">{project.stack.map((item) => <span>{item}</span>)}</div>
+                            <span class="chapter-category">{project.category}</span>
+                        </section>
+                    ))}
+                </div>
+            </div>
+            <footer class="history-ending">
+                <p class="history-eyebrow">Следующая глава</p>
+                <h2>Продолжаю строить продукты<br />и развивать команды.</h2>
+                <a href="https://t.me/stipjey" target="_blank" rel="noopener noreferrer" data-goal="telegram">Обсудить проект ↗</a>
+                <p class="history-source">Даты обозначают периоды работы в компаниях. Некоторые проекты шли параллельно.</p>
+            </footer>
+        </main>
+        <Footer />
+        <script>
+            const chapters = Array.from(
+                document.querySelectorAll<HTMLElement>('[data-project]'),
+            );
+            const scenes = document.querySelectorAll('[data-scene]');
+            const links = document.querySelectorAll('[data-chapter]');
+            const counter = document.getElementById('chapter-count');
+            const videos = document.querySelectorAll<HTMLVideoElement>(
+                '.chapter-demo video',
+            );
+            const reducedMotion = window.matchMedia(
+                '(prefers-reduced-motion: reduce)',
+            );
+            const videoObserver = new IntersectionObserver(
+                (entries) => {
+                    for (const entry of entries) {
+                        const video = entry.target as HTMLVideoElement;
+                        if (entry.intersectionRatio >= 0.25 && !reducedMotion.matches) {
+                            video.play().catch(() => {});
+                        } else {
+                            video.pause();
+                        }
+                    }
+                },
+                { threshold: 0.25 },
+            );
+
+            function updateVideoMotion() {
+                for (const video of videos) {
+                    if (reducedMotion.matches) {
+                        videoObserver.unobserve(video);
+                        video.pause();
+                    } else {
+                        videoObserver.observe(video);
+                    }
+                }
+            }
+
+            reducedMotion.addEventListener('change', updateVideoMotion);
+            updateVideoMotion();
+            let activeId = '';
+            let scheduled = false;
+
+            function updateChapter() {
+                scheduled = false;
+                const focusLine = window.innerHeight * 0.45;
+                let active = chapters[0];
+                for (const chapter of chapters) {
+                    if (chapter.getBoundingClientRect().top <= focusLine) {
+                        active = chapter;
+                    }
+                }
+                if (!active || active.id === activeId) return;
+                activeId = active.id;
+                scenes.forEach((scene) => {
+                    scene.classList.toggle(
+                        'is-active',
+                        scene.getAttribute('data-scene') === activeId,
+                    );
+                });
+                links.forEach((link) => {
+                    if (link.getAttribute('data-chapter') === activeId) {
+                        link.setAttribute('aria-current', 'step');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
+                if (counter) {
+                    counter.textContent = `${String(chapters.indexOf(active) + 1).padStart(2, '0')} / ${chapters.length}`;
+                }
+            }
+            function scheduleUpdate() {
+                if (scheduled) return;
+                scheduled = true;
+                requestAnimationFrame(updateChapter);
+            }
+            window.addEventListener('scroll', scheduleUpdate, { passive: true });
+            window.addEventListener('resize', scheduleUpdate);
+            updateChapter();
+        </script>
+    </body>
+</html>

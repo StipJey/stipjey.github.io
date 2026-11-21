@@ -1,0 +1,410 @@
+.project-history {
+    max-width: 1320px;
+    padding: 0 clamp(20px, 5vw, 72px);
+    font-size: 16px;
+    line-height: 1.7;
+}
+.history-intro {
+    padding: 80px 0 64px;
+}
+.history-eyebrow,
+.chapter-company,
+.stage-top,
+.scene-period,
+.chapter-meta,
+.chapter-category,
+.stage-note,
+.history-source {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+.history-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+.history-intro h1 {
+    margin: 24px 0 32px;
+    font-size: clamp(30px, 4.6vw, 60px);
+    line-height: 1.25;
+    letter-spacing: -0.05em;
+}
+.history-intro em {
+    color: var(--brand);
+    font-style: normal;
+}
+.intro-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 32px;
+}
+.intro-bottom p {
+    max-width: 580px;
+    margin: 0;
+    color: var(--text-muted);
+}
+.start-link {
+    flex-shrink: 0;
+    font-size: 13px;
+    text-decoration: none;
+}
+.history-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+}
+.history-stage {
+    position: sticky;
+    top: 24px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--surface);
+    padding: 24px;
+}
+.stage-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+}
+.stage-art {
+    height: clamp(220px, 28vw, 340px);
+    position: relative;
+    margin: 20px 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--surface-soft);
+}
+.project-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 20px;
+    visibility: hidden;
+    opacity: 0;
+}
+.project-scene.is-active {
+    visibility: visible;
+    opacity: 1;
+}
+.scene-mark {
+    font:
+        500 clamp(48px, 7vw, 88px)/1 'Unbounded',
+        sans-serif;
+    color: var(--brand);
+}
+.scene-period {
+    font-family: monospace;
+}
+.scene-nodes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.scene-nodes span {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    padding: 10px 4px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    font-size: 10px;
+    line-height: 1.4;
+}
+.scene-nodes span + span {
+    margin-left: 12px;
+}
+.scene-nodes span + span::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 1px;
+    background: var(--brand);
+    right: 100%;
+    top: 50%;
+}
+.scene-caption {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+}
+.chapter-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+}
+.chapter-nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 30px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 10px;
+    line-height: 1.4;
+    padding: 4px 0;
+}
+.chapter-dot {
+    flex: 0 0 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--line);
+}
+.chapter-nav a[aria-current] {
+    color: var(--brand);
+}
+.chapter-nav a[aria-current] .chapter-dot {
+    background: var(--brand);
+    box-shadow: 0 0 0 4px var(--surface-soft);
+}
+.stage-note {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 16px;
+    margin: 16px 0 0;
+    border-top: 1px solid var(--line);
+    font-size: 9px;
+}
+.history-chapters {
+    border-left: 1px solid var(--line);
+    padding-left: 32px;
+}
+.history-chapter {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 85svh;
+    padding: 64px 0;
+    scroll-margin-top: 32px;
+}
+.history-chapter::before {
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 80px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--brand);
+    border: 3px solid var(--page-bg);
+}
+.history-chapter + .history-chapter {
+    border-top: 1px solid var(--line);
+}
+.chapter-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    color: var(--brand);
+    font-size: 13px;
+}
+.chapter-company {
+    margin: 32px 0 12px;
+}
+.history-chapter h2 {
+    font-size: clamp(24px, 2.6vw, 36px);
+    line-height: 1.3;
+    letter-spacing: -0.04em;
+    margin: 0 0 24px;
+}
+.chapter-intro {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+.chapter-details {
+    padding-left: 18px;
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+.chapter-details li + li {
+    margin-top: 12px;
+}
+.chapter-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 28px;
+}
+.chapter-stack span {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+}
+.chapter-category {
+    margin-top: 24px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+.history-ending {
+    padding: 80px 0;
+    border-top: 1px solid var(--line);
+}
+.history-ending h2 {
+    font-size: clamp(24px, 3vw, 40px);
+    margin: 20px 0 32px;
+    line-height: 1.4;
+}
+.history-ending > a {
+    display: inline-block;
+    padding: 14px 24px;
+    border-radius: 10px;
+    color: var(--on-accent);
+    background: var(--brand);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+.history-source {
+    max-width: 600px;
+    margin-top: 40px;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .project-scene {
+        transition: opacity 300ms ease;
+    }
+}
+@media (max-height: 760px) and (min-width: 761px) {
+    .history-stage {
+        top: 12px;
+        padding: 16px;
+    }
+    .stage-art {
+        height: 220px;
+        margin: 12px 0;
+    }
+    .chapter-nav a {
+        min-height: 26px;
+    }
+    .stage-note {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}
+@media (max-width: 760px) {
+    .history-intro {
+        padding: 48px 0 40px;
+    }
+    .intro-bottom {
+        display: block;
+    }
+    .start-link {
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .history-layout {
+        display: block;
+    }
+    .history-stage {
+        position: relative;
+        top: auto;
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+    .stage-art,
+    .stage-note {
+        display: none;
+    }
+    .stage-top {
+        margin-bottom: 16px;
+    }
+    .chapter-nav {
+        gap: 4px 20px;
+    }
+    .chapter-nav a {
+        font-size: 11px;
+        min-height: 38px;
+    }
+    .history-chapters {
+        margin-left: 5px;
+        padding-left: 24px;
+    }
+    .history-chapter {
+        min-height: auto;
+        padding: 48px 0;
+    }
+    .history-chapter::before {
+        left: -30px;
+        top: 54px;
+    }
+    .chapter-company {
+        margin-top: 24px;
+    }
+    .chapter-intro {
+        font-size: 17px;
+    }
+    .history-ending {
+        padding: 48px 0;
+    }
+}
+@media print {
+    .history-stage,
+    .start-link {
+        display: none;
+    }
+    .history-layout {
+        display: block;
+    }
+    .history-chapter {
+        min-height: auto;
+        break-inside: avoid;
+        padding: 24px 0;
+    }
+}
+
+.scene-preview {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+    object-fit: contain;
+}
+
+.scene-preview + .scene-caption {
+    margin-top: 10px;
+}
+
+.chapter-demo {
+    margin: 0 0 28px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+}
+
+.chapter-demo video,
+.chapter-demo-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.chapter-demo-portrait .chapter-demo-media {
+    display: flex;
+    justify-content: center;
+    padding: clamp(12px, 3vw, 24px);
+    background: var(--surface-soft);
+}
+
+.chapter-demo-portrait video {
+    width: min(100%, clamp(168px, 19vw, 220px));
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 14%);
+}
+
+.chapter-demo figcaption {
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
