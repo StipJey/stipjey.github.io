@@ -7,9 +7,9 @@ import RecommendationCard from '../../components/RecommendationCard.astro';
 
 const recommendations = await getCollection('recommendations');
 
-const title = 'Рекомендации и Промокоды';
+const title = 'Промокоды и реферальные ссылки';
 const description =
-    'Мои личные рекомендации сервисов, банков и инструментов с бонусами для вас.';
+    'Промокоды каршеринга и Skyeng, реферальные ссылки Т-Банка и ВТБ. Условия скидок и бонусов и инструкции по активации.';
 const categories = [
     ...new Set(recommendations.map((r) => r.data.category)),
 ].sort();

@@ -14,25 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, description, category, items } = entry.data;
-
-// SEO Logic
-const date = new Date();
-const currentMonth = date.toLocaleString('ru-RU', { month: 'long' });
-const currentYear = date.getFullYear();
-const monthYear = `${currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)} ${currentYear}`;
-
-const topPromo =
-    items.find((i) => i.isTop && i.code) ||
-    items.find((i) => i.code) ||
-    items[0];
-const benefitText = topPromo?.benefit ? ` — ${topPromo.benefit}` : '';
-const promoCodeText = topPromo?.code
-    ? `Промокод: ${topPromo.code}`
-    : 'Скидки и бонусы';
-
-const seoTitle = `${title}: Промокоды и Бонусы на ${monthYear}${benefitText}`;
-const seoDescription = `🎁 Актуальные промокоды для ${title} (${monthYear}). ${promoCodeText}. ${description || ''} ✅ Проверено и работает.`;
+const { seoTitle, seoDescription, category, items } = entry.data;
 
 // JSON-LD Schema (FAQ for Rich Snippets)
 const faqSchema = {
@@ -120,8 +102,8 @@ const faqSchema = {
             </div>
 
             <RecommendationCard
-                title={title}
-                description={description}
+                title={seoTitle}
+                description={seoDescription}
                 category={category}
                 items={items}
             />

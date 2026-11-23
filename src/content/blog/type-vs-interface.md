@@ -1,6 +1,7 @@
 ---
 title: 'Типы и интерфейсы'
-description: 'Ультимативный разбор отличий типов и интерфейсов в тайпскрипте. Всё что нужно знать перед собеседованием и даже больше.'
+seoTitle: 'Типы и интерфейсы в TypeScript — чем отличаются type и interface'
+description: 'Когда использовать type, а когда interface в TypeScript. Примеры расширения, объединения типов и слияния деклараций.'
 pubDate: 'Mar 16 2024'
 updatedDate: 'Oct 01 2026'
 heroImage: './images/type-vs-interface-preview.png'
