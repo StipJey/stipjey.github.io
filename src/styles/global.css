@@ -296,3 +296,25 @@ figure {
         font-size: 1rem;
     }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+
+    ::view-transition-old(root) {
+        animation: page-out 230ms cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    ::view-transition-new(root) {
+        animation: page-in 420ms cubic-bezier(.22, 1, .36, 1) both;
+    }
+}
+
+@keyframes page-out {
+    to { opacity: 0; transform: translateY(-12px); }
+}
+
+@keyframes page-in {
+    from { opacity: 0; transform: translateY(20px); }
+}

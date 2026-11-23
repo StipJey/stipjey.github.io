@@ -1,16 +1,17 @@
 ---
 import TelegramIcon from './TelegramIcon.astro';
+const { compact = false } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class:list={['site-footer', { 'is-compact': compact }]}>
     <div class="footer-inner">
-        <div class="footer-intro">
+        {!compact && <div class="footer-intro">
             <span class="footer-eyebrow">На связи</span>
             <h2>Есть задача? Давайте обсудим.</h2>
             <p>Напишите пару слов о контексте — я отвечу лично.</p>
             <a class="footer-contact" href="https://t.me/stipjey" target="_blank" rel="noopener noreferrer" data-goal="telegram"><TelegramIcon /> Написать в Telegram</a>
-        </div>
+        </div>}
         <div class="footer-bottom">
             <span>© {year} Евгений Черкасов</span>
             <nav aria-label="Ссылки в подвале">
@@ -22,8 +23,64 @@ const year = new Date().getFullYear();
             </nav>
         </div>
     </div>
+    <button class="back-to-top" type="button" aria-label="Наверх" hidden>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 14 6-6 6 6" />
+        </svg>
+    </button>
 </footer>
+
+<script>
+    const header = document.querySelector('.site-header');
+    const button = document.querySelector<HTMLButtonElement>('.back-to-top');
+
+    if (header && button) {
+        const syncVisibility = () => {
+            const hidden = window.scrollY <= 0;
+            if (button.hidden !== hidden) button.hidden = hidden;
+        };
+        window.addEventListener('scroll', syncVisibility, { passive: true });
+        syncVisibility();
+
+        button.addEventListener('click', () => {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            header.querySelector('a')?.focus({ preventScroll: true });
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'instant' : 'smooth' });
+        });
+    }
+</script>
+
 <style>
+    .back-to-top {
+        position: fixed;
+        z-index: 1000;
+        left: max(16px, env(safe-area-inset-left));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface-raised);
+        color: var(--text-primary);
+        box-shadow: var(--box-shadow);
+        cursor: pointer;
+    }
+
+    .back-to-top[hidden] { display: none; }
+    .back-to-top:hover { background: var(--surface-soft); }
+    .site-footer:has(.back-to-top:not([hidden])) {
+        padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+
+    @media print {
+        .site-footer .back-to-top { display: none; }
+        .site-footer:has(.back-to-top:not([hidden])) { padding-bottom: 24px; }
+    }
+
+
     .site-footer { padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.5rem) 1.5rem; background: #172235; color: #f4f7fc; }
     .footer-inner { max-width: 1440px; margin: 0 auto; }
     .footer-eyebrow { color: #b5c6df; font: 600 .68rem/1.4 'Montserrat', sans-serif; letter-spacing: .11em; text-transform: uppercase; }
@@ -32,6 +89,7 @@ const year = new Date().getFullYear();
     .footer-contact { display: inline-flex; gap: .7rem; align-items: center; padding: .85rem 1.1rem; border-radius: 11px; background: #96c5ff; color: #0d1b31; text-decoration: none; font-size: .8rem; font-weight: 700; }
     .footer-contact:hover { background: #c4e0ff; color: #0d1b31; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0, 0, 0, .2); }
     .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; margin-top: clamp(2.5rem, 5vw, 5rem); padding-top: 1.25rem; border-top: 1px solid #43536d; color: #c8d4e5; font-size: .68rem; }
+    .is-compact .footer-bottom { margin-top: 0; }
     .footer-bottom nav { display: flex; flex-wrap: wrap; gap: .75rem 1.2rem; }
     .footer-bottom a { color: #e3ebf7; text-decoration: none; }
     .footer-bottom a:hover { color: #96c5ff; }

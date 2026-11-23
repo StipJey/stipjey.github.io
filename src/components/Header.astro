@@ -6,15 +6,14 @@ const telegram = 'https://t.me/stipjey';
 <noscript><div><img src="https://mc.yandex.ru/watch/106572860" style="position:absolute;left:-9999px" alt="" /></div></noscript>
 <header class="site-header">
     <nav class="site-nav" aria-label="Основная навигация">
-        <a class="identity" href="/" aria-label="Евгений Черкасов — главная">
-            <span class="monogram" aria-hidden="true">ЕЧ</span>
+        <a class="identity" href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined} aria-label="Евгений Черкасов — главная">
             <span class="identity-copy"><strong>Евгений<span class="identity-surname"> Черкасов</span></strong><small>Head of Frontend Development</small></span>
         </a>
         <div class="nav-links">
-            <a href="/#experience">Опыт</a>
             <a href="/projects/">Проекты</a>
+            <a href="/tools/">Инструменты</a>
             <a href="/#consulting">Консультации</a>
-            <a href="/#blog">Блог</a>
+            <a href="/blog/">Блог</a>
         </div>
         <div class="nav-actions">
             <button class="theme-toggle" id="site-theme" type="button" role="switch" aria-label="Тёмная тема" aria-checked="false" title="Переключить тему">
@@ -29,10 +28,10 @@ const telegram = 'https://t.me/stipjey';
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
             </summary>
             <div class="mobile-menu-links">
-                <a href="/#experience">Опыт</a>
                 <a href="/projects/">Проекты</a>
+                <a href="/tools/">Инструменты</a>
                 <a href="/#consulting">Консультации</a>
-                <a href="/#blog">Блог</a>
+                <a href="/blog/">Блог</a>
             </div>
         </details>
     </nav>
@@ -89,17 +88,6 @@ const telegram = 'https://t.me/stipjey';
         color: var(--text-primary);
     }
     .identity:hover { color: var(--text-primary); }
-    .monogram {
-        display: grid;
-        place-items: center;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: #172235;
-        color: #fff;
-        font: 700 .86rem/1 'Unbounded', sans-serif;
-        letter-spacing: -.07em;
-    }
     .identity-copy { display: grid; gap: .1rem; line-height: 1.2; }
     .identity-copy strong { font-size: .83rem; }
     .identity-copy small { color: var(--text-muted); font-size: .64rem; }
@@ -206,7 +194,6 @@ const telegram = 'https://t.me/stipjey';
         .identity { gap: .5rem; }
         .identity-copy strong { font-size: .72rem; }
         .identity-surname { display: none; }
-        .monogram { width: 36px; height: 36px; font-size: .7rem; }
         .theme-toggle { width: 58px; height: 34px; }
         .theme-thumb { width: 26px; height: 26px; }
         .theme-toggle[aria-checked='true'] .theme-thumb { transform: translateX(24px); }
@@ -214,7 +201,6 @@ const telegram = 'https://t.me/stipjey';
         .nav-actions { gap: .5rem; }
     }
     @media (max-width: 350px) {
-        .identity-copy { display: none; }
         .contact-link { font-size: .68rem; }
     }
     @media (prefers-reduced-motion: no-preference) {

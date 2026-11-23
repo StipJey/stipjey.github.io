@@ -13,14 +13,12 @@ export const projects = [
         company: 'Первые проекты',
         title: 'Сайты под ключ',
         category: 'Веб-разработка',
-        mark: '</>',
         intro: 'Четыре сайта, которые я сделал под ключ во время учёбы в университете.',
         details: [
             'Разработал сайты ЗАО «СвязьИнжиниринг», Фонда Владимира Храброго и персональный сайт «АэроЖеня».',
             'В 2015 году целиком разработал сайт базы отдыха «Кантри Хоум».',
         ],
         stack: ['PHP', 'WordPress'],
-        nodes: ['Задача', 'Разработка', 'Готовый сайт'],
     },
     {
         id: 'erp',
@@ -34,14 +32,12 @@ export const projects = [
         company: 'Alternative-Soft',
         title: 'ERP для малого бизнеса',
         category: 'Бизнес-системы',
-        mark: '▦',
         intro: 'Система для складского учёта и работы с кассовым оборудованием.',
         details: [
             'Запустил подсистему складского учёта.',
             'Написал драйверы для фискального принтера и весов. Они подключали устройства к приложению Chrome через COM-порт.',
         ],
         stack: ['JavaScript', 'PostgreSQL', 'PlatypusJS'],
-        nodes: ['Склад', 'ChromeApp', 'Принтер / весы'],
     },
     {
         id: 'clash-tyrane',
@@ -55,14 +51,12 @@ export const projects = [
         company: 'Topface',
         title: 'Clash Tyrane',
         category: 'Игры',
-        mark: '⚔',
         intro: 'Карточная стратегия с боями в реальном времени.',
         details: [
             'Вёл разработку фронтенда. Реализовал бой на WebGL, а интерфейсы между боями — на React и Redux.',
             'Довёл приложение до релиза во ВКонтакте, Facebook и Одноклассниках.',
         ],
         stack: ['React', 'Redux', 'Phaser', 'WebGL'],
-        nodes: ['WebGL · бой', 'React · метаигра', 'ВК / FB / ОК'],
     },
     {
         id: 'social-games',
@@ -76,14 +70,12 @@ export const projects = [
         company: 'Topface',
         title: 'Кис-Кис и Гарем',
         category: 'Социальные игры',
-        mark: '✳',
         intro: 'Две браузерные игры Topface.',
         details: [
             'В «Кис-Кис» реализовал новый тип подарков с анимациями.',
             'В «Гареме» добавил функции для VIP-игроков, подключил платежи и выпустил игру на Facebook.',
         ],
         stack: ['Backbone', 'Node.js', 'HTML5', 'LESS'],
-        nodes: ['Подарки', 'VIP', 'Платежи'],
     },
     {
         id: 'binevo',
@@ -98,14 +90,12 @@ export const projects = [
         company: 'Мобильный Капитал',
         title: 'Binevo',
         category: 'Финтех',
-        mark: '↗',
         intro: 'Торговая платформа для валютного рынка.',
         details: [
             'Разработал интерфейс с графиком котировок и подключил обмен данными с сервером по WebSocket.',
             'Рефакторил код и улучшал производительность интерфейса.',
         ],
         stack: ['React', 'Redux', 'JavaScript'],
-        nodes: ['WebSocket', 'Котировки', 'Торговый интерфейс'],
     },
     {
         id: 'luckybroker',
@@ -125,13 +115,11 @@ export const projects = [
         company: 'Мобильный Капитал',
         title: 'LuckyBroker и Workomania',
         category: 'Финансовые игры',
-        mark: '◈',
         intro: 'Игры на основе валютных котировок для Galleon Games.',
         details: [
             'Реализовал игровые анимации с помощью Phaser и Lottie, график котировок отрисовал на Canvas.',
         ],
         stack: ['JavaScript', 'Canvas', 'Phaser', 'Lottie'],
-        nodes: ['Платформа', 'LuckyBroker', 'Workomania'],
     },
     {
         id: 'chequepay',
@@ -145,17 +133,11 @@ export const projects = [
         company: 'Мобильный Капитал',
         title: 'ChequePay',
         category: 'Платёжные системы',
-        mark: '⇄',
         intro: 'Модульная платформа для запуска платёжных систем.',
         details: [
             'Разработал архитектуру ChequePay и четыре системы на её основе. Бизнес-логика у них была в основном общей, а дизайн интерфейса адаптировали под каждый продукт.',
         ],
         stack: ['React', 'Redux', 'styled-components'],
-        nodes: [
-            'Модульная платформа',
-            'Общие компоненты',
-            '4 платёжные системы',
-        ],
     },
     {
         id: 'galleon',
@@ -169,13 +151,11 @@ export const projects = [
         company: 'Мобильный Капитал',
         title: 'Galleon Games',
         category: 'Игровая платформа',
-        mark: '⊞',
         intro: 'Сайт, где можно выбрать и запустить игру, в том числе LuckyBroker или Workomania.',
         details: [
             'Разработал сайт платформы и весь каталог игр.',
         ],
         stack: ['React', 'JavaScript', 'Canvas'],
-        nodes: ['Каталог игр', 'LuckyBroker', 'Workomania'],
     },
     {
         id: 'taskdata',
@@ -189,14 +169,12 @@ export const projects = [
         company: 'Hawk House Integration · TaskData',
         title: 'Рабочее место оператора МФЦ Санкт-Петербурга',
         category: 'Корпоративные системы',
-        mark: '≡',
         intro: 'Внутренняя система для обработки документов.',
         details: [
             'Спроектировал и разработал интерфейс. Ввёл в проект двух разработчиков.',
             'Обновил React с 15 до 16.4 и добавил типизацию редьюсеров Redux и обмена данными с сервером.',
         ],
         stack: ['React', 'Redux', 'TypeScript', 'react-table'],
-        nodes: ['Документы', 'Рабочее место оператора', 'Обмен данными'],
     },
     {
         id: 'action',
@@ -211,7 +189,6 @@ export const projects = [
         company: 'Hawk House Integration · Актион Диджитал',
         title: 'Справочные системы и Консилиум',
         category: 'Архитектура и процессы',
-        mark: '⌘',
         intro: 'Справочные системы «Актион Диджитал», включая издание «Консилиум».',
         details: [
             'Встроил разделы на React в систему на XSLT. Раздел лекарств разработал как отдельный микросервис за два месяца.',
@@ -219,7 +196,6 @@ export const projects = [
             'Заменил систему статической вёрстки. Это сократило время вёрстки и интеграции примерно вдвое.',
         ],
         stack: ['React SSR', 'styled-components', 'XSLT', 'jQuery'],
-        nodes: ['Справочная система', 'React SSR', 'Раздел лекарств'],
     },
     {
         id: 'multibonus',
@@ -233,7 +209,6 @@ export const projects = [
         company: 'Мультибонус',
         title: 'Мультибонус',
         category: 'Программа лояльности',
-        mark: '◎',
         intro: 'Отдельное приложение программы лояльности ВТБ для iOS, Android и веба. Работало до 2023 года.',
         details: [
             'Привёл компоненты в коде в соответствие с дизайн-китом. Доработал модуль доставки товаров и интеграции с ДаДата и Флоктори.',
@@ -247,7 +222,6 @@ export const projects = [
             'Team Leadership',
             'Engineering Management',
         ],
-        nodes: ['UI-kit', 'Доставка', 'CMS / интеграции'],
     },
     {
         id: 'vtb',
@@ -261,7 +235,6 @@ export const projects = [
         company: 'ВТБ',
         title: 'Программа лояльности ВТБ',
         category: 'Руководство frontend-разработкой',
-        mark: 'ВТБ',
         intro: 'С 2024 года программа лояльности стала частью ВТБ Онлайн. Отдельное приложение «Мультибонус» закрыли.',
         details: [
             'Руковожу фронтендом программы лояльности и командой до 12 человек.',
@@ -269,6 +242,5 @@ export const projects = [
             'Отвечаю за архитектуру фронтенда, найм и развитие разработчиков. Согласовываю приоритеты со стейкхолдерами.',
         ],
         stack: ['React', 'TypeScript', 'Tech Lead', 'AppSec Champion'],
-        nodes: ['Команда', 'ВТБ Онлайн', 'Лояльность'],
     },
 ];

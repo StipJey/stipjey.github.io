@@ -27,23 +27,7 @@ import '../styles/projects.css';
             </header>
             <div class="history-layout">
                 <aside class="history-stage" aria-label="Навигация по проектам">
-                    <div class="stage-top"><span>Проект за проектом</span><span id="chapter-count">01 / {projects.length}</span></div>
-                    <div class="stage-art" aria-hidden="true">
-                        {projects.map((project, index) => (
-                            <div class:list={['project-scene', { 'is-active': index === 0 }]} data-scene={project.id}>
-                                {project.demo ? (
-                                    <img class="scene-preview" src={`/projects/${project.demo.poster ?? project.demo.file}.webp`} alt="" loading="lazy" decoding="async" />
-                                ) : (
-                                    <>
-                                        <span class="scene-period">{project.period}</span>
-                                        <span class="scene-mark">{project.mark}</span>
-                                        <div class="scene-nodes">{project.nodes.map((node) => <span>{node}</span>)}</div>
-                                    </>
-                                )}
-                                <span class="scene-caption">{project.title}</span>
-                            </div>
-                        ))}
-                    </div>
+                    <div class="stage-top"><strong>Хронология проектов</strong><span id="chapter-count">01 / {projects.length}</span></div>
                     <nav class="chapter-nav" aria-label="Этапы истории">
                         {projects.map((project, index) => (
                             <a href={`#${project.id}`} aria-label={`${project.title}, ${project.period}`} aria-current={index === 0 ? 'step' : undefined} data-chapter={project.id}>
@@ -108,7 +92,6 @@ import '../styles/projects.css';
             const chapters = Array.from(
                 document.querySelectorAll<HTMLElement>('[data-project]'),
             );
-            const scenes = document.querySelectorAll('[data-scene]');
             const links = document.querySelectorAll('[data-chapter]');
             const counter = document.getElementById('chapter-count');
             const videos = document.querySelectorAll<HTMLVideoElement>(
@@ -158,12 +141,6 @@ import '../styles/projects.css';
                 }
                 if (!active || active.id === activeId) return;
                 activeId = active.id;
-                scenes.forEach((scene) => {
-                    scene.classList.toggle(
-                        'is-active',
-                        scene.getAttribute('data-scene') === activeId,
-                    );
-                });
                 links.forEach((link) => {
                     if (link.getAttribute('data-chapter') === activeId) {
                         link.setAttribute('aria-current', 'step');
