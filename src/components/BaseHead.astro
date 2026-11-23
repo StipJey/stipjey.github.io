@@ -27,7 +27,7 @@ const {
     ogTitle,
     ogDescription,
     ogImage,
-    image = '/og/home.png',
+    image = '/og/home-v2.png',
     imageWidth,
     imageHeight,
     type = 'website',
@@ -82,8 +82,8 @@ const socialImageURL = new URL(socialImage, Astro.site);
 <meta property="og:title" content={socialTitle} />
 <meta property="og:description" content={socialDescription} />
 <meta property="og:image" content={socialImageURL} />
-{(socialImageWidth || socialImage === '/og/home.png') && <meta property="og:image:width" content={socialImageWidth ?? 1200} />}
-{(socialImageHeight || socialImage === '/og/home.png') && <meta property="og:image:height" content={socialImageHeight ?? 630} />}
+{(socialImageWidth || socialImage === '/og/home-v2.png') && <meta property="og:image:width" content={socialImageWidth ?? 1200} />}
+{(socialImageHeight || socialImage === '/og/home-v2.png') && <meta property="og:image:height" content={socialImageHeight ?? 630} />}
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:site_name" content="Евгений Черкасов" />
 {
@@ -109,11 +109,11 @@ const socialImageURL = new URL(socialImage, Astro.site);
 }
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={socialTitle} />
-<meta property="twitter:description" content={socialDescription} />
-<meta property="twitter:image" content={socialImageURL} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={socialTitle} />
+<meta name="twitter:description" content={socialDescription} />
+<meta name="twitter:image" content={socialImageURL} />
 
 <!-- Telegram -->
 <meta property="telegram:channel" content="@frontend_lead_mentor" />

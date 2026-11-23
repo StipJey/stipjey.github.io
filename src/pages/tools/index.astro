@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 const currentTitle = 'Инструменты | Мой Блог';
 const currentDesc =
     'Коллекция бесплатных онлайн-инструментов: счетчик кликов, упражнения для дыхания и многое другое для вашей продуктивности.';
-const currentImage = '/og/tools.png';
+const currentImage = '/og/tools-v2.png';
 
 const toolFiles = await Astro.glob('./*.astro');
 const tools = toolFiles
@@ -25,6 +25,8 @@ const tools = toolFiles
             title={currentTitle}
             description={currentDesc}
             image={currentImage}
+            imageWidth={1200}
+            imageHeight={630}
         />
         <style>
             .tools-grid {

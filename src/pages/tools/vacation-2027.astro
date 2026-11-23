@@ -8,14 +8,20 @@ export const toolData = {
     description: 'Производственный календарь России на 2027 год: планирование отпуска, сравнение отпускных и зарплаты, расчёт премий и НДФЛ.',
     emoji: '🏖️',
     order: 3,
-    image: '/og/tools.png',
+    image: '/og/vacation-2027.png',
 };
 ---
 
 <!doctype html>
 <html lang="ru">
     <head>
-        <BaseHead title={`${toolData.title} | Инструменты`} description={toolData.description} image={toolData.image} />
+        <BaseHead
+            title={`${toolData.title} | Инструменты`}
+            description={toolData.description}
+            image={toolData.image}
+            imageWidth={1200}
+            imageHeight={630}
+        />
         <style is:global>
             #vacation-app main {
                 width: auto;
