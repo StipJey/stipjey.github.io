@@ -40,25 +40,6 @@ export const projects = [
         stack: ['JavaScript', 'PostgreSQL', 'PlatypusJS'],
     },
     {
-        id: 'clash-tyrane',
-        demo: {
-            file: 'clash-tyrane-gameplay',
-            width: 748,
-            height: 480,
-            caption: 'Фрагмент боя',
-        },
-        period: '2015 — 2016',
-        company: 'Topface',
-        title: 'Clash Tyrane',
-        category: 'Игры',
-        intro: 'Карточная стратегия с боями в реальном времени.',
-        details: [
-            'Вёл разработку фронтенда. Реализовал бой на WebGL, а интерфейсы между боями — на React и Redux.',
-            'Довёл приложение до релиза во ВКонтакте, Facebook и Одноклассниках.',
-        ],
-        stack: ['React', 'Redux', 'Phaser', 'WebGL'],
-    },
-    {
         id: 'social-games',
         demo: {
             file: 'kis-kis',
@@ -76,6 +57,25 @@ export const projects = [
             'В «Гареме» добавил функции для VIP-игроков, подключил платежи и выпустил игру на Facebook.',
         ],
         stack: ['Backbone', 'Node.js', 'HTML5', 'LESS'],
+    },
+    {
+        id: 'clash-tyrane',
+        demo: {
+            file: 'clash-tyrane-gameplay',
+            width: 748,
+            height: 480,
+            caption: 'Фрагмент боя',
+        },
+        period: '2015 — 2016',
+        company: 'Topface',
+        title: 'Clash Tyrane',
+        category: 'Игры',
+        intro: 'Карточная стратегия с боями в реальном времени.',
+        details: [
+            'Вёл разработку фронтенда. Реализовал бой на WebGL, а интерфейсы между боями — на React и Redux.',
+            'Довёл приложение до релиза во ВКонтакте, Facebook и Одноклассниках.',
+        ],
+        stack: ['React', 'Redux', 'Phaser', 'WebGL'],
     },
     {
         id: 'binevo',
